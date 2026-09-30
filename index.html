@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#12372A">
+  <meta name="description" content="SAKIN — ইসলামী জীবনযাপনের জন্য একটি পূর্ণাঙ্গ PWA">
+  <title>SAKIN</title>
+</head>
+
+<body>
+  <h1>SAKIN</h1>
+  <p>ইসলামী জীবনযাপনের জন্য আপনার ডিজিটাল সহকারী</p>
+
+  <main>
+    <section>
+      <h2>আজকের দিন</h2>
+      <p id="date">তারিখ লোড হচ্ছে...</p>
+      <p id="time">সময় লোড হচ্ছে...</p>
+    </section>
+
+    <section>
+      <h2>নামাজ</h2>
+      <p>নামাজের সময় শীঘ্রই এখানে আসবে।</p>
+    </section>
+
+    <section>
+      <h2>কুরআন</h2>
+      <p>কুরআন বিভাগ</p>
+    </section>
+
+    <section>
+      <h2>হাদিস</h2>
+      <p>হাদিস বিভাগ</p>
+    </section>
+
+    <section>
+      <h2>দোয়া ও যিকির</h2>
+      <p>দোয়া ও যিকির বিভাগ</p>
+    </section>
+  </main>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+
+      document.getElementById("date").textContent =
+        now.toLocaleDateString("bn-BD", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+      document.getElementById("time").textContent =
+        now.toLocaleTimeString("bn-BD");
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
