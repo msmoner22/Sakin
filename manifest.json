@@ -1,0 +1,11 @@
+{
+  "name": "SAKIN",
+  "short_name": "SAKIN",
+  "description": "ইসলামী জীবনযাপনের জন্য একটি পূর্ণাঙ্গ ডিজিটাল সহকারী",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#12372A"
+}
