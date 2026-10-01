@@ -2936,11 +2936,1156 @@
         "Sakin is currently offline."
       );
       <div id="smart-reminder"></div>
-
+    
     }
   );
 
 </script>
+<section id="smart-reminder" class="card">
+  <h2>🧠 Smart Reminder</h2>
 
+  <p id="reminder-status">
+    Smart Reminder is ready.
+  </p>
+
+  <button type="button" onclick="openSmartReminder()">
+    🔔 Open Smart Reminder
+  </button>
+</section>
+
+<script>
+function openSmartReminder() {
+  const status = document.getElementById("reminder-status");
+
+  if (status) {
+    status.textContent =
+      "Smart Reminder is ready. Prayer, Ramadan and exercise reminders will be connected next.";
+  }
+}
+</script>
+  <script>
+/* Sakin Smart Reminder — Location & Prayer Foundation */
+
+let sakinLocation = {
+  latitude: null,
+  longitude: null
+};
+
+function getSakinLocation() {
+  const status = document.getElementById("reminder-status");
+
+  if (!navigator.geolocation) {
+    if (status) {
+      status.textContent = "Location is not supported on this device.";
+    }
+    return;
+  }
+
+  if (status) {
+    status.textContent = "Detecting your location...";
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      sakinLocation.latitude = position.coords.latitude;
+      sakinLocation.longitude = position.coords.longitude;
+
+      localStorage.setItem(
+        "sakinLocation",
+        JSON.stringify(sakinLocation)
+      );
+
+      if (status) {
+        status.textContent =
+          "Location detected successfully. Smart Reminder is ready.";
+      }
+
+      console.log("Sakin Location:", sakinLocation);
+    },
+    function() {
+      const saved = localStorage.getItem("sakinLocation");
+
+      if (saved) {
+        sakinLocation = JSON.parse(saved);
+
+        if (status) {
+          status.textContent =
+            "Using your previously saved location.";
+        }
+      } else {
+        if (status) {
+          status.textContent =
+            "Please allow location access for Smart Reminder.";
+        }
+      }
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 3600000
+    }
+  );
+}
+
+/* Load saved location when Sakin opens */
+window.addEventListener("load", function() {
+  const saved = localStorage.getItem("sakinLocation");
+
+  if (saved) {
+    try {
+      sakinLocation = JSON.parse(saved);
+    } catch (error) {
+      console.log("Saved location could not be loaded.");
+    }
+  }
+});
+</script>
+  <script>
+/* Sakin Prayer Time Calculation Foundation */
+
+function calculatePrayerTimes(latitude, longitude, date = new Date()) {
+  const rad = Math.PI / 180;
+  const deg = 180 / Math.PI;
+
+  const dayOfYear = Math.floor(
+    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+      Date.UTC(date.getFullYear(), 0, 0)) /
+      86400000
+  );
+
+  // Solar declination
+  const declination =
+    23.44 *
+    Math.sin(
+      (360 / 365) * (dayOfYear - 81) * rad
+    );
+
+  // Equation of time (minutes)
+  const B = ((360 / 365) * (dayOfYear - 81)) * rad;
+
+  const equationOfTime =
+    9.87 * Math.sin(2 * B) -
+    7.53 * Math.cos(B) -
+    1.5 * Math.sin(B);
+
+  // Solar noon in local solar time
+  const timezoneOffset = -date.getTimezoneOffset() / 60;
+
+  const solarNoon =
+    12 +
+    timezoneOffset -
+    longitude / 15 -
+    equationOfTime / 60;
+
+  function hourAngle(altitude) {
+    const cosH =
+      (Math.sin(altitude * rad) -
+        Math.sin(latitude * rad) *
+          Math.sin(declination * rad)) /
+      (Math.cos(latitude * rad) *
+        Math.cos(declination * rad));
+
+    if (cosH < -1) return 180;
+    if (cosH > 1) return 0;
+
+    return Math.acos(cosH) * deg;
+  }
+
+  function solarTime(angle, rising) {
+    const minutes = angle / 15 * 60;
+
+    return rising
+      ? solarNoon - minutes / 60
+      : solarNoon + minutes / 60;
+  }
+
+  // Sunrise / Sunset
+  const sunrise = solarTime(hourAngle(-0.833), true);
+  const sunset = solarTime(hourAngle(-0.833), false);
+
+  // Fajr: 18° below horizon
+  const fajr = solarTime(hourAngle(-18), true);
+
+  // Isha: 18° below horizon
+  const isha = solarTime(hourAngle(-18), false);
+
+  // Dhuhr
+  const dhuhr = solarNoon;
+
+  // Asr: approximate shadow factor 1
+  const asrAltitude =
+    Math.atan(
+      1 /
+        (1 +
+          Math.tan(
+            Math.abs((latitude - declination) * rad)
+          ))
+    ) * deg;
+
+  const asr = solarTime(hourAngle(asrAltitude), false);
+
+  function formatTime(decimalHour) {
+    decimalHour =
+      ((decimalHour % 24) + 24) % 24;
+
+    let hours = Math.floor(decimalHour);
+    let minutes = Math.round(
+      (decimalHour - hours) * 60
+    );
+
+    if (minutes >= 60) {
+      minutes = 0;
+      hours++;
+    }
+
+    hours = hours % 24;
+
+    return String(hours).padStart(2, "0") +
+      ":" +
+      String(minutes).padStart(2, "0");
+  }
+
+  return {
+    fajr: formatTime(fajr),
+    sunrise: formatTime(sunrise),
+    dhuhr: formatTime(dhuhr),
+    asr: formatTime(asr),
+    sunset: formatTime(sunset),
+    maghrib: formatTime(sunset),
+    isha: formatTime(isha)
+  };
+}
+
+console.log("Sakin Prayer Time engine loaded.");
+</script>
+  <script>
+/* Connect Sakin Prayer Times with Live Location */
+
+function startSakinPrayerCalculation() {
+  if (!navigator.geolocation) {
+    console.log("Geolocation is not supported.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const prayerTimes = calculatePrayerTimes(
+        latitude,
+        longitude
+      );
+
+      console.log("Sakin Prayer Times:", prayerTimes);
+
+      localStorage.setItem(
+        "sakinPrayerTimes",
+        JSON.stringify({
+          date: new Date().toISOString().slice(0, 10),
+          latitude: latitude,
+          longitude: longitude,
+          times: prayerTimes
+        })
+      );
+
+      const status =
+        document.getElementById("reminder-status");
+
+      if (status) {
+        status.textContent =
+          "Prayer times calculated for your location.";
+      }
+    },
+    function(error) {
+      console.log(
+        "Location permission/error:",
+        error.message
+      );
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 3600000
+    }
+  );
+}
+
+window.addEventListener("load", function() {
+  startSakinPrayerCalculation();
+});
+</script>
+  <section id="sakin-prayer-times" class="card">
+  <h2>🕌 Prayer Times</h2>
+
+  <p>Fajr: <strong id="sakin-fajr">--:--</strong></p>
+  <p>Sunrise: <strong id="sakin-sunrise">--:--</strong></p>
+  <p>Dhuhr: <strong id="sakin-dhuhr">--:--</strong></p>
+  <p>Asr: <strong id="sakin-asr">--:--</strong></p>
+  <p>Maghrib: <strong id="sakin-maghrib">--:--</strong></p>
+  <p>Sunset: <strong id="sakin-sunset">--:--</strong></p>
+  <p>Isha: <strong id="sakin-isha">--:--</strong></p>
+</section>
+
+<script>
+function displaySakinPrayerTimes(times) {
+  if (!times) return;
+
+  const items = {
+    "sakin-fajr": times.fajr,
+    "sakin-sunrise": times.sunrise,
+    "sakin-dhuhr": times.dhuhr,
+    "sakin-asr": times.asr,
+    "sakin-maghrib": times.maghrib,
+    "sakin-sunset": times.sunset,
+    "sakin-isha": times.isha
+  };
+
+  Object.keys(items).forEach(function(id) {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.textContent = items[id] || "--:--";
+    }
+  });
+}
+
+window.addEventListener("load", function() {
+  const saved =
+    localStorage.getItem("sakinPrayerTimes");
+
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+
+      if (data.times) {
+        displaySakinPrayerTimes(data.times);
+      }
+    } catch (error) {
+      console.log("Saved prayer times could not be loaded.");
+    }
+  }
+});
+</script>
+  <script>
+/* Sakin Sunrise & Sunset Reminder */
+
+function setupSunriseSunsetReminders(times) {
+  if (!times) return;
+
+  const now = new Date();
+
+  function scheduleReminder(timeString, message) {
+    const parts = timeString.split(":");
+
+    if (parts.length !== 2) return;
+
+    const target = new Date();
+
+    target.setHours(
+      Number(parts[0]),
+      Number(parts[1]),
+      0,
+      0
+    );
+
+    // Reminder = 30 minutes after the event
+    target.setMinutes(target.getMinutes() + 30);
+
+    let delay = target.getTime() - now.getTime();
+
+    // If today's reminder already passed, don't schedule it
+    if (delay <= 0) return;
+
+    setTimeout(function() {
+      showSakinReminder(message);
+    }, delay);
+  }
+
+  scheduleReminder(
+    times.sunrise,
+    "🌅 30 minutes have passed since sunrise."
+  );
+
+  scheduleReminder(
+    times.sunset,
+    "🌇 30 minutes have passed since sunset."
+  );
+}
+
+function showSakinReminder(message) {
+  console.log("Sakin Reminder:", message);
+
+  if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+      new Notification("Sakin Smart Reminder", {
+        body: message
+      });
+    }
+  }
+
+  const status =
+    document.getElementById("reminder-status");
+
+  if (status) {
+    status.textContent = message;
+  }
+}
+
+window.addEventListener("load", function() {
+  const saved =
+    localStorage.getItem("sakinPrayerTimes");
+
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+
+      if (data.times) {
+        setupSunriseSunsetReminders(data.times);
+      }
+    } catch (error) {
+      console.log(
+        "Sunrise/Sunset reminder could not be loaded."
+      );
+    }
+  }
+});
+</script>
+  <script>
+/* Sakin Prayer Reminders */
+
+function setupPrayerReminders(times) {
+  if (!times) return;
+
+  schedulePrayerReminder(
+    times.fajr,
+    "🕌 Fajr prayer time has arrived."
+  );
+
+  schedulePrayerReminder(
+    times.dhuhr,
+    "🕌 Dhuhr prayer time has arrived."
+  );
+
+  schedulePrayerReminder(
+    times.asr,
+    "🕌 Asr prayer time has arrived."
+  );
+
+  schedulePrayerReminder(
+    times.maghrib,
+    "🕌 Maghrib prayer time has arrived."
+  );
+
+  schedulePrayerReminder(
+    times.isha,
+    "🕌 Isha prayer time has arrived."
+  );
+}
+
+function schedulePrayerReminder(timeString, message) {
+  if (!timeString) return;
+
+  const parts = timeString.split(":");
+
+  if (parts.length !== 2) return;
+
+  const target = new Date();
+
+  target.setHours(
+    Number(parts[0]),
+    Number(parts[1]),
+    0,
+    0
+  );
+
+  const delay =
+    target.getTime() - Date.now();
+
+  if (delay <= 0) return;
+
+  setTimeout(function() {
+    showSakinReminder(message);
+  }, delay);
+}
+
+window.addEventListener("load", function() {
+  const saved =
+    localStorage.getItem("sakinPrayerTimes");
+
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+
+      if (data.times) {
+        setupPrayerReminders(data.times);
+      }
+    } catch (error) {
+      console.log(
+        "Prayer reminders could not be loaded."
+      );
+    }
+  }
+});
+</script>
+  <script>
+/* Sakin Notification Permission */
+
+async function requestSakinNotificationPermission() {
+  if (!("Notification" in window)) {
+    console.log("Notifications are not supported.");
+    return;
+  }
+
+  if (Notification.permission === "default") {
+    try {
+      const permission =
+        await Notification.requestPermission();
+
+      console.log(
+        "Sakin notification permission:",
+        permission
+      );
+    } catch (error) {
+      console.log(
+        "Notification permission request failed."
+      );
+    }
+  }
+}
+
+window.addEventListener("load", function() {
+  requestSakinNotificationPermission();
+});
+</script>
+
+  <script>
+/* Sakin Exercise Reminder */
+
+function setSakinExerciseReminder(time) {
+  if (!time) return;
+
+  localStorage.setItem(
+    "sakinExerciseTime",
+    time
+  );
+
+  scheduleExerciseReminder(time);
+}
+
+function scheduleExerciseReminder(time) {
+  const parts = time.split(":");
+
+  if (parts.length !== 2) return;
+
+  const target = new Date();
+
+  target.setHours(
+    Number(parts[0]),
+    Number(parts[1]),
+    0,
+    0
+  );
+
+  const delay =
+    target.getTime() - Date.now();
+
+  if (delay <= 0) return;
+
+  setTimeout(function() {
+    showSakinReminder(
+      "🏃 Exercise time. Stay active and healthy."
+    );
+  }, delay);
+}
+
+window.addEventListener("load", function() {
+  const saved =
+    localStorage.getItem("sakinExerciseTime");
+
+  if (saved) {
+    scheduleExerciseReminder(saved);
+  }
+});
+</script>
+  <script>
+/* =========================================
+   SAKIN RAMADAN + SEHRI + IFTAR REMINDER
+   ========================================= */
+
+function getIslamicMonth() {
+  try {
+    const formatter = new Intl.DateTimeFormat(
+      "en-u-ca-islamic",
+      {
+        month: "numeric"
+      }
+    );
+
+    const parts = formatter.formatToParts(new Date());
+    const monthPart = parts.find(
+      part => part.type === "month"
+    );
+
+    return monthPart
+      ? Number(monthPart.value)
+      : null;
+
+  } catch (error) {
+    console.log(
+      "Islamic calendar is not supported."
+    );
+    return null;
+  }
+}
+
+function isRamadan() {
+  return getIslamicMonth() === 9;
+}
+
+function setupRamadanReminders(times) {
+  if (!times) return;
+
+  if (!isRamadan()) {
+    console.log(
+      "Ramadan is not active. Sehri/Iftar reminders are disabled."
+    );
+    return;
+  }
+
+  console.log(
+    "Ramadan detected. Sehri and Iftar reminders enabled."
+  );
+
+  scheduleRamadanReminder(
+    times.fajr,
+    "🌙 Sehri time has ended. Fajr time has arrived."
+  );
+
+  scheduleRamadanReminder(
+    times.maghrib,
+    "🌙 Iftar time has arrived."
+  );
+}
+
+function scheduleRamadanReminder(
+  timeString,
+  message
+) {
+  if (!timeString) return;
+
+  const parts = timeString.split(":");
+
+  if (parts.length !== 2) return;
+
+  const target = new Date();
+
+  target.setHours(
+    Number(parts[0]),
+    Number(parts[1]),
+    0,
+    0
+  );
+
+  const delay =
+    target.getTime() - Date.now();
+
+  if (delay <= 0) return;
+
+  setTimeout(function() {
+    showSakinReminder(message);
+  }, delay);
+}
+
+
+/* =========================================
+   DAILY REFRESH
+   ========================================= */
+
+function saveTodayPrayerDate() {
+  const today =
+    new Date().toISOString().slice(0, 10);
+
+  localStorage.setItem(
+    "sakinPrayerDate",
+    today
+  );
+}
+
+function getSavedPrayerDate() {
+  return localStorage.getItem(
+    "sakinPrayerDate"
+  );
+}
+
+function checkNewDay() {
+  const today =
+    new Date().toISOString().slice(0, 10);
+
+  const savedDate =
+    getSavedPrayerDate();
+
+  if (savedDate !== today) {
+    saveTodayPrayerDate();
+
+    if (typeof startSakinPrayerCalculation === "function") {
+      startSakinPrayerCalculation();
+    }
+  }
+}
+
+
+/* =========================================
+   START RAMADAN SYSTEM
+   ========================================= */
+
+window.addEventListener("load", function() {
+
+  saveTodayPrayerDate();
+
+  checkNewDay();
+
+  const saved =
+    localStorage.getItem(
+      "sakinPrayerTimes"
+    );
+
+  if (!saved) return;
+
+  try {
+
+    const data = JSON.parse(saved);
+
+    if (data.times) {
+      setupRamadanReminders(
+        data.times
+      );
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Ramadan reminder data could not be loaded."
+    );
+
+  }
+
+});
+</script>
+  <script>
+/* =========================================
+   SAKIN OFFLINE PRAYER SCHEDULE
+   ========================================= */
+
+function getOfflinePrayerSchedule() {
+  const saved =
+    localStorage.getItem("sakinPrayerTimes");
+
+  if (!saved) {
+    console.log(
+      "No saved prayer schedule found."
+    );
+    return null;
+  }
+
+  try {
+    const data = JSON.parse(saved);
+
+    if (
+      data &&
+      data.times &&
+      data.latitude !== undefined &&
+      data.longitude !== undefined
+    ) {
+      console.log(
+        "Using saved offline prayer schedule."
+      );
+
+      return data;
+    }
+
+  } catch (error) {
+    console.log(
+      "Saved offline schedule is invalid."
+    );
+  }
+
+  return null;
+}
+
+
+/* Use saved schedule when internet is unavailable */
+
+window.addEventListener("offline", function() {
+  const saved =
+    getOfflinePrayerSchedule();
+
+  if (saved && saved.times) {
+
+    displaySakinPrayerTimes(
+      saved.times
+    );
+
+    const status =
+      document.getElementById(
+        "reminder-status"
+      );
+
+    if (status) {
+      status.textContent =
+        "📵 Offline mode: using your saved prayer schedule.";
+    }
+
+    console.log(
+      "Sakin is working with saved offline data."
+    );
+  }
+});
+
+
+/* Refresh prayer times when internet returns */
+
+window.addEventListener("online", function() {
+
+  console.log(
+    "Internet connection restored."
+  );
+
+  if (
+    typeof startSakinPrayerCalculation ===
+    "function"
+  ) {
+    startSakinPrayerCalculation();
+  }
+
+});
+
+
+/* Load saved data when Sakin starts */
+
+window.addEventListener("load", function() {
+
+  const saved =
+    getOfflinePrayerSchedule();
+
+  if (
+    saved &&
+    saved.times &&
+    typeof displaySakinPrayerTimes ===
+      "function"
+  ) {
+
+    displaySakinPrayerTimes(
+      saved.times
+    );
+
+  }
+
+});
+</script>
+  <section id="sakin-reminder-settings" class="card">
+  <h2>🔔 Reminder Settings</h2>
+
+  <label>
+    Exercise time:
+    <input
+      type="time"
+      id="sakin-exercise-time"
+    >
+  </label>
+
+  <br><br>
+
+  <button
+    type="button"
+    onclick="saveSakinExerciseTime()"
+  >
+    💾 Save Exercise Reminder
+  </button>
+
+  <p id="exercise-reminder-status">
+    Exercise reminder is not set.
+  </p>
+</section>
+
+<script>
+function saveSakinExerciseTime() {
+  const input =
+    document.getElementById(
+      "sakin-exercise-time"
+    );
+
+  if (!input || !input.value) {
+    alert("Please select an exercise time.");
+    return;
+  }
+
+  setSakinExerciseReminder(
+    input.value
+  );
+
+  const status =
+    document.getElementById(
+      "exercise-reminder-status"
+    );
+
+  if (status) {
+    status.textContent =
+      "✅ Exercise reminder saved for " +
+      input.value;
+  }
+}
+
+window.addEventListener("load", function() {
+  const saved =
+    localStorage.getItem(
+      "sakinExerciseTime"
+    );
+
+  const input =
+    document.getElementById(
+      "sakin-exercise-time"
+    );
+
+  const status =
+    document.getElementById(
+      "exercise-reminder-status"
+    );
+
+  if (saved && input) {
+    input.value = saved;
+
+    if (status) {
+      status.textContent =
+        "✅ Exercise reminder is set for " +
+        saved;
+    }
+  }
+});
+</script>
+  <script>
+/* =========================================
+   SAKIN REMINDER MANAGER
+   ========================================= */
+
+const SAKIN_REMINDER_SETTINGS = {
+  prayer: true,
+  sunrise: true,
+  sunset: true,
+  ramadan: true,
+  exercise: true
+};
+
+function saveSakinReminderSettings() {
+  localStorage.setItem(
+    "sakinReminderSettings",
+    JSON.stringify(
+      SAKIN_REMINDER_SETTINGS
+    )
+  );
+
+  console.log(
+    "Sakin reminder settings saved."
+  );
+}
+
+function loadSakinReminderSettings() {
+  const saved =
+    localStorage.getItem(
+      "sakinReminderSettings"
+    );
+
+  if (!saved) {
+    saveSakinReminderSettings();
+    return;
+  }
+
+  try {
+    const settings =
+      JSON.parse(saved);
+
+    Object.keys(
+      SAKIN_REMINDER_SETTINGS
+    ).forEach(function(key) {
+
+      if (
+        typeof settings[key] ===
+        "boolean"
+      ) {
+        SAKIN_REMINDER_SETTINGS[key] =
+          settings[key];
+      }
+
+    });
+
+  } catch (error) {
+    console.log(
+      "Reminder settings could not be loaded."
+    );
+  }
+}
+
+
+/* =========================================
+   REMINDER STATUS
+   ========================================= */
+
+function updateSakinReminderStatus() {
+
+  const status =
+    document.getElementById(
+      "reminder-status"
+    );
+
+  if (!status) return;
+
+  const enabled =
+    Object.values(
+      SAKIN_REMINDER_SETTINGS
+    ).filter(Boolean).length;
+
+  status.textContent =
+    "🔔 " +
+    enabled +
+    " Sakin reminder categories are enabled.";
+}
+
+
+/* =========================================
+   START ALL REMINDER SYSTEMS
+   ========================================= */
+
+function startAllSakinReminders() {
+
+  loadSakinReminderSettings();
+
+  const saved =
+    localStorage.getItem(
+      "sakinPrayerTimes"
+    );
+
+  if (!saved) {
+    console.log(
+      "Prayer schedule is not available yet."
+    );
+
+    updateSakinReminderStatus();
+    return;
+  }
+
+  try {
+
+    const data =
+      JSON.parse(saved);
+
+    if (!data.times) return;
+
+    if (
+      SAKIN_REMINDER_SETTINGS.prayer &&
+      typeof setupPrayerReminders ===
+        "function"
+    ) {
+      setupPrayerReminders(
+        data.times
+      );
+    }
+
+    if (
+      SAKIN_REMINDER_SETTINGS.sunrise ||
+      SAKIN_REMINDER_SETTINGS.sunset
+    ) {
+      if (
+        typeof setupSunriseSunsetReminders ===
+          "function"
+      ) {
+        setupSunriseSunsetReminders(
+          data.times
+        );
+      }
+    }
+
+    if (
+      SAKIN_REMINDER_SETTINGS.ramadan &&
+      typeof setupRamadanReminders ===
+        "function"
+    ) {
+      setupRamadanReminders(
+        data.times
+      );
+    }
+
+    if (
+      SAKIN_REMINDER_SETTINGS.exercise
+    ) {
+      const exerciseTime =
+        localStorage.getItem(
+          "sakinExerciseTime"
+        );
+
+      if (
+        exerciseTime &&
+        typeof scheduleExerciseReminder ===
+          "function"
+      ) {
+        scheduleExerciseReminder(
+          exerciseTime
+        );
+      }
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Sakin reminder manager error:",
+      error
+    );
+
+  }
+
+  updateSakinReminderStatus();
+}
+
+
+/* Start after the page loads */
+
+window.addEventListener(
+  "load",
+  function() {
+    startAllSakinReminders();
+  }
+);
+</script>
+  <script>
+/* =========================================
+   SAKIN SERVICE WORKER CONNECTION
+   ========================================= */
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then(function(registration) {
+
+        console.log(
+          "Sakin Service Worker registered:",
+          registration.scope
+        );
+
+      })
+      .catch(function(error) {
+
+        console.log(
+          "Sakin Service Worker registration failed:",
+          error
+        );
+
+      });
+
+  });
+}
+</script>
+  
 </body>
 </html>
+
