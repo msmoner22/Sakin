@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#0f766e">
-  <meta name="description" content="Sakin — একটি আধুনিক ইসলামিক PWA">
+  <meta name="description" content="Sakin — A modern Islamic PWA">
+
   <link rel="manifest" href="manifest.json">
-  <title>সাকিন</title>
+
+  <title>Sakin</title>
 
   <style>
     * {
@@ -56,21 +59,28 @@
       transition: .25s;
     }
 
-    button {
+    button,
+    select {
       font: inherit;
     }
 
     .topbar {
-      height: 70px;
+      min-height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 18px;
+      gap: 10px;
+      padding: 10px 18px;
       border-bottom: 1px solid var(--border);
       background: var(--card);
       position: sticky;
       top: 0;
       z-index: 20;
+    }
+
+    .brand-area {
+      min-width: 0;
+      flex: 1;
     }
 
     .brand {
@@ -84,9 +94,25 @@
       margin-top: 2px;
     }
 
+    .language-box {
+      margin-top: 7px;
+    }
+
+    #language-selector {
+      max-width: 180px;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 7px 9px;
+      outline: none;
+      cursor: pointer;
+    }
+
     .menu-btn {
       width: 43px;
       height: 43px;
+      flex-shrink: 0;
       border: 0;
       border-radius: 50%;
       background: var(--soft);
@@ -98,7 +124,7 @@
     .menu {
       display: none;
       position: fixed;
-      top: 65px;
+      top: 75px;
       right: 14px;
       width: 235px;
       background: var(--card);
@@ -135,7 +161,11 @@
     }
 
     .hero {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+      );
       color: white;
       border-radius: 25px;
       padding: 23px;
@@ -287,6 +317,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 10px;
     }
 
     .setting button {
@@ -303,9 +334,46 @@
       font-size: 12px;
     }
 
+    /* Google Translate */
+    .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
+
+    body {
+      top: 0 !important;
+    }
+
+    .goog-logo-link,
+    .goog-te-gadget span {
+      display: none !important;
+    }
+
+    .goog-te-gadget {
+      font-size: 0 !important;
+    }
+
+    #google_translate_element {
+      display: none;
+    }
+
     @media (min-width: 600px) {
       .grid {
         grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 430px) {
+      .topbar {
+        padding: 10px 12px;
+      }
+
+      .brand {
+        font-size: 22px;
+      }
+
+      #language-selector {
+        max-width: 150px;
+        font-size: 12px;
       }
     }
   </style>
@@ -314,200 +382,350 @@
 <body>
 
 <header class="topbar">
-  <div>
-   <img src ="s style ="height:28px; margin right:8px;" alt ="Sakin logo">
-   <select id="language-selector" aria-label="Language">
-  <option value="en">English</option>
-  <option value="bn">বাংলা</option>
-  <option value="ar">العربية</option>
-  <option value="es">Español</option>
-  <option value="fr">Français</option>
-  <option value="de">Deutsch</option>
-  <option value="it">Italiano</option>
-  <option value="pt">Português</option>
-  <option value="ru">Русский</option>
-  <option value="uk">Українська</option>
-  <option value="tr">Türkçe</option>
-  <option value="ur">اردو</option>
-  <option value="fa">فارسی</option>
-  <option value="hi">हिन्दी</option>
-  <option value="ne">नेपाली</option>
-  <option value="si">සිංහල</option>
-  <option value="ta">தமிழ்</option>
-  <option value="te">తెలుగు</option>
-  <option value="ml">മലയാളം</option>
-  <option value="kn">ಕನ್ನಡ</option>
-  <option value="mr">मराठी</option>
-  <option value="gu">ગુજરાતી</option>
-  <option value="pa">ਪੰਜਾਬੀ</option>
-  <option value="id">Bahasa Indonesia</option>
-  <option value="ms">Bahasa Melayu</option>
-  <option value="th">ไทย</option>
-  <option value="vi">Tiếng Việt</option>
-  <option value="ko">한국어</option>
-  <option value="ja">日本語</option>
-  <option value="zh">中文</option>
-  <option value="he">עברית</option>
-  <option value="nl">Nederlands</option>
-  <option value="sv">Svenska</option>
-  <option value="no">Norsk</option>
-  <option value="da">Dansk</option>
-  <option value="fi">Suomi</option>
-  <option value="pl">Polski</option>
-  <option value="cs">Čeština</option>
-  <option value="sk">Slovenčina</option>
-  <option value="hu">Magyar</option>
-  <option value="ro">Română</option>
-  <option value="bg">Български</option>
-  <option value="sr">Српски</option>
-  <option value="hr">Hrvatski</option>
-  <option value="sl">Slovenščina</option>
-  <option value="el">Ελληνικά</option>
-  <option value="sw">Kiswahili</option>
-  <option value="am">አማርኛ</option>
-  <option value="so">Soomaali</option>
-  <option value="ha">Hausa</option>
-  <option value="yo">Yorùbá</option>
-  <option value="af">Afrikaans</option>
-  <option value="az">Azərbaycan</option>
-  <option value="kk">Қазақша</option>
-  <option value="uz">O‘zbek</option>
-  <option value="my">မြန်မာ</option>
-  <option value="km">ខ្មែរ</option>
-  <option value="lo">ລາວ</option>
-  <option value="mn">Монгол</option>
-  <option value="hy">Հայերեն</option>
-  <option value="ka">ქართული</option>
-  <option value="sq">Shqip</option>
-  <option value="bs">Bosanski</option>
-</select>
-    <div class="brand">সাকিন</div>
-    <div class="subtitle">শান্তির পথে, প্রতিদিন</div>
+
+  <div class="brand-area">
+
+    <div class="brand">Sakin</div>
+
+    <div class="subtitle">
+      Peaceful living, every day
+    </div>
+
+    <div class="language-box">
+      <select id="language-selector" aria-label="Language">
+
+        <option value="en">English</option>
+        <option value="bn">বাংলা</option>
+        <option value="ar">العربية</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
+        <option value="uk">Українська</option>
+        <option value="tr">Türkçe</option>
+        <option value="ur">اردو</option>
+        <option value="fa">فارسی</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ne">नेपाली</option>
+        <option value="si">සිංහල</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="ml">മലയാളം</option>
+        <option value="kn">ಕನ್ನಡ</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="pa">ਪੰਜਾਬੀ</option>
+        <option value="id">Bahasa Indonesia</option>
+        <option value="ms">Bahasa Melayu</option>
+        <option value="th">ไทย</option>
+        <option value="vi">Tiếng Việt</option>
+        <option value="ko">한국어</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+        <option value="he">עברית</option>
+        <option value="nl">Nederlands</option>
+        <option value="sv">Svenska</option>
+        <option value="no">Norsk</option>
+        <option value="da">Dansk</option>
+        <option value="fi">Suomi</option>
+        <option value="pl">Polski</option>
+        <option value="cs">Čeština</option>
+        <option value="sk">Slovenčina</option>
+        <option value="hu">Magyar</option>
+        <option value="ro">Română</option>
+        <option value="bg">Български</option>
+        <option value="sr">Српски</option>
+        <option value="hr">Hrvatski</option>
+        <option value="sl">Slovenščina</option>
+        <option value="el">Ελληνικά</option>
+        <option value="sw">Kiswahili</option>
+        <option value="am">አማርኛ</option>
+        <option value="so">Soomaali</option>
+        <option value="ha">Hausa</option>
+        <option value="yo">Yorùbá</option>
+        <option value="af">Afrikaans</option>
+        <option value="az">Azərbaycan</option>
+        <option value="kk">Қазақша</option>
+        <option value="uz">O‘zbek</option>
+        <option value="my">မြန်မာ</option>
+        <option value="km">ខ្មែរ</option>
+        <option value="lo">ລາວ</option>
+        <option value="mn">Монгол</option>
+        <option value="hy">Հայերեն</option>
+        <option value="ka">ქართული</option>
+        <option value="sq">Shqip</option>
+        <option value="bs">Bosanski</option>
+
+      </select>
+    </div>
+
   </div>
 
-  <button class="menu-btn" onclick="toggleMenu()">⋮</button>
+  <button
+    class="menu-btn"
+    onclick="toggleMenu()"
+    aria-label="Menu"
+  >
+    ⋮
+  </button>
+
 </header>
+
 
 <div id="menu" class="menu">
 
-  <button onclick="goHome()">🏠 Sakin Home</button>
+  <button onclick="goHome()">
+    🏠 Sakin Home
+  </button>
 
-  <button onclick="setDark()">🌙 Dark Mode</button>
+  <button onclick="setDark()">
+    🌙 Dark Mode
+  </button>
 
-  <button onclick="setNight()">🌃 Night Mode</button>
+  <button onclick="setNight()">
+    🌃 Night Mode
+  </button>
 
-  <button onclick="openSettings()">⚙️ Settings</button>
+  <button onclick="openSettings()">
+    ⚙️ Settings
+  </button>
 
-  <button onclick="requestLocation()">📍 Live Location</button>
+  <button onclick="requestLocation()">
+    📍 Live Location
+  </button>
 
-  <button onclick="installApp()">📲 Install Sakin</button>
+  <button onclick="installApp()">
+    📲 Install Sakin
+  </button>
 
-  <button onclick="aboutSakin()">ℹ️ About Sakin</button>
+  <button onclick="aboutSakin()">
+    ℹ️ About Sakin
+  </button>
 
 </div>
+
 
 <main>
 
   <!-- HOME -->
+
   <section id="home" class="panel active">
 
     <div class="hero">
 
-      <h1>আসসালামু আলাইকুম</h1>
+      <h1>
+        Welcome to Sakin
+      </h1>
 
-      <p>সাকিনে আপনাকে স্বাগতম</p>
+      <p>
+        Peace, worship and a better daily life
+      </p>
 
-      <div id="clock" class="clock">--:--:--</div>
+      <div id="clock" class="clock">
+        --:--:--
+      </div>
 
-      <div id="date" class="date"></div>
+      <div id="date" class="date">
+      </div>
 
       <div id="location" class="location">
-        📍 Location নির্ধারণ করা হচ্ছে...
+        📍 Detecting location...
       </div>
 
     </div>
 
+
     <div class="section-title">
-      <h2>দ্রুত প্রবেশ</h2>
+
+      <h2>
+        Quick Access
+      </h2>
+
     </div>
+
 
     <div class="grid">
 
       <div class="card feature">
-        <div class="icon">🕌</div>
-        <h3>নামাজ</h3>
-        <p>পাঁচ ওয়াক্ত নামাজ</p>
+
+        <div class="icon">
+          🕌
+        </div>
+
+        <h3>
+          Prayer
+        </h3>
+
+        <p>
+          Five daily prayers
+        </p>
+
       </div>
 
-      <div class="card feature">
-        <div class="icon">📖</div>
-        <h3>কোরআন</h3>
-        <p>কোরআন তেলাওয়াত</p>
-      </div>
 
       <div class="card feature">
-        <div class="icon">🤲</div>
-        <h3>দোয়া</h3>
-        <p>দোয়া ও যিকির</p>
+
+        <div class="icon">
+          📖
+        </div>
+
+        <h3>
+          Quran
+        </h3>
+
+        <p>
+          Quran recitation
+        </p>
+
       </div>
 
+
       <div class="card feature">
-        <div class="icon">🧭</div>
-        <h3>কিবলা</h3>
-        <p>কিবলার দিক</p>
+
+        <div class="icon">
+          🤲
+        </div>
+
+        <h3>
+          Duas
+        </h3>
+
+        <p>
+          Duas and Dhikr
+        </p>
+
+      </div>
+
+
+      <div class="card feature">
+
+        <div class="icon">
+          🧭
+        </div>
+
+        <h3>
+          Qibla
+        </h3>
+
+        <p>
+          Qibla direction
+        </p>
+
       </div>
 
     </div>
+
 
     <div class="section-title">
-      <h2>আজকের নামাজ</h2>
-      <span class="muted">AUTO</span>
+
+      <h2>
+        Today's Prayer
+      </h2>
+
+      <span class="muted">
+        AUTO
+      </span>
+
     </div>
+
 
     <div id="prayers">
 
       <div class="prayer next">
-        <strong>ফজর</strong>
-        <span>--:--</span>
+
+        <strong>
+          Fajr
+        </strong>
+
+        <span>
+          --:--
+        </span>
+
       </div>
 
-      <div class="prayer">
-        <strong>যোহর</strong>
-        <span>--:--</span>
-      </div>
 
       <div class="prayer">
-        <strong>আসর</strong>
-        <span>--:--</span>
+
+        <strong>
+          Dhuhr
+        </strong>
+
+        <span>
+          --:--
+        </span>
+
       </div>
 
-      <div class="prayer">
-        <strong>মাগরিব</strong>
-        <span>--:--</span>
-      </div>
 
       <div class="prayer">
-        <strong>এশা</strong>
-        <span>--:--</span>
+
+        <strong>
+          Asr
+        </strong>
+
+        <span>
+          --:--
+        </span>
+
+      </div>
+
+
+      <div class="prayer">
+
+        <strong>
+          Maghrib
+        </strong>
+
+        <span>
+          --:--
+        </span>
+
+      </div>
+
+
+      <div class="prayer">
+
+        <strong>
+          Isha
+        </strong>
+
+        <span>
+          --:--
+        </span>
+
       </div>
 
     </div>
+
 
     <div class="section-title">
-      <h2>Smart Reminder</h2>
-      <span class="muted">AUTO</span>
+
+      <h2>
+        Smart Reminder
+      </h2>
+
+      <span class="muted">
+        AUTO
+      </span>
+
     </div>
+
 
     <div class="card">
 
       <p>
-        🔔 পাঁচ ওয়াক্ত নামাজ এবং Exercise Reminder
-        স্বয়ংক্রিয়ভাবে কাজ করবে।
+        🔔 Five daily prayers and Exercise Reminder
+        will work automatically.
       </p>
 
-      <p class="muted" style="margin-top:8px">
-        ফোনের Notification/Sound/Vibration সেটিংস অনুযায়ী
-        Reminder দেওয়া হবে।
+      <p
+        class="muted"
+        style="margin-top:8px"
+      >
+        Reminders will follow the phone's
+        Notification, Sound and Vibration settings.
       </p>
 
     </div>
@@ -517,52 +735,104 @@
 
   <!-- SETTINGS -->
 
-  <section id="settings" class="panel">
+  <section
+    id="settings"
+    class="panel"
+  >
 
     <div class="section-title">
-      <h2>⚙️ Settings</h2>
+
+      <h2>
+        ⚙️ Settings
+      </h2>
+
     </div>
+
 
     <div class="card">
 
-      <div class="setting">
-        <div>
-          <strong>🌙 Dark Mode</strong>
-          <div class="muted">ডার্ক থিম</div>
-        </div>
-
-        <button onclick="setDark()">ON</button>
-      </div>
 
       <div class="setting">
-        <div>
-          <strong>🌃 Night Mode</strong>
-          <div class="muted">রাতের জন্য বিশেষ থিম</div>
-        </div>
 
-        <button onclick="setNight()">ON</button>
-      </div>
-
-      <div class="setting">
         <div>
-          <strong>🔔 Smart Reminder</strong>
+
+          <strong>
+            🌙 Dark Mode
+          </strong>
+
           <div class="muted">
-            নামাজ ও Exercise Reminder
+            Dark theme
           </div>
+
         </div>
 
-        <button onclick="toggleReminder()">ON</button>
+        <button onclick="setDark()">
+          ON
+        </button>
+
       </div>
 
+
       <div class="setting">
+
         <div>
-          <strong>📍 Live Location</strong>
+
+          <strong>
+            🌃 Night Mode
+          </strong>
+
           <div class="muted">
-            অবস্থান অনুযায়ী নামাজের সময়
+            Special night theme
           </div>
+
         </div>
 
-        <button onclick="requestLocation()">Allow</button>
+        <button onclick="setNight()">
+          ON
+        </button>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div>
+
+          <strong>
+            🔔 Smart Reminder
+          </strong>
+
+          <div class="muted">
+            Prayer and Exercise Reminder
+          </div>
+
+        </div>
+
+        <button onclick="toggleReminder()">
+          ON
+        </button>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div>
+
+          <strong>
+            📍 Live Location
+          </strong>
+
+          <div class="muted">
+            Prayer times according to location
+          </div>
+
+        </div>
+
+        <button onclick="requestLocation()">
+          Allow
+        </button>
+
       </div>
 
     </div>
@@ -572,234 +842,687 @@
 </main>
 
 
+<!-- BOTTOM NAVIGATION -->
+
 <nav class="bottom-nav">
 
-  <button class="active" onclick="goHome()">
-    <div>⌂</div>
-    <small>হোম</small>
+  <button
+    class="active"
+    onclick="goHome()"
+  >
+
+    <div>
+      ⌂
+    </div>
+
+    <small>
+      Home
+    </small>
+
   </button>
 
-  <button>
-    <div>📖</div>
-    <small>কোরআন</small>
-  </button>
 
   <button>
-    <div>🤲</div>
-    <small>দোয়া</small>
+
+    <div>
+      📖
+    </div>
+
+    <small>
+      Quran
+    </small>
+
   </button>
 
+
   <button>
-    <div>🛠️</div>
-    <small>টুলস</small>
+
+    <div>
+      🤲
+    </div>
+
+    <small>
+      Duas
+    </small>
+
   </button>
+
+
+  <button>
+
+    <div>
+      🛠️
+    </div>
+
+    <small>
+      Tools
+    </small>
+
+  </button>
+
 
   <button onclick="openSettings()">
-    <div>⚙️</div>
-    <small>সেটিংস</small>
+
+    <div>
+      ⚙️
+    </div>
+
+    <small>
+      Settings
+    </small>
+
   </button>
 
 </nav>
 
 
+<!-- Google Translate engine -->
+
+<div id="google_translate_element"></div>
+
+
 <script>
 
-let deferredPrompt = null;
+  /* =========================
+     SAKIN BASIC FUNCTIONS
+     ========================= */
 
-function toggleMenu() {
-  document.getElementById("menu").classList.toggle("show");
-}
+  let deferredPrompt = null;
 
-function goHome() {
 
-  document.getElementById("home").classList.add("active");
-  document.getElementById("settings").classList.remove("active");
+  function toggleMenu() {
 
-  document.getElementById("menu").classList.remove("show");
+    document
+      .getElementById("menu")
+      .classList
+      .toggle("show");
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-
-function openSettings() {
-
-  document.getElementById("home").classList.remove("active");
-  document.getElementById("settings").classList.add("active");
-
-  document.getElementById("menu").classList.remove("show");
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-
-function setDark() {
-
-  document.body.classList.remove("night");
-  document.body.classList.toggle("dark");
-
-  localStorage.setItem(
-    "sakinTheme",
-    document.body.classList.contains("dark")
-      ? "dark"
-      : "light"
-  );
-}
-
-function setNight() {
-
-  document.body.classList.remove("dark");
-  document.body.classList.toggle("night");
-
-  localStorage.setItem(
-    "sakinTheme",
-    document.body.classList.contains("night")
-      ? "night"
-      : "light"
-  );
-}
-
-function requestLocation() {
-
-  if (!navigator.geolocation) {
-
-    document.getElementById("location").innerText =
-      "📍 এই ডিভাইসে Location সুবিধা নেই।";
-
-    return;
   }
 
-  navigator.geolocation.getCurrentPosition(
 
-    function(position) {
+  function goHome() {
 
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+    document
+      .getElementById("home")
+      .classList
+      .add("active");
 
-      document.getElementById("location").innerText =
-        "📍 Live Location সক্রিয় • " +
-        lat.toFixed(3) + ", " +
-        lon.toFixed(3);
+    document
+      .getElementById("settings")
+      .classList
+      .remove("active");
 
-    },
+    document
+      .getElementById("menu")
+      .classList
+      .remove("show");
 
-    function() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-      document.getElementById("location").innerText =
-        "📍 Location permission দেওয়া হয়নি।";
+  }
+
+
+  function openSettings() {
+
+    document
+      .getElementById("home")
+      .classList
+      .remove("active");
+
+    document
+      .getElementById("settings")
+      .classList
+      .add("active");
+
+    document
+      .getElementById("menu")
+      .classList
+      .remove("show");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  /* =========================
+     DARK MODE
+     ========================= */
+
+  function setDark() {
+
+    document.body.classList.remove("night");
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+      "sakinTheme",
+      document.body.classList.contains("dark")
+        ? "dark"
+        : "light"
+    );
+
+  }
+
+
+  /* =========================
+     NIGHT MODE
+     ========================= */
+
+  function setNight() {
+
+    document.body.classList.remove("dark");
+
+    document.body.classList.toggle("night");
+
+    localStorage.setItem(
+      "sakinTheme",
+      document.body.classList.contains("night")
+        ? "night"
+        : "light"
+    );
+
+  }
+
+
+  /* =========================
+     LOCATION
+     ========================= */
+
+  function requestLocation() {
+
+    if (!navigator.geolocation) {
+
+      document
+        .getElementById("location")
+        .innerText =
+        "📍 Location is not available on this device.";
+
+      return;
 
     }
 
-  );
-}
 
-function toggleReminder() {
+    navigator.geolocation.getCurrentPosition(
 
-  const current =
-    localStorage.getItem("sakinReminder");
+      function(position) {
 
-  if (current === "off") {
+        const lat =
+          position.coords.latitude;
 
-    localStorage.setItem("sakinReminder", "on");
+        const lon =
+          position.coords.longitude;
 
-    alert("Smart Reminder চালু হয়েছে।");
+        document
+          .getElementById("location")
+          .innerText =
+          "📍 Live Location active • " +
+          lat.toFixed(3) +
+          ", " +
+          lon.toFixed(3);
 
-  } else {
+      },
 
-    localStorage.setItem("sakinReminder", "off");
 
-    alert("Smart Reminder বন্ধ করা হয়েছে।");
+      function() {
+
+        document
+          .getElementById("location")
+          .innerText =
+          "📍 Location permission was not granted.";
+
+      }
+
+    );
+
   }
-}
 
-function aboutSakin() {
 
-  alert(
-    "সাকিন\n\n" +
-    "একটি আধুনিক ইসলামিক PWA।\n\n" +
-    "কোরআন • নামাজ • দোয়া • কিবলা • Smart Reminder"
-  );
-}
+  /* =========================
+     SMART REMINDER
+     ========================= */
 
-function installApp() {
+  function toggleReminder() {
 
-  if (deferredPrompt) {
+    const current =
+      localStorage.getItem(
+        "sakinReminder"
+      );
 
-    deferredPrompt.prompt();
 
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-    });
+    if (current === "off") {
 
-  } else {
+      localStorage.setItem(
+        "sakinReminder",
+        "on"
+      );
+
+      alert(
+        "Smart Reminder is now ON."
+      );
+
+    }
+
+    else {
+
+      localStorage.setItem(
+        "sakinReminder",
+        "off"
+      );
+
+      alert(
+        "Smart Reminder is now OFF."
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     ABOUT SAKIN
+     ========================= */
+
+  function aboutSakin() {
 
     alert(
-      "Install অপশনটি ব্রাউজার/ডিভাইস অনুযায়ী পরে সক্রিয় হবে।"
+      "Sakin\n\n" +
+      "A modern Islamic PWA.\n\n" +
+      "Quran • Prayer • Duas • Qibla • Smart Reminder"
     );
 
   }
-}
 
-window.addEventListener(
-  "beforeinstallprompt",
-  function(event) {
 
-    event.preventDefault();
+  /* =========================
+     INSTALL APP
+     ========================= */
 
-    deferredPrompt = event;
+  function installApp() {
+
+    if (deferredPrompt) {
+
+      deferredPrompt.prompt();
+
+      deferredPrompt.userChoice.then(
+        function() {
+
+          deferredPrompt = null;
+
+        }
+      );
+
+    }
+
+    else {
+
+      alert(
+        "The Install option will become available according to your browser/device."
+      );
+
+    }
 
   }
-);
 
 
-function updateClock() {
+  window.addEventListener(
+    "beforeinstallprompt",
+    function(event) {
 
-  const now = new Date();
+      event.preventDefault();
 
-  document.getElementById("clock").innerText =
-    now.toLocaleTimeString("bn-BD");
+      deferredPrompt = event;
 
-  document.getElementById("date").innerText =
-    now.toLocaleDateString(
-      "bn-BD",
-      {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      }
+    }
+  );
+
+
+  /* =========================
+     CLOCK & DATE
+     ========================= */
+
+  function updateClock() {
+
+    const now = new Date();
+
+
+    document
+      .getElementById("clock")
+      .innerText =
+      now.toLocaleTimeString(
+        "en-US"
+      );
+
+
+    document
+      .getElementById("date")
+      .innerText =
+      now.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
+
+  }
+
+
+  /* =========================
+     LOAD SAVED THEME
+     ========================= */
+
+  const savedTheme =
+    localStorage.getItem(
+      "sakinTheme"
     );
-}
 
-const savedTheme =
-  localStorage.getItem("sakinTheme");
 
-if (savedTheme === "dark") {
-  document.body.classList.add("dark");
-}
+  if (savedTheme === "dark") {
 
-if (savedTheme === "night") {
-  document.body.classList.add("night");
-}
+    document.body.classList.add(
+      "dark"
+    );
 
-updateClock();
+  }
 
-setInterval(updateClock, 1000);
+
+  if (savedTheme === "night") {
+
+    document.body.classList.add(
+      "night"
+    );
+
+  }
+
+
+  updateClock();
+
+  setInterval(
+    updateClock,
+    1000
+  );
+
+
+  /* =========================
+     LANGUAGE SYSTEM
+     ========================= */
+
+  const languageSelector =
+    document.getElementById(
+      "language-selector"
+    );
+
+
+  /*
+     IMPORTANT:
+     English is the DEFAULT language
+     for a fresh installation.
+  */
+
+  const languageInitialized =
+    localStorage.getItem(
+      "sakinLanguageInitialized"
+    );
+
+
+  if (!languageInitialized) {
+
+    localStorage.setItem(
+      "sakinLanguage",
+      "en"
+    );
+
+    localStorage.setItem(
+      "sakinLanguageInitialized",
+      "1"
+    );
+
+  }
+
+
+  const savedLanguage =
+    localStorage.getItem(
+      "sakinLanguage"
+    ) || "en";
+
+
+  languageSelector.value =
+    savedLanguage;
+
+
+  /*
+     Google Translate language codes
+  */
+
+  const translateLanguages = {
+
+    en: "en",
+    bn: "bn",
+    ar: "ar",
+    es: "es",
+    fr: "fr",
+    de: "de",
+    it: "it",
+    pt: "pt",
+    ru: "ru",
+    uk: "uk",
+    tr: "tr",
+    ur: "ur",
+    fa: "fa",
+    hi: "hi",
+    ne: "ne",
+    si: "si",
+    ta: "ta",
+    te: "te",
+    ml: "ml",
+    kn: "kn",
+    mr: "mr",
+    gu: "gu",
+    pa: "pa",
+    id: "id",
+    ms: "ms",
+    th: "th",
+    vi: "vi",
+    ko: "ko",
+    ja: "ja",
+    zh: "zh-CN",
+    he: "iw",
+    nl: "nl",
+    sv: "sv",
+    no: "no",
+    da: "da",
+    fi: "fi",
+    pl: "pl",
+    cs: "cs",
+    sk: "sk",
+    hu: "hu",
+    ro: "ro",
+    bg: "bg",
+    sr: "sr",
+    hr: "hr",
+    sl: "sl",
+    el: "el",
+    sw: "sw",
+    am: "am",
+    so: "so",
+    ha: "ha",
+    yo: "yo",
+    af: "af",
+    az: "az",
+    kk: "kk",
+    uz: "uz",
+    my: "my",
+    km: "km",
+    lo: "lo",
+    mn: "mn",
+    hy: "hy",
+    ka: "ka",
+    sq: "sq",
+    bs: "bs"
+
+  };
+
+
+  /*
+     Change language
+  */
+
+  languageSelector.addEventListener(
+    "change",
+    function() {
+
+      const selectedLanguage =
+        this.value;
+
+
+      localStorage.setItem(
+        "sakinLanguage",
+        selectedLanguage
+      );
+
+
+      changeSakinLanguage(
+        selectedLanguage
+      );
+
+    }
+  );
+
+
+  function changeSakinLanguage(
+    language
+  ) {
+
+    /*
+       English:
+       restore the original page.
+    */
+
+    if (language === "en") {
+
+      setTimeout(
+        function() {
+
+          location.reload();
+
+        },
+        100
+      );
+
+      return;
+
+    }
+
+
+    const googleLanguage =
+      translateLanguages[language];
+
+
+    if (!googleLanguage) {
+
+      return;
+
+    }
+
+
+    /*
+       Google Translate uses
+       this cookie to select language.
+    */
+
+    document.cookie =
+      "googtrans=/en/" +
+      googleLanguage +
+      ";path=/";
+
+
+    document.cookie =
+      "googtrans=/en/" +
+      googleLanguage +
+      ";path=/;" +
+      "domain=" +
+      location.hostname;
+
+
+    /*
+       Reload so Google Translate
+       applies the selected language.
+    */
+
+    setTimeout(
+      function() {
+
+        location.reload();
+
+      },
+      150
+    );
+
+  }
+
+
+  /*
+     Apply saved language when page opens.
+  */
+
+  if (
+    savedLanguage &&
+    savedLanguage !== "en"
+  ) {
+
+    const googleLanguage =
+      translateLanguages[
+        savedLanguage
+      ];
+
+
+    if (googleLanguage) {
+
+      document.cookie =
+        "googtrans=/en/" +
+        googleLanguage +
+        ";path=/";
+
+    }
+
+  }
+
 
 </script>
+
+
+<!-- Google Translate Library -->
+
+<script
+  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
 
 <script>
-  const languageSelector = document.getElementById("language-selector");
 
-  const savedLanguage = localStorage.getItem("sakinLanguage") || "en";
-  languageSelector.value = savedLanguage;
+  function googleTranslateElementInit() {
 
-  languageSelector.addEventListener("change", function () {
-    localStorage.setItem("sakinLanguage", this.value);
-  });
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        includedLanguages:
+          "en,bn,ar,es,fr,de,it,pt,ru,uk,tr,ur,fa,hi,ne,si,ta,te,ml,kn,mr,gu,pa,id,ms,th,vi,ko,ja,zh,he,nl,sv,no,da,fi,pl,cs,sk,hu,ro,bg,sr,hr,sl,el,sw,am,so,ha,yo,af,az,kk,uz,my,km,lo,mn,hy,ka,sq,bs",
+        autoDisplay: false
+      },
+      "google_translate_element"
+    );
+
+  }
+
 </script>
+
 </body>
 </html>
