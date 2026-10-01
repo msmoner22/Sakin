@@ -250,6 +250,54 @@ section {
   width: 100%;
   max-width: 100%;
 }
+/* =========================================
+   SAKIN LOW-END PERFORMANCE OPTIMIZATION
+   ========================================= */
+
+.content-section,
+.card,
+.sakin-card {
+  contain: layout paint;
+}
+
+/* Avoid expensive effects on low-end devices */
+@media (max-width: 600px) {
+
+  * {
+    animation-duration: 0.15s !important;
+    transition-duration: 0.15s !important;
+  }
+
+  .card,
+  .sakin-card {
+    box-shadow: none;
+  }
+
+  img {
+    content-visibility: auto;
+  }
+}
+
+/* Very low-end devices */
+@media (max-width: 360px) {
+
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .card,
+  .sakin-card {
+    box-shadow: none;
+    border-radius: 8px;
+  }
+}
+
+/* Save rendering resources for off-screen content */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
 
 /* ---------- Landscape Phones ---------- */
 
