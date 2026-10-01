@@ -4144,6 +4144,47 @@ async function testSakinNotification() {
   }, 3000);
 }
 </script>
+  <section class="card" id="sakin-live-clock">
+  <h2>🕐 Live Time & Date</h2>
+  <p id="sakin-live-time">--:--:--</p>
+  <p id="sakin-live-date">Loading date...</p>
+</section>
+
+<script>
+function updateSakinLiveClock() {
+  const now = new Date();
+
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
+  const date = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+
+  const timeElement =
+    document.getElementById("sakin-live-time");
+
+  const dateElement =
+    document.getElementById("sakin-live-date");
+
+  if (timeElement) {
+    timeElement.textContent = time;
+  }
+
+  if (dateElement) {
+    dateElement.textContent = date;
+  }
+}
+
+updateSakinLiveClock();
+setInterval(updateSakinLiveClock, 1000);
+</script>
 </body>
 </html>
 
