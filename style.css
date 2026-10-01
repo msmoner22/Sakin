@@ -1,0 +1,261 @@
+/* =========================================
+   SAKIN RESPONSIVE + PERFORMANCE FOUNDATION
+   Low-end → High-end
+   Mobile → Tablet → Laptop → Desktop
+   ========================================= */
+
+/* ---------- Basic Performance ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Images ---------- */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------- Buttons & Inputs ---------- */
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* ---------- Main Content ---------- */
+
+main,
+.container,
+.app-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ---------- Responsive Grid ---------- */
+
+.grid,
+.cards,
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ---------- Small Phones ---------- */
+
+@media (max-width: 360px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  main,
+  .container,
+  .app-container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .grid,
+  .cards,
+  .features-grid {
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* ---------- Normal Phones ---------- */
+
+@media (min-width: 361px) and (max-width: 600px) {
+
+  main,
+  .container,
+  .app-container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+/* ---------- Large Phones / Small Tablets ---------- */
+
+@media (min-width: 601px) and (max-width: 767px) {
+
+  .grid,
+  .cards,
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Tablets ---------- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  main,
+  .container,
+  .app-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .grid,
+  .cards,
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+/* ---------- Laptop ---------- */
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+
+  main,
+  .container,
+  .app-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .grid,
+  .cards,
+  .features-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+
+/* ---------- Large Desktop ---------- */
+
+@media (min-width: 1440px) {
+
+  main,
+  .container,
+  .app-container {
+    max-width: 1500px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .grid,
+  .cards,
+  .features-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+/* ---------- Touch Devices ---------- */
+
+@media (hover: none) and (pointer: coarse) {
+
+  button,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+}
+
+/* ---------- Reduced Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Dark Mode Foundation ---------- */
+
+@media (prefers-color-scheme: dark) {
+
+  body {
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Prevent Very Wide Content ---------- */
+
+table,
+pre,
+code {
+  max-width: 100%;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+/* ---------- Safe Mobile Spacing ---------- */
+
+section {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ---------- Landscape Phones ---------- */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  body {
+    font-size: 14px;
+  }
+}
