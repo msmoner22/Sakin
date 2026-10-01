@@ -9,5 +9,12 @@
   "theme_color": "#0f766e",
   "orientation": "portrait",
   "lang": "bn",
-  "dir": "ltr"
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "sakin.png",
+      "type": "image/png",
+      "sizes": "any"
+    }
+  ]
 }
