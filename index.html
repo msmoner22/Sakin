@@ -4086,7 +4086,64 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
-  
+  <!-- SAKIN NOTIFICATION TEST -->
+
+<section class="card" id="notification-test">
+  <h2>🔔 Notification Test</h2>
+
+  <button type="button" onclick="testSakinNotification()">
+    🔔 Test Notification
+  </button>
+
+  <p id="notification-test-status">
+    Press the button to test Sakin notifications.
+  </p>
+</section>
+
+<script>
+async function testSakinNotification() {
+  const status = document.getElementById(
+    "notification-test-status"
+  );
+
+  if (!("Notification" in window)) {
+    if (status) {
+      status.textContent =
+        "❌ Notifications are not supported on this device.";
+    }
+    return;
+  }
+
+  if (Notification.permission !== "granted") {
+    const permission =
+      await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      if (status) {
+        status.textContent =
+          "❌ Notification permission was not granted.";
+      }
+      return;
+    }
+  }
+
+  if (status) {
+    status.textContent =
+      "✅ Permission granted. Sending test notification...";
+  }
+
+  setTimeout(() => {
+    new Notification("Sakin Smart Reminder", {
+      body: "🔔 Notification test successful."
+    });
+
+    if (status) {
+      status.textContent =
+        "✅ Test notification sent.";
+    }
+  }, 3000);
+}
+</script>
 </body>
 </html>
 
