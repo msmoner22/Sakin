@@ -791,5 +791,15 @@ setInterval(updateClock, 1000);
 
 </script>
 
+<script>
+  const languageSelector = document.getElementById("language-selector");
+
+  const savedLanguage = localStorage.getItem("sakinLanguage") || "en";
+  languageSelector.value = savedLanguage;
+
+  languageSelector.addEventListener("change", function () {
+    localStorage.setItem("sakinLanguage", this.value);
+  });
+</script>
 </body>
 </html>
