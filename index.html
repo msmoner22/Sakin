@@ -3,72 +3,727 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#12372A">
-  <meta name="description" content="SAKIN — ইসলামী জীবনযাপনের জন্য একটি পূর্ণাঙ্গ PWA">
-  <title>SAKIN</title>
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="Sakin — একটি আধুনিক ইসলামিক PWA">
+  <link rel="manifest" href="manifest.json">
+  <title>সাকিন</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f7f6;
+      --card: #ffffff;
+      --text: #14201d;
+      --muted: #6b7773;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --soft: #e5f3f0;
+      --border: #e1e8e5;
+    }
+
+    body.dark {
+      --bg: #0b1412;
+      --card: #14201d;
+      --text: #eef8f5;
+      --muted: #a8b7b3;
+      --primary: #2aa89c;
+      --primary-dark: #1d8178;
+      --soft: #17352f;
+      --border: #283934;
+    }
+
+    body.night {
+      --bg: #10131b;
+      --card: #191d28;
+      --text: #e9edf7;
+      --muted: #9ba3b5;
+      --primary: #7c9cff;
+      --primary-dark: #5c78d9;
+      --soft: #252c42;
+      --border: #303747;
+    }
+
+    body {
+      font-family: system-ui, "Noto Sans Bengali", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: .25s;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .menu-btn {
+      width: 43px;
+      height: 43px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--text);
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .menu {
+      display: none;
+      position: fixed;
+      top: 65px;
+      right: 14px;
+      width: 235px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 8px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.15);
+      z-index: 50;
+    }
+
+    .menu.show {
+      display: block;
+    }
+
+    .menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 13px;
+      text-align: left;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .menu button:hover {
+      background: var(--soft);
+    }
+
+    main {
+      max-width: 760px;
+      margin: auto;
+      padding: 18px 16px 105px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: 25px;
+      padding: 23px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .hero p {
+      opacity: .9;
+      font-size: 13px;
+    }
+
+    .clock {
+      font-size: 34px;
+      font-weight: 800;
+      margin-top: 17px;
+    }
+
+    .date {
+      font-size: 13px;
+      opacity: .9;
+    }
+
+    .location {
+      margin-top: 13px;
+      font-size: 12px;
+      opacity: .9;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 23px 2px 12px;
+    }
+
+    .section-title h2 {
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .feature {
+      min-height: 110px;
+      cursor: pointer;
+      transition: .15s;
+    }
+
+    .feature:active {
+      transform: scale(.97);
+    }
+
+    .icon {
+      font-size: 28px;
+    }
+
+    .feature h3 {
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .prayer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      margin-bottom: 9px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+    }
+
+    .prayer span {
+      color: var(--muted);
+    }
+
+    .next {
+      border-left: 4px solid var(--primary);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 760px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 7px 5px;
+      z-index: 30;
+    }
+
+    .bottom-nav button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 7px 2px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .bottom-nav button.active {
+      color: var(--primary);
+      background: var(--soft);
+    }
+
+    .bottom-nav div {
+      font-size: 19px;
+    }
+
+    .bottom-nav small {
+      font-size: 10px;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .setting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .setting button {
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <h1>SAKIN</h1>
-  <p>ইসলামী জীবনযাপনের জন্য আপনার ডিজিটাল সহকারী</p>
 
-  <main>
-    <section>
-      <h2>আজকের দিন</h2>
-      <p id="date">তারিখ লোড হচ্ছে...</p>
-      <p id="time">সময় লোড হচ্ছে...</p>
-    </section>
+<header class="topbar">
+  <div>
+    <div class="brand">সাকিন</div>
+    <div class="subtitle">শান্তির পথে, প্রতিদিন</div>
+  </div>
 
-    <section>
-      <h2>নামাজ</h2>
-      <p>নামাজের সময় শীঘ্রই এখানে আসবে।</p>
-    </section>
+  <button class="menu-btn" onclick="toggleMenu()">⋮</button>
+</header>
 
-    <section>
-      <h2>কুরআন</h2>
-      <p>কুরআন বিভাগ</p>
-    </section>
+<div id="menu" class="menu">
 
-    <section>
-      <h2>হাদিস</h2>
-      <p>হাদিস বিভাগ</p>
-    </section>
+  <button onclick="goHome()">🏠 Sakin Home</button>
 
-    <section>
-      <h2>দোয়া ও যিকির</h2>
-      <p>দোয়া ও যিকির বিভাগ</p>
-    </section>
-  </main>
+  <button onclick="setDark()">🌙 Dark Mode</button>
 
-  <script>
-    function updateTime() {
-      const now = new Date();
+  <button onclick="setNight()">🌃 Night Mode</button>
 
-      document.getElementById("date").textContent =
-        now.toLocaleDateString("bn-BD", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        });
+  <button onclick="openSettings()">⚙️ Settings</button>
 
-      document.getElementById("time").textContent =
-        now.toLocaleTimeString("bn-BD");
+  <button onclick="requestLocation()">📍 Live Location</button>
+
+  <button onclick="installApp()">📲 Install Sakin</button>
+
+  <button onclick="aboutSakin()">ℹ️ About Sakin</button>
+
+</div>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home" class="panel active">
+
+    <div class="hero">
+
+      <h1>আসসালামু আলাইকুম</h1>
+
+      <p>সাকিনে আপনাকে স্বাগতম</p>
+
+      <div id="clock" class="clock">--:--:--</div>
+
+      <div id="date" class="date"></div>
+
+      <div id="location" class="location">
+        📍 Location নির্ধারণ করা হচ্ছে...
+      </div>
+
+    </div>
+
+    <div class="section-title">
+      <h2>দ্রুত প্রবেশ</h2>
+    </div>
+
+    <div class="grid">
+
+      <div class="card feature">
+        <div class="icon">🕌</div>
+        <h3>নামাজ</h3>
+        <p>পাঁচ ওয়াক্ত নামাজ</p>
+      </div>
+
+      <div class="card feature">
+        <div class="icon">📖</div>
+        <h3>কোরআন</h3>
+        <p>কোরআন তেলাওয়াত</p>
+      </div>
+
+      <div class="card feature">
+        <div class="icon">🤲</div>
+        <h3>দোয়া</h3>
+        <p>দোয়া ও যিকির</p>
+      </div>
+
+      <div class="card feature">
+        <div class="icon">🧭</div>
+        <h3>কিবলা</h3>
+        <p>কিবলার দিক</p>
+      </div>
+
+    </div>
+
+    <div class="section-title">
+      <h2>আজকের নামাজ</h2>
+      <span class="muted">AUTO</span>
+    </div>
+
+    <div id="prayers">
+
+      <div class="prayer next">
+        <strong>ফজর</strong>
+        <span>--:--</span>
+      </div>
+
+      <div class="prayer">
+        <strong>যোহর</strong>
+        <span>--:--</span>
+      </div>
+
+      <div class="prayer">
+        <strong>আসর</strong>
+        <span>--:--</span>
+      </div>
+
+      <div class="prayer">
+        <strong>মাগরিব</strong>
+        <span>--:--</span>
+      </div>
+
+      <div class="prayer">
+        <strong>এশা</strong>
+        <span>--:--</span>
+      </div>
+
+    </div>
+
+    <div class="section-title">
+      <h2>Smart Reminder</h2>
+      <span class="muted">AUTO</span>
+    </div>
+
+    <div class="card">
+
+      <p>
+        🔔 পাঁচ ওয়াক্ত নামাজ এবং Exercise Reminder
+        স্বয়ংক্রিয়ভাবে কাজ করবে।
+      </p>
+
+      <p class="muted" style="margin-top:8px">
+        ফোনের Notification/Sound/Vibration সেটিংস অনুযায়ী
+        Reminder দেওয়া হবে।
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- SETTINGS -->
+
+  <section id="settings" class="panel">
+
+    <div class="section-title">
+      <h2>⚙️ Settings</h2>
+    </div>
+
+    <div class="card">
+
+      <div class="setting">
+        <div>
+          <strong>🌙 Dark Mode</strong>
+          <div class="muted">ডার্ক থিম</div>
+        </div>
+
+        <button onclick="setDark()">ON</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>🌃 Night Mode</strong>
+          <div class="muted">রাতের জন্য বিশেষ থিম</div>
+        </div>
+
+        <button onclick="setNight()">ON</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>🔔 Smart Reminder</strong>
+          <div class="muted">
+            নামাজ ও Exercise Reminder
+          </div>
+        </div>
+
+        <button onclick="toggleReminder()">ON</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>📍 Live Location</strong>
+          <div class="muted">
+            অবস্থান অনুযায়ী নামাজের সময়
+          </div>
+        </div>
+
+        <button onclick="requestLocation()">Allow</button>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+  <button class="active" onclick="goHome()">
+    <div>⌂</div>
+    <small>হোম</small>
+  </button>
+
+  <button>
+    <div>📖</div>
+    <small>কোরআন</small>
+  </button>
+
+  <button>
+    <div>🤲</div>
+    <small>দোয়া</small>
+  </button>
+
+  <button>
+    <div>🛠️</div>
+    <small>টুলস</small>
+  </button>
+
+  <button onclick="openSettings()">
+    <div>⚙️</div>
+    <small>সেটিংস</small>
+  </button>
+
+</nav>
+
+
+<script>
+
+let deferredPrompt = null;
+
+function toggleMenu() {
+  document.getElementById("menu").classList.toggle("show");
+}
+
+function goHome() {
+
+  document.getElementById("home").classList.add("active");
+  document.getElementById("settings").classList.remove("active");
+
+  document.getElementById("menu").classList.remove("show");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function openSettings() {
+
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("settings").classList.add("active");
+
+  document.getElementById("menu").classList.remove("show");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function setDark() {
+
+  document.body.classList.remove("night");
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "sakinTheme",
+    document.body.classList.contains("dark")
+      ? "dark"
+      : "light"
+  );
+}
+
+function setNight() {
+
+  document.body.classList.remove("dark");
+  document.body.classList.toggle("night");
+
+  localStorage.setItem(
+    "sakinTheme",
+    document.body.classList.contains("night")
+      ? "night"
+      : "light"
+  );
+}
+
+function requestLocation() {
+
+  if (!navigator.geolocation) {
+
+    document.getElementById("location").innerText =
+      "📍 এই ডিভাইসে Location সুবিধা নেই।";
+
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      document.getElementById("location").innerText =
+        "📍 Live Location সক্রিয় • " +
+        lat.toFixed(3) + ", " +
+        lon.toFixed(3);
+
+    },
+
+    function() {
+
+      document.getElementById("location").innerText =
+        "📍 Location permission দেওয়া হয়নি।";
+
     }
 
+  );
+}
 
+function toggleReminder() {
 
+  const current =
+    localStorage.getItem("sakinReminder");
 
-    <script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js");
-    });
+  if (current === "off") {
+
+    localStorage.setItem("sakinReminder", "on");
+
+    alert("Smart Reminder চালু হয়েছে।");
+
+  } else {
+
+    localStorage.setItem("sakinReminder", "off");
+
+    alert("Smart Reminder বন্ধ করা হয়েছে।");
   }
+}
+
+function aboutSakin() {
+
+  alert(
+    "সাকিন\n\n" +
+    "একটি আধুনিক ইসলামিক PWA।\n\n" +
+    "কোরআন • নামাজ • দোয়া • কিবলা • Smart Reminder"
+  );
+}
+
+function installApp() {
+
+  if (deferredPrompt) {
+
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+    });
+
+  } else {
+
+    alert(
+      "Install অপশনটি ব্রাউজার/ডিভাইস অনুযায়ী পরে সক্রিয় হবে।"
+    );
+
+  }
+}
+
+window.addEventListener(
+  "beforeinstallprompt",
+  function(event) {
+
+    event.preventDefault();
+
+    deferredPrompt = event;
+
+  }
+);
+
+
+function updateClock() {
+
+  const now = new Date();
+
+  document.getElementById("clock").innerText =
+    now.toLocaleTimeString("bn-BD");
+
+  document.getElementById("date").innerText =
+    now.toLocaleDateString(
+      "bn-BD",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }
+    );
+}
+
+const savedTheme =
+  localStorage.getItem("sakinTheme");
+
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+}
+
+if (savedTheme === "night") {
+  document.body.classList.add("night");
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
 </script>
 
-    updateTime();
-    setInterval(updateTime, 1000);
-  </script>
 </body>
 </html>
