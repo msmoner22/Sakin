@@ -1,4 +1,4 @@
-const CACHE_NAME = "sakin-v1";
+const CACHE_NAME = "sakin-v2";
 
 const APP_FILES = [
   "./",
@@ -7,7 +7,7 @@ const APP_FILES = [
   "./sakin.png"
 ];
 
-// Install: save the main Sakin files for offline use
+/* Install */
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -18,7 +18,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activate: remove old Sakin caches
+/* Activate */
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -33,7 +33,7 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: use cache when offline, network when available
+/* Offline support */
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
@@ -50,10 +50,10 @@ self.addEventListener("fetch", (event) => {
             networkResponse.status === 200 &&
             networkResponse.type === "basic"
           ) {
-            const responseCopy = networkResponse.clone();
+            const copy = networkResponse.clone();
 
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseCopy);
+              cache.put(event.request, copy);
             });
           }
 
@@ -62,6 +62,30 @@ self.addEventListener("fetch", (event) => {
         .catch(() => {
           return caches.match("./index.html");
         });
+    })
+  );
+});
+
+/* Background notification click */
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  event.waitUntil(
+    clients.matchAll({
+      type: "window",
+      includeUncontrolled: true
+    }).then((clientList) => {
+
+      for (const client of clientList) {
+        if ("focus" in client) {
+          return client.focus();
+        }
+      }
+
+      if (clients.openWindow) {
+        return clients.openWindow("./");
+      }
+
     })
   );
 });
