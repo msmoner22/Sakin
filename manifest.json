@@ -1,18 +1,13 @@
 {
-  "name": "SAKIN",
-  "short_name": "SAKIN",
-  "description": "ইসলামী জীবনযাপনের জন্য একটি পূর্ণাঙ্গ ডিজিটাল সহকারী",
-  "lang": "bn",
-  "dir": "ltr",
+  "name": "সাকিন — Sakin",
+  "short_name": "সাকিন",
+  "description": "একটি আধুনিক ইসলামিক PWA",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#12372A",
-  "icons": [
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "background_color": "#f5f7f6",
+  "theme_color": "#0f766e",
+  "orientation": "portrait",
+  "lang": "bn",
+  "dir": "ltr"
 }
