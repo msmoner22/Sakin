@@ -1,0 +1,10 @@
+{
+  "name": "Sakin – Islamic Super App",
+  "short_name": "Sakin",
+  "description": "Sakin – A complete Islamic Super App",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f8f6",
+  "theme_color": "#0f6b4f",
+  "orientation": "portrait"
+}
