@@ -2817,11 +2817,168 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js")
       .catch(error => {
-        console.error("Sakin Service Worker failed:", error);
+   
+      console.error("Sakin Service Worker failed:", error);
       });
   });
 }
   </script>
+  
+<style>
+#sakin-three-dot {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 99999;
+}
 
+#sakin-three-dot-button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--card, #ffffff);
+  color: var(--text, #111111);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  font-size: 28px;
+  cursor: pointer;
+}
+
+#sakin-three-dot-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 235px;
+  max-height: 75vh;
+  overflow-y: auto;
+  background: var(--card, #ffffff);
+  color: var(--text, #111111);
+  border: 1px solid var(--border, #dddddd);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+  padding: 8px;
+}
+
+#sakin-three-dot-menu.open {
+  display: block;
+}
+
+.sakin-menu-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 13px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sakin-menu-item:hover {
+  background: rgba(0,0,0,0.06);
+}
+</style>
+
+<div id="sakin-three-dot">
+
+  <button
+    id="sakin-three-dot-button"
+    type="button"
+    onclick="toggleSakinThreeDot()"
+    aria-label="Sakin Menu"
+  >
+    ⋮
+  </button>
+
+  <div id="sakin-three-dot-menu">
+
+    <button class="sakin-menu-item" onclick="goHome(); closeSakinThreeDot();">
+      🏠 Home
+    </button>
+
+    <button class="sakin-menu-item" onclick="addToHomeScreen();">
+      ➕ Add to Home Screen
+    </button>
+
+    <button class="sakin-menu-item" onclick="openSettings(); closeSakinThreeDot();">
+      ⚙️ Settings
+    </button>
+
+    <button class="sakin-menu-item" onclick="toggleDarkMode(); closeSakinThreeDot();">
+      🌙 Dark Mode
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="document.body.classList.toggle('night-mode'); closeSakinThreeDot();"
+    >
+      🌃 Night Mode
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="requestNotificationPermission(); closeSakinThreeDot();"
+    >
+      🔔 Notifications
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="requestLocation(); closeSakinThreeDot();"
+    >
+      📍 Location
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="openModal('Language'); closeSakinThreeDot();"
+    >
+      🌐 Language
+    </button>
+
+    <button class="sakin-menu-item" onclick="installSakin();">
+      📲 Install Sakin
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="openModal('Privacy & Security'); closeSakinThreeDot();"
+    >
+      🛡️ Privacy & Security
+    </button>
+
+    <button
+      class="sakin-menu-item"
+      onclick="openModal('About Sakin'); closeSakinThreeDot();"
+    >
+      ℹ️ About Sakin
+    </button>
+
+  </div>
+</div>
+
+<script>
+function toggleSakinThreeDot() {
+  document
+    .getElementById("sakin-three-dot-menu")
+    .classList.toggle("open");
+}
+
+function closeSakinThreeDot() {
+  document
+    .getElementById("sakin-three-dot-menu")
+    .classList.remove("open");
+}
+
+document.addEventListener("click", function(event) {
+  const box = document.getElementById("sakin-three-dot");
+
+  if (box && !box.contains(event.target)) {
+    closeSakinThreeDot();
+  }
+});
+</script>
 </body>
 </html>
