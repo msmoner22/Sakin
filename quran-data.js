@@ -1,512 +1,457 @@
 /* =========================================================
-   SAKIN QUR'AN DATA SYSTEM
+   SAKIN QURAN DATA SYSTEM
+   Foundation for:
+   - Noorani Quran Sharif
+   - 15-line Hafizi Quran Sharif
+   - Multiple Arabic display styles
+   - Bengali meaning
+   - Bengali pronunciation
+   - English translation
+   - Scalable multi-language system
+   - Tafsir system
    ========================================================= */
 
-const SAKIN_QURAN_DATA = {
 
-  version: "1.0",
+/* ---------------------------------------------------------
+   1. QURAN DISPLAY MODES
+   --------------------------------------------------------- */
 
-  totalSurahs: 114,
+const SAKIN_QURAN_CONFIG = {
 
-  totalJuz: 30,
+    defaultReadingMode: "noorani",
 
-  languages: {
-    bn: "বাংলা",
-    en: "English",
-    ar: "العربية",
-    ur: "اردو",
-    hi: "हिन्दी",
-    tr: "Türkçe",
-    id: "Bahasa Indonesia",
-    ms: "Bahasa Melayu",
-    fa: "فارسی"
-  },
+    readingModes: {
 
-  arabicStyles: {
-    uthmani: "Uthmani",
-    indopak: "Indo-Pak / Hafizi",
-    naskh: "Arabic Naskh"
-  },
+        noorani: {
+            id: "noorani",
+            name: "Noorani Quran Sharif",
+            description: "Noorani-style Quran reading mode",
+            available: true
+        },
 
-  tafsirs: [
-    {
-      id: "ibn-kathir",
-      name: "Tafsir Ibn Kathir",
-      language: "bn",
-      available: false
-    },
+        hafizi15: {
+            id: "hafizi15",
+            name: "15-Line Hafizi Quran Sharif",
+            description: "15-line Hafizi Quran reading mode",
+            available: true
+        }
 
-    {
-      id: "ruh-al-mani",
-      name: "Tafsir Ruh al-Ma'ani",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "jalalayn",
-      name: "Tafsir al-Jalalayn",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "tabari",
-      name: "Tafsir al-Tabari",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "qurtubi",
-      name: "Tafsir al-Qurtubi",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "sadi",
-      name: "Tafsir as-Sa'di",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "maariful-quran",
-      name: "Ma'ariful Qur'an",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "abu-bakr-zakaria",
-      name: "Tafsir Abu Bakr Zakaria",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "saeedi",
-      name: "Tafsir Saeedi",
-      language: "bn",
-      available: false
-    },
-
-    {
-      id: "other",
-      name: "More Tafsir",
-      language: "bn",
-      available: false
     }
-  ],
-
-  surahs: [],
-
-  juz: [],
-
-  ayahs: {},
-
-  translations: {},
-
-  tafsirData: {},
-
-  audio: {}
 
 };
 
 
-/* =========================================================
-   CREATE 114 SURAH PLACEHOLDERS
-   ========================================================= */
+/* ---------------------------------------------------------
+   2. ARABIC DISPLAY STYLES
+   --------------------------------------------------------- */
 
-const SAKIN_SURAH_NAMES = [
-  "Al-Fatihah",
-  "Al-Baqarah",
-  "Aal-E-Imran",
-  "An-Nisa",
-  "Al-Ma'idah",
-  "Al-An'am",
-  "Al-A'raf",
-  "Al-Anfal",
-  "At-Tawbah",
-  "Yunus",
-  "Hud",
-  "Yusuf",
-  "Ar-Ra'd",
-  "Ibrahim",
-  "Al-Hijr",
-  "An-Nahl",
-  "Al-Isra",
-  "Al-Kahf",
-  "Maryam",
-  "Ta-Ha",
-  "Al-Anbiya",
-  "Al-Hajj",
-  "Al-Mu'minun",
-  "An-Nur",
-  "Al-Furqan",
-  "Ash-Shu'ara",
-  "An-Naml",
-  "Al-Qasas",
-  "Al-Ankabut",
-  "Ar-Rum",
-  "Luqman",
-  "As-Sajdah",
-  "Al-Ahzab",
-  "Saba",
-  "Fatir",
-  "Ya-Sin",
-  "As-Saffat",
-  "Sad",
-  "Az-Zumar",
-  "Ghafir",
-  "Fussilat",
-  "Ash-Shura",
-  "Az-Zukhruf",
-  "Ad-Dukhan",
-  "Al-Jathiyah",
-  "Al-Ahqaf",
-  "Muhammad",
-  "Al-Fath",
-  "Al-Hujurat",
-  "Qaf",
-  "Adh-Dhariyat",
-  "At-Tur",
-  "An-Najm",
-  "Al-Qamar",
-  "Ar-Rahman",
-  "Al-Waqi'ah",
-  "Al-Hadid",
-  "Al-Mujadilah",
-  "Al-Hashr",
-  "Al-Mumtahanah",
-  "As-Saff",
-  "Al-Jumu'ah",
-  "Al-Munafiqun",
-  "At-Taghabun",
-  "At-Talaq",
-  "At-Tahrim",
-  "Al-Mulk",
-  "Al-Qalam",
-  "Al-Haqqah",
-  "Al-Ma'arij",
-  "Nuh",
-  "Al-Jinn",
-  "Al-Muzzammil",
-  "Al-Muddaththir",
-  "Al-Qiyamah",
-  "Al-Insan",
-  "Al-Mursalat",
-  "An-Naba",
-  "An-Nazi'at",
-  "Abasa",
-  "At-Takwir",
-  "Al-Infitar",
-  "Al-Mutaffifin",
-  "Al-Inshiqaq",
-  "Al-Buruj",
-  "At-Tariq",
-  "Al-A'la",
-  "Al-Ghashiyah",
-  "Al-Fajr",
-  "Al-Balad",
-  "Ash-Shams",
-  "Al-Layl",
-  "Ad-Duha",
-  "Ash-Sharh",
-  "At-Tin",
-  "Al-Alaq",
-  "Al-Qadr",
-  "Al-Bayyinah",
-  "Az-Zalzalah",
-  "Al-Adiyat",
-  "Al-Qari'ah",
-  "At-Takathur",
-  "Al-Asr",
-  "Al-Humazah",
-  "Al-Fil",
-  "Quraysh",
-  "Al-Ma'un",
-  "Al-Kawthar",
-  "Al-Kafirun",
-  "An-Nasr",
-  "Al-Masad",
-  "Al-Ikhlas",
-  "Al-Falaq",
-  "An-Nas"
+const SAKIN_ARABIC_STYLES = {
+
+    uthmani: {
+        id: "uthmani",
+        name: "Uthmani / Osmani",
+        description: "Uthmani Quran script"
+    },
+
+    indopak: {
+        id: "indopak",
+        name: "Indo-Pak",
+        description: "Indo-Pak Quran script"
+    },
+
+    naskh: {
+        id: "naskh",
+        name: "Naskh",
+        description: "Naskh Arabic display"
+    }
+
+};
+
+
+/* ---------------------------------------------------------
+   3. TRANSLATION SYSTEM
+   --------------------------------------------------------- */
+
+const SAKIN_TRANSLATION_LANGUAGES = {
+
+    bn: {
+        id: "bn",
+        name: "বাংলা অর্থ",
+        nativeName: "বাংলা",
+        type: "translation",
+        direction: "rtl"
+    },
+
+    bn_pronunciation: {
+        id: "bn_pronunciation",
+        name: "বাংলা উচ্চারণ",
+        nativeName: "বাংলা উচ্চারণ",
+        type: "transliteration",
+        direction: "ltr"
+    },
+
+    en: {
+        id: "en",
+        name: "English Translation",
+        nativeName: "English",
+        type: "translation",
+        direction: "ltr"
+    },
+
+    ar: {
+        id: "ar",
+        name: "Arabic",
+        nativeName: "العربية",
+        type: "translation",
+        direction: "rtl"
+    }
+
+};
+
+
+/*
+   ভবিষ্যতে এখানে আরও ভাষা যোগ করা যাবে।
+
+   উদাহরণ:
+
+   SAKIN_TRANSLATION_LANGUAGES["ur"] = {
+       id: "ur",
+       name: "Urdu",
+       nativeName: "اردو",
+       type: "translation",
+       direction: "rtl"
+   };
+
+   একই পদ্ধতিতে পৃথিবীর আরও অনেক ভাষা যুক্ত করা যাবে।
+*/
+
+
+/* ---------------------------------------------------------
+   4. TAFSIR SYSTEM
+   --------------------------------------------------------- */
+
+const SAKIN_TAFSIRS = [
+
+    {
+        id: "ibn_kathir",
+        name: "Tafsir Ibn Kathir",
+        language: "multi"
+    },
+
+    {
+        id: "ruh_al_maani",
+        name: "Tafsir Ruh al-Ma'ani",
+        language: "multi"
+    },
+
+    {
+        id: "jalalayn",
+        name: "Tafsir al-Jalalayn",
+        language: "multi"
+    },
+
+    {
+        id: "saeedi",
+        name: "Tafsir Saeedi",
+        language: "bn"
+    },
+
+    {
+        id: "abu_bakr_zakaria",
+        name: "Tafsir Abu Bakr Zakaria",
+        language: "bn"
+    },
+
+    {
+        id: "tafsir_10",
+        name: "Additional Verified Tafsir",
+        language: "multi"
+    },
+
+    {
+        id: "tafsir_11",
+        name: "Additional Verified Tafsir",
+        language: "multi"
+    },
+
+    {
+        id: "tafsir_12",
+        name: "Additional Verified Tafsir",
+        language: "multi"
+    },
+
+    {
+        id: "tafsir_13",
+        name: "Additional Verified Tafsir",
+        language: "multi"
+    },
+
+    {
+        id: "tafsir_14",
+        name: "Additional Verified Tafsir",
+        language: "multi"
+    }
+
 ];
 
 
-/* =========================================================
-   BUILD SURAH STRUCTURE
-   ========================================================= */
+/* ---------------------------------------------------------
+   5. 114 SURAH NAMES
+   --------------------------------------------------------- */
+
+const SAKIN_SURAH_NAMES = [
+
+    "Al-Fatihah",
+    "Al-Baqarah",
+    "Aal-E-Imran",
+    "An-Nisa",
+    "Al-Ma'idah",
+    "Al-An'am",
+    "Al-A'raf",
+    "Al-Anfal",
+    "At-Tawbah",
+    "Yunus",
+    "Hud",
+    "Yusuf",
+    "Ar-Ra'd",
+    "Ibrahim",
+    "Al-Hijr",
+    "An-Nahl",
+    "Al-Isra",
+    "Al-Kahf",
+    "Maryam",
+    "Ta-Ha",
+    "Al-Anbiya",
+    "Al-Hajj",
+    "Al-Mu'minun",
+    "An-Nur",
+    "Al-Furqan",
+    "Ash-Shu'ara",
+    "An-Naml",
+    "Al-Qasas",
+    "Al-Ankabut",
+    "Ar-Rum",
+    "Luqman",
+    "As-Sajdah",
+    "Al-Ahzab",
+    "Saba",
+    "Fatir",
+    "Ya-Sin",
+    "As-Saffat",
+    "Sad",
+    "Az-Zumar",
+    "Ghafir",
+    "Fussilat",
+    "Ash-Shura",
+    "Az-Zukhruf",
+    "Ad-Dukhan",
+    "Al-Jathiyah",
+    "Al-Ahqaf",
+    "Muhammad",
+    "Al-Fath",
+    "Al-Hujurat",
+    "Qaf",
+    "Adh-Dhariyat",
+    "At-Tur",
+    "An-Najm",
+    "Al-Qamar",
+    "Ar-Rahman",
+    "Al-Waqi'ah",
+    "Al-Hadid",
+    "Al-Mujadilah",
+    "Al-Hashr",
+    "Al-Mumtahanah",
+    "As-Saff",
+    "Al-Jumu'ah",
+    "Al-Munafiqun",
+    "At-Taghabun",
+    "At-Talaq",
+    "At-Tahrim",
+    "Al-Mulk",
+    "Al-Qalam",
+    "Al-Haqqah",
+    "Al-Ma'arij",
+    "Nuh",
+    "Al-Jinn",
+    "Al-Muzzammil",
+    "Al-Muddaththir",
+    "Al-Qiyamah",
+    "Al-Insan",
+    "Al-Mursalat",
+    "An-Naba",
+    "An-Nazi'at",
+    "Abasa",
+    "At-Takwir",
+    "Al-Infitar",
+    "Al-Mutaffifin",
+    "Al-Inshiqaq",
+    "Al-Buruj",
+    "At-Tariq",
+    "Al-A'la",
+    "Al-Ghashiyah",
+    "Al-Fajr",
+    "Al-Balad",
+    "Ash-Shams",
+    "Al-Layl",
+    "Ad-Duha",
+    "Ash-Sharh",
+    "At-Tin",
+    "Al-Alaq",
+    "Al-Qadr",
+    "Al-Bayyinah",
+    "Az-Zalzalah",
+    "Al-Adiyat",
+    "Al-Qari'ah",
+    "At-Takathur",
+    "Al-Asr",
+    "Al-Humazah",
+    "Al-Fil",
+    "Quraysh",
+    "Al-Ma'un",
+    "Al-Kawthar",
+    "Al-Kafirun",
+    "An-Nasr",
+    "Al-Masad",
+    "Al-Ikhlas",
+    "Al-Falaq",
+    "An-Nas"
 
-SAKIN_SURAH_NAMES.forEach((name, index) => {
+];
 
-  SAKIN_QURAN_DATA.surahs.push({
 
-    number: index + 1,
+/* ---------------------------------------------------------
+   6. QURAN DATA STRUCTURE
+   ---------------------------------------------------------
 
-    name: name,
+   এখানে এখনো আসল আয়াত বসানো হচ্ছে না।
 
-    arabicName: "",
+   পরবর্তী ধাপে যাচাই করা Quran dataset যুক্ত হবে।
 
-    revelation: "",
+   Structure:
 
-    totalAyahs: 0
+   SAKIN_QURAN_DATA = {
+       1: {
+           name: "Al-Fatihah",
+           ayahs: [
+               {
+                   number: 1,
 
-  });
+                   arabic: {
+                       uthmani: "...",
+                       indopak: "...",
+                       naskh: "..."
+                   },
 
-});
+                   translation: {
+                       bn: "...",
+                       bn_pronunciation: "...",
+                       en: "...",
+                       ar: "..."
+                   }
+               }
+           ]
+       }
+   }
 
+   --------------------------------------------------------- */
 
-/* =========================================================
-   CREATE 30 JUZ STRUCTURE
-   ========================================================= */
+const SAKIN_QURAN_DATA = {};
 
-for(let i = 1; i <= 30; i++){
 
-  SAKIN_QURAN_DATA.juz.push({
+/* ---------------------------------------------------------
+   7. FUTURE MULTI-LANGUAGE SYSTEM
+   --------------------------------------------------------- */
 
-    number: i,
+const SAKIN_LANGUAGE_SYSTEM = {
 
-    name: `Juz ${i}`,
+    currentLanguage: "bn",
 
-    startSurah: null,
+    supportedLanguages: [
 
-    startAyah: null,
+        "bn",
+        "bn_pronunciation",
+        "en",
+        "ar"
 
-    endSurah: null,
+    ],
 
-    endAyah: null
+    maximumPlannedLanguages: 100,
 
-  });
+    translationSourcePolicy:
+        "Only verified and properly licensed translations should be added."
 
-}
+};
 
 
-/* =========================================================
-   LANGUAGE MANAGEMENT
-   ========================================================= */
+/* ---------------------------------------------------------
+   8. QURAN READING SETTINGS
+   --------------------------------------------------------- */
 
-function getSakinQuranLanguage(){
+const SAKIN_QURAN_READING_SETTINGS = {
 
-  return localStorage.getItem(
-    "sakinQuranLanguage"
-  ) || "bn";
+    readingMode: "noorani",
 
-}
+    arabicStyle: "uthmani",
 
+    translationLanguage: "bn",
 
-function setSakinQuranLanguage(language){
+    showArabic: true,
 
-  if(!SAKIN_QURAN_DATA.languages[language]){
-    return;
-  }
+    showTranslation: true,
 
-  localStorage.setItem(
-    "sakinQuranLanguage",
-    language
-  );
+    showPronunciation: false,
 
-}
+    showTafsir: false,
 
+    autoSavePosition: true,
 
-/* =========================================================
-   TAFSIR MANAGEMENT
-   ========================================================= */
+    lastSurah: 1,
 
-function getSakinTafsir(){
+    lastAyah: 1
 
-  return localStorage.getItem(
-    "sakinTafsir"
-  ) || "ibn-kathir";
+};
 
-}
 
+/* ---------------------------------------------------------
+   9. JUZ INFORMATION
+   --------------------------------------------------------- */
 
-function setSakinTafsir(tafsirId){
+const SAKIN_JUZ_LIST = Array.from(
+    { length: 30 },
+    (_, index) => ({
+        juz: index + 1,
+        name: "Juz " + (index + 1)
+    })
+);
 
-  const exists =
-    SAKIN_QURAN_DATA.tafsirs.some(
-      item => item.id === tafsirId
-    );
 
-  if(!exists){
-    return;
-  }
+/* ---------------------------------------------------------
+   10. EXPORT TO WINDOW
+   --------------------------------------------------------- */
 
-  localStorage.setItem(
-    "sakinTafsir",
-    tafsirId
-  );
+window.SAKIN_QURAN_CONFIG =
+    SAKIN_QURAN_CONFIG;
 
-}
+window.SAKIN_ARABIC_STYLES =
+    SAKIN_ARABIC_STYLES;
 
+window.SAKIN_TRANSLATION_LANGUAGES =
+    SAKIN_TRANSLATION_LANGUAGES;
 
-/* =========================================================
-   READING PROGRESS
-   ========================================================= */
+window.SAKIN_TAFSIRS =
+    SAKIN_TAFSIRS;
 
-function saveSakinQuranPosition(
-  surah,
-  ayah,
-  juz = null
-){
-
-  const position = {
-
-    surah: Number(surah),
-
-    ayah: Number(ayah),
-
-    juz: juz ? Number(juz) : null,
-
-    savedAt: new Date().toISOString()
-
-  };
-
-  localStorage.setItem(
-    "sakinQuranPosition",
-    JSON.stringify(position)
-  );
-
-}
-
-
-function getSakinQuranPosition(){
-
-  try{
-
-    const saved =
-      localStorage.getItem(
-        "sakinQuranPosition"
-      );
-
-    return saved
-      ? JSON.parse(saved)
-      : null;
-
-  }catch(error){
-
-    return null;
-
-  }
-
-}
-
-
-/* =========================================================
-   AUDIO PROGRESS
-   ========================================================= */
-
-function saveSakinQuranAudioPosition(
-  surah,
-  ayah
-){
-
-  const position = {
-
-    surah: Number(surah),
-
-    ayah: Number(ayah),
-
-    savedAt: new Date().toISOString()
-
-  };
-
-  localStorage.setItem(
-    "sakinQuranAudioPosition",
-    JSON.stringify(position)
-  );
-
-}
-
-
-function getSakinQuranAudioPosition(){
-
-  try{
-
-    const saved =
-      localStorage.getItem(
-        "sakinQuranAudioPosition"
-      );
-
-    return saved
-      ? JSON.parse(saved)
-      : null;
-
-  }catch(error){
-
-    return null;
-
-  }
-
-}
-
-
-/* =========================================================
-   DATA STATUS
-   ========================================================= */
-
-function getSakinQuranDataStatus(){
-
-  return {
-
-    surahs:
-      SAKIN_QURAN_DATA.surahs.length,
-
-    juz:
-      SAKIN_QURAN_DATA.juz.length,
-
-    languages:
-      Object.keys(
-        SAKIN_QURAN_DATA.languages
-      ).length,
-
-    tafsirs:
-      SAKIN_QURAN_DATA.tafsirs.length,
-
-    verifiedQuranTextLoaded:
-      Object.keys(
-        SAKIN_QURAN_DATA.ayahs
-      ).length > 0
-
-  };
-
-}
-
-
-/* =========================================================
-   GLOBAL ACCESS
-   ========================================================= */
+window.SAKIN_SURAH_NAMES =
+    SAKIN_SURAH_NAMES;
 
 window.SAKIN_QURAN_DATA =
-  SAKIN_QURAN_DATA;
+    SAKIN_QURAN_DATA;
 
-window.getSakinQuranLanguage =
-  getSakinQuranLanguage;
+window.SAKIN_LANGUAGE_SYSTEM =
+    SAKIN_LANGUAGE_SYSTEM;
 
-window.setSakinQuranLanguage =
-  setSakinQuranLanguage;
+window.SAKIN_QURAN_READING_SETTINGS =
+    SAKIN_QURAN_READING_SETTINGS;
 
-window.getSakinTafsir =
-  getSakinTafsir;
-
-window.setSakinTafsir =
-  setSakinTafsir;
-
-window.saveSakinQuranPosition =
-  saveSakinQuranPosition;
-
-window.getSakinQuranPosition =
-  getSakinQuranPosition;
-
-window.saveSakinQuranAudioPosition =
-  saveSakinQuranAudioPosition;
-
-window.getSakinQuranAudioPosition =
-  getSakinQuranAudioPosition;
-
-window.getSakinQuranDataStatus =
-  getSakinQuranDataStatus;
+window.SAKIN_JUZ_LIST =
+    SAKIN_JUZ_LIST;
