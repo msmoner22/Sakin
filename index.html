@@ -1,74 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="./style.css">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#0f766e">
-  <meta name="description" content="Sakin — A modern Islamic super app">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
-  <link rel="manifest" href="manifest.json">
+  <meta
+    name="theme-color"
+    content="#0b5d3b"
+  >
 
-  <title>Sakin</title>
+  <meta
+    name="description"
+    content="Sakin - Islamic Super App"
+  >
+
+  <title>Sakin - Islamic Super App</title>
 
   <style>
+    /* =====================================================
+       SAKIN MASTER DESIGN SYSTEM
+       ===================================================== */
+
+    :root {
+      --primary: #0b5d3b;
+      --primary-dark: #07452c;
+      --secondary: #d4af37;
+
+      --bg: #f5f7f6;
+      --card: #ffffff;
+      --text: #17201b;
+      --muted: #65736b;
+      --border: #dce4df;
+
+      --danger: #b42318;
+      --success: #087443;
+
+      --shadow:
+        0 4px 18px rgba(0, 0, 0, 0.08);
+
+      --radius: 18px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    :root {
-      --bg: #f5f7f6;
-      --card: #ffffff;
-      --text: #14201d;
-      --muted: #6b7773;
-      --primary: #0f766e;
-      --primary-dark: #115e59;
-      --soft: #e5f3f0;
-      --border: #dfe8e4;
-      --danger: #b42318;
-      --star: #d89b00;
-    }
-
-    body.dark {
-      --bg: #0b1412;
-      --card: #14201d;
-      --text: #eef8f5;
-      --muted: #a8b7b3;
-      --primary: #2aa89c;
-      --primary-dark: #1d8178;
-      --soft: #17352f;
-      --border: #283934;
-    }
-
-    body.night {
-      --bg: #10131b;
-      --card: #191d28;
-      --text: #e9edf7;
-      --muted: #9ba3b5;
-      --primary: #7c9cff;
-      --primary-dark: #5c78d9;
-      --soft: #252c42;
-      --border: #303747;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       font-family:
-        system-ui,
-        "Noto Sans Bengali",
-        "Noto Sans Arabic",
+        Arial,
+        Helvetica,
         sans-serif;
+
       background: var(--bg);
       color: var(--text);
+
       min-height: 100vh;
-      transition: .25s;
+
+      transition:
+        background 0.25s ease,
+        color 0.25s ease;
     }
 
     button,
-    input,
-    select {
+    select,
+    input {
       font: inherit;
     }
 
@@ -76,405 +81,666 @@
       cursor: pointer;
     }
 
-    .topbar {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 16px;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
+    /* =====================================================
+       DARK MODE
+       ===================================================== */
+
+    body.dark-mode {
+      --bg: #101614;
+      --card: #18211d;
+      --text: #f1f5f2;
+      --muted: #aab8b0;
+      --border: #2b3932;
+
+      --shadow:
+        0 4px 18px rgba(0, 0, 0, 0.30);
+    }
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .top-header {
       position: sticky;
       top: 0;
-      z-index: 100;
-    }
+      z-index: 1000;
 
-    .brand-area {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .brand {
-      font-size: 25px;
-      font-weight: 800;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    .language-box {
-      margin-top: 7px;
-    }
-
-    #language-selector {
-      width: min(190px, 100%);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 7px 9px;
-      background: var(--soft);
-      color: var(--text);
-      outline: none;
-    }
-
-    .menu-btn {
-      width: 43px;
-      height: 43px;
-      flex-shrink: 0;
-      border: 0;
-      border-radius: 50%;
-      background: var(--soft);
-      color: var(--text);
-      font-size: 24px;
-    }
-
-    .menu {
-      display: none;
-      position: fixed;
-      top: 83px;
-      right: 14px;
-      width: 245px;
-      max-height: calc(100vh - 100px);
-      overflow-y: auto;
-      padding: 8px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 12px 35px rgba(0,0,0,.15);
-      z-index: 200;
-    }
-
-    .menu.show {
-      display: block;
-    }
-
-    .menu button {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      text-align: left;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    .menu button:hover {
-      background: var(--soft);
-    }
-
-    main {
-      max-width: 820px;
-      margin: auto;
-      padding: 18px 15px 110px;
-    }
-
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .hero {
       background:
         linear-gradient(
           135deg,
           var(--primary),
           var(--primary-dark)
         );
+
       color: white;
-      border-radius: 25px;
-      padding: 24px;
-      margin-bottom: 20px;
+
+      padding:
+        14px
+        max(14px, env(safe-area-inset-right))
+        14px
+        max(14px, env(safe-area-inset-left));
+
+      box-shadow: var(--shadow);
     }
 
-    .hero h1 {
-      font-size: 26px;
-      margin-bottom: 6px;
-    }
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
 
-    .hero p {
-      opacity: .9;
-      font-size: 13px;
-    }
-
-    .clock {
-      font-size: 34px;
-      font-weight: 800;
-      margin-top: 17px;
-    }
-
-    .date {
-      font-size: 13px;
-      opacity: .9;
-    }
-
-    .location {
-      margin-top: 12px;
-      font-size: 12px;
-      opacity: .9;
-    }
-
-    .section-title {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin: 23px 2px 12px;
+      justify-content: space-between;
+
+      gap: 12px;
     }
 
-    .section-title h2 {
-      font-size: 18px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .muted {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .brand-icon {
+      width: 42px;
+      height: 42px;
 
-    .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 11px;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,0.14);
+
+      font-size: 22px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
+    .brand-text h1 {
+      font-size: 21px;
+      line-height: 1.1;
     }
 
-    .feature {
-      min-height: 112px;
-      transition: .15s;
-    }
-
-    .feature:active {
-      transform: scale(.97);
-    }
-
-    .feature h3 {
-      margin-top: 7px;
-      font-size: 16px;
-    }
-
-    .feature p {
-      color: var(--muted);
+    .brand-text p {
       font-size: 11px;
+      opacity: 0.82;
       margin-top: 3px;
     }
 
-    .icon {
-      font-size: 27px;
-    }
-
-    .prayer {
+    .header-actions {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px;
-      margin-bottom: 9px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-    }
-
-    .prayer.next {
-      border-left: 4px solid var(--primary);
-    }
-
-    .prayer span {
-      color: var(--muted);
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 10px 14px;
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn.secondary {
-      background: var(--soft);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn.danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    .input {
-      width: 100%;
-      padding: 11px;
-      margin-top: 7px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      outline: none;
-    }
-
-    .calculator-display {
-      width: 100%;
-      min-height: 70px;
-      padding: 15px;
-      border-radius: 14px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 27px;
-      text-align: right;
-      overflow: auto;
-      margin-bottom: 10px;
-    }
-
-    .calc-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 7px;
     }
 
-    .calc-grid button {
-      min-height: 52px;
-      border: 1px solid var(--border);
+    .icon-button {
+      width: 40px;
+      height: 40px;
+
+      border: 1px solid rgba(255,255,255,0.22);
       border-radius: 12px;
-      background: var(--soft);
-      color: var(--text);
+
+      background: rgba(255,255,255,0.10);
+      color: white;
+
       font-size: 18px;
     }
 
-    .calc-grid button.equal {
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding:
+        16px
+        max(16px, env(safe-area-inset-right))
+        40px
+        max(16px, env(safe-area-inset-left));
+    }
+
+    .section-title {
+      margin: 24px 0 12px;
+    }
+
+    .section-title h2 {
+      font-size: 21px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* =====================================================
+       HOME STATUS
+       ===================================================== */
+
+    .hero {
+      margin-top: 4px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          #138154
+        );
+
+      color: white;
+
+      border-radius: var(--radius);
+
+      padding: 22px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .hero-label {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .live-time {
+      font-size: clamp(34px, 8vw, 62px);
+      font-weight: 700;
+
+      margin-top: 5px;
+
+      letter-spacing: 1px;
+    }
+
+    .live-date {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .location-status {
+      margin-top: 16px;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      font-size: 13px;
+    }
+
+    /* =====================================================
+       WEATHER
+       ===================================================== */
+
+    .weather-card {
+      margin-top: 14px;
+      padding: 18px;
+
+      background: var(--card);
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+    }
+
+    .weather-temperature {
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .weather-info {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .weather-forecast {
+      display: grid;
+
+      grid-template-columns:
+        repeat(7, minmax(80px, 1fr));
+
+      gap: 8px;
+
+      overflow-x: auto;
+
+      margin-top: 16px;
+      padding-bottom: 4px;
+    }
+
+    .forecast-day {
+      min-width: 80px;
+
+      padding: 10px;
+
+      background: var(--bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      text-align: center;
+
+      font-size: 12px;
+    }
+
+    .forecast-icon {
+      font-size: 23px;
+      margin: 7px 0;
+    }
+
+    /* =====================================================
+       QUICK ACCESS
+       ===================================================== */
+
+    .module-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(145px, 1fr));
+
+      gap: 12px;
+    }
+
+    .module-card {
+      border: 1px solid var(--border);
+
+      background: var(--card);
+
+      color: var(--text);
+
+      border-radius: var(--radius);
+
+      padding: 18px 14px;
+
+      min-height: 130px;
+
+      text-align: left;
+
+      box-shadow: var(--shadow);
+
+      transition:
+        transform 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .module-card:active {
+      transform: scale(0.98);
+    }
+
+    .module-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .module-card h3 {
+      font-size: 15px;
+    }
+
+    .module-card p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 5px;
+    }
+
+    /* =====================================================
+       CONTENT LIBRARY
+       ===================================================== */
+
+    .library-card {
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius);
+
+      margin-bottom: 12px;
+
+      overflow: hidden;
+
+      box-shadow: var(--shadow);
+    }
+
+    .library-header {
+      width: 100%;
+
+      border: 0;
+
+      background: transparent;
+      color: var(--text);
+
+      padding: 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      text-align: left;
+    }
+
+    .library-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .library-icon {
+      font-size: 26px;
+    }
+
+    .library-body {
+      display: none;
+
+      padding:
+        0
+        17px
+        17px;
+    }
+
+    .library-body.open {
+      display: block;
+    }
+
+    .book-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .book-item {
+      padding: 13px;
+
+      border-radius: 12px;
+
+      background: var(--bg);
+
+      border: 1px solid var(--border);
+
+      font-size: 13px;
+    }
+
+    .book-item small {
+      display: block;
+
+      color: var(--muted);
+
+      margin-top: 4px;
+    }
+
+    /* =====================================================
+       REMINDER
+       ===================================================== */
+
+    .reminder-box {
+      padding: 18px;
+
+      background: var(--card);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+    }
+
+    .reminder-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 11px 0;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+    .reminder-row:last-child {
+      border-bottom: 0;
+    }
+
+    .status-badge {
+      padding: 5px 9px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(8,116,67,0.12);
+
+      color: var(--success);
+
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       BUTTONS
+       ===================================================== */
+
+    .primary-button {
+      width: 100%;
+
+      border: 0;
+
+      border-radius: 12px;
+
       background: var(--primary);
       color: white;
-    }
 
-    .counter {
-      text-align: center;
-    }
+      padding: 13px 16px;
 
-    .counter-number {
-      font-size: 55px;
-      font-weight: 800;
-      margin: 15px 0;
-    }
-
-    .stars {
-      display: flex;
-      gap: 5px;
-      font-size: 31px;
-      margin: 12px 0;
-    }
-
-    .stars button {
-      border: 0;
-      background: transparent;
-      color: #aaa;
-      padding: 0;
-    }
-
-    .stars button.selected {
-      color: var(--star);
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      max-width: 820px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      padding: 6px 5px;
-      z-index: 150;
-    }
-
-    .bottom-nav button {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      padding: 7px 2px;
-      border-radius: 12px;
-    }
-
-    .bottom-nav button.active {
-      color: var(--primary);
-      background: var(--soft);
-    }
-
-    .bottom-nav div {
-      font-size: 19px;
-    }
-
-    .bottom-nav small {
-      font-size: 10px;
-    }
-
-    .setting {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .setting:last-child {
-      margin-bottom: 0;
-    }
-
-    .arabic {
-      font-size: 25px;
-      line-height: 2;
-      text-align: right;
-      direction: rtl;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 25px 10px;
-      color: var(--muted);
-    }
-
-    .notice {
-      padding: 12px;
-      border-radius: 12px;
-      background: var(--soft);
-      color: var(--text);
       margin-top: 10px;
-      font-size: 12px;
-      line-height: 1.6;
     }
 
-    @media (min-width: 600px) {
-      .grid {
-        grid-template-columns: repeat(4, 1fr);
+    .secondary-button {
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      background: var(--card);
+      color: var(--text);
+
+      padding: 11px 14px;
+    }
+
+    /* =====================================================
+       SETTINGS PANEL
+       ===================================================== */
+
+    .settings-panel {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 2000;
+
+      background:
+        rgba(0,0,0,0.55);
+
+      display: none;
+
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .settings-panel.open {
+      display: flex;
+    }
+
+    .settings-sheet {
+      width: 100%;
+      max-width: 650px;
+
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      background: var(--card);
+
+      color: var(--text);
+
+      border-radius:
+        24px
+        24px
+        0
+        0;
+
+      padding: 20px;
+    }
+
+    .settings-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 16px;
+    }
+
+    .setting-row {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 15px 0;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+    .setting-row strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .setting-row span {
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-top: 4px;
+    }
+
+    select {
+      max-width: 160px;
+
+      padding: 9px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 10px;
+
+      background: var(--card);
+      color: var(--text);
+    }
+
+    /* =====================================================
+       MODAL
+       ===================================================== */
+
+    .modal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 2500;
+
+      background:
+        rgba(0,0,0,0.55);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 600px;
+
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      background: var(--card);
+
+      color: var(--text);
+
+      border-radius: 20px;
+
+      padding: 20px;
+    }
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      padding: 25px 10px 40px;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 600px) {
+
+      main {
+        padding-top: 12px;
+      }
+
+      .module-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .weather-forecast {
+        grid-template-columns:
+          repeat(7, 80px);
       }
     }
 
-    @media (max-width: 430px) {
-      .brand {
-        font-size: 22px;
+    @media (min-width: 900px) {
+
+      .module-grid {
+        grid-template-columns:
+          repeat(4, 1fr);
       }
 
-      #language-selector {
-        max-width: 160px;
-        font-size: 12px;
+      .settings-panel {
+        align-items: center;
+      }
+
+      .settings-sheet {
+        border-radius: 22px;
       }
     }
   </style>
@@ -482,3710 +748,2071 @@
 
 <body>
 
-<header class="topbar">
+  <!-- =====================================================
+       SAKIN HEADER
+       ===================================================== -->
 
-  <div class="brand-area">
+  <header class="top-header">
 
-    <div class="brand">Sakin</div>
+    <div class="header-inner">
 
-    <div class="subtitle" data-i18n="subtitle">
-      Peaceful living, every day
-    </div>
+      <div class="brand">
 
-    <div class="language-box">
+        <div class="brand-icon">
+          ☪
+        </div>
 
-      <select id="language-selector" aria-label="Language">
+        <div class="brand-text">
+          <h1>Sakin</h1>
+          <p>Islamic Super App</p>
+        </div>
 
-        <option value="en">English</option>
-        <option value="bn">বাংলা</option>
-        <option value="ar">العربية</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-        <option value="it">Italiano</option>
-        <option value="pt">Português</option>
-        <option value="ru">Русский</option>
-        <option value="uk">Українська</option>
-        <option value="tr">Türkçe</option>
-        <option value="ur">اردو</option>
-        <option value="fa">فارسی</option>
-        <option value="hi">हिन्दी</option>
-        <option value="ne">नेपाली</option>
-        <option value="si">සිංහල</option>
-        <option value="ta">தமிழ்</option>
-        <option value="te">తెలుగు</option>
-        <option value="ml">മലയാളം</option>
-        <option value="kn">ಕನ್ನಡ</option>
-        <option value="mr">मराठी</option>
-        <option value="gu">ગુજરાતી</option>
-        <option value="pa">ਪੰਜਾਬੀ</option>
-        <option value="id">Bahasa Indonesia</option>
-        <option value="ms">Bahasa Melayu</option>
-        <option value="th">ไทย</option>
-        <option value="vi">Tiếng Việt</option>
-        <option value="ko">한국어</option>
-        <option value="ja">日本語</option>
-        <option value="zh">中文</option>
-        <option value="he">עברית</option>
-        <option value="nl">Nederlands</option>
-        <option value="sv">Svenska</option>
-        <option value="no">Norsk</option>
-        <option value="da">Dansk</option>
-        <option value="fi">Suomi</option>
-        <option value="pl">Polski</option>
-        <option value="cs">Čeština</option>
-        <option value="sk">Slovenčina</option>
-        <option value="hu">Magyar</option>
-        <option value="ro">Română</option>
-        <option value="bg">Български</option>
-        <option value="sr">Српски</option>
-        <option value="hr">Hrvatski</option>
-        <option value="sl">Slovenščina</option>
-        <option value="el">Ελληνικά</option>
-        <option value="sw">Kiswahili</option>
-        <option value="am">አማርኛ</option>
-        <option value="so">Soomaali</option>
-        <option value="ha">Hausa</option>
-        <option value="yo">Yorùbá</option>
-        <option value="af">Afrikaans</option>
-        <option value="az">Azərbaycan</option>
-        <option value="kk">Қазақша</option>
-        <option value="uz">O‘zbek</option>
-        <option value="my">မြန်မာ</option>
-        <option value="km">ខ្មែរ</option>
-        <option value="lo">ລາວ</option>
-        <option value="mn">Монгол</option>
-        <option value="hy">Հայերեն</option>
-        <option value="ka">ქართული</option>
-        <option value="sq">Shqip</option>
-        <option value="bs">Bosanski</option>
+      </div>
 
-      </select>
+      <div class="header-actions">
+
+        <button
+          class="icon-button"
+          type="button"
+          onclick="toggleDarkMode()"
+          aria-label="Dark mode"
+        >
+          🌙
+        </button>
+
+        <button
+          class="icon-button"
+          type="button"
+          onclick="openSettings()"
+          aria-label="Settings"
+        >
+          ⚙️
+        </button>
+
+      </div>
 
     </div>
 
-  </div>
+  </header>
 
-  <button
-    class="menu-btn"
-    onclick="toggleMenu()"
-    aria-label="Menu"
-  >
-    ⋮
-  </button>
 
-</header>
+  <!-- =====================================================
+       MAIN HOME
+       ===================================================== -->
 
+  <main>
 
-<!-- MENU -->
+    <!-- LIVE TIME -->
 
-<div id="menu" class="menu">
+    <section class="hero">
 
-  <button onclick="showPanel('home')">
-    🏠 <span data-i18n="home">Home</span>
-  </button>
+      <div class="hero-label">
+        Live Time & Date
+      </div>
 
-  <button onclick="showPanel('quran')">
-    📖 <span data-i18n="quran">Quran</span>
-  </button>
+      <div
+        id="live-time"
+        class="live-time"
+      >
+        --:--:--
+      </div>
 
-  <button onclick="showPanel('hadith')">
-    📚 <span data-i18n="hadith">Hadith</span>
-  </button>
+      <div
+        id="live-date"
+        class="live-date"
+      >
+        Loading date...
+      </div>
 
-  <button onclick="showPanel('fiqh')">
-    ⚖️ <span data-i18n="fiqh">Fiqh</span>
-  </button>
+      <div
+        id="location-status"
+        class="location-status"
+      >
+        📍 Location not detected
+      </div>
 
-  <button onclick="showPanel('tools')">
-    🧮 <span data-i18n="tools">Tools</span>
-  </button>
-
-  <button onclick="showPanel('feedback')">
-    ⭐ <span data-i18n="feedback">Feedback</span>
-  </button>
-
-  <button onclick="setDark()">
-    🌙 <span data-i18n="darkMode">Dark Mode</span>
-  </button>
-
-  <button onclick="setNight()">
-    🌃 <span data-i18n="nightMode">Night Mode</span>
-  </button>
-
-  <button onclick="showPanel('settings')">
-    ⚙️ <span data-i18n="settings">Settings</span>
-  </button>
-
-  <button onclick="requestLocation()">
-    📍 <span data-i18n="location">Live Location</span>
-  </button>
-
-  <button onclick="installApp()">
-    📲 <span data-i18n="install">Install Sakin</span>
-  </button>
-
-  <button onclick="aboutSakin()">
-    ℹ️ <span data-i18n="about">About Sakin</span>
-  </button>
-
-</div>
-
-
-<main>
-
-
-<!-- ================= HOME ================= -->
-
-<section id="home" class="panel active">
-
-  <div class="hero">
-
-    <h1 data-i18n="welcome">
-      Welcome to Sakin
-    </h1>
-
-    <p data-i18n="welcomeText">
-      Peace, worship and a better daily life
-    </p>
-
-    <div id="clock" class="clock">
-      --:--:--
-    </div>
-
-    <div id="date" class="date">
-      Loading date...
-    </div>
-
-    <div id="location" class="location">
-      📍 Detecting location...
-    </div>
-
-  </div>
-
-
-  <div class="section-title">
-    <h2 data-i18n="quickAccess">
-      Quick Access
-    </h2>
-  </div>
-
-
-  <div class="grid">
-
-
-    <div class="card feature" onclick="showPanel('prayer')">
-
-      <div class="icon">🕌</div>
-
-      <h3 data-i18n="prayer">
-        Prayer
-      </h3>
-
-      <p data-i18n="fivePrayers">
-        Five daily prayers
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('quran')">
-
-      <div class="icon">📖</div>
-
-      <h3 data-i18n="quran">
-        Quran
-      </h3>
-
-      <p data-i18n="quranReading">
-        Quran reading
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('hadith')">
-
-      <div class="icon">📚</div>
-
-      <h3 data-i18n="hadith">
-        Hadith
-      </h3>
-
-      <p data-i18n="hadithLibrary">
-        Hadith library
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('dua')">
-
-      <div class="icon">🤲</div>
-
-      <h3 data-i18n="dua">
-        Dua & Dhikr
-      </h3>
-
-      <p data-i18n="duaText">
-        Masnun duas and dhikr
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('fiqh')">
-
-      <div class="icon">⚖️</div>
-
-      <h3 data-i18n="fiqh">
-        Fiqh
-      </h3>
-
-      <p data-i18n="fiqhText">
-        Islamic jurisprudence
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('qibla')">
-
-      <div class="icon">🧭</div>
-
-      <h3 data-i18n="qibla">
-        Qibla
-      </h3>
-
-      <p data-i18n="qiblaText">
-        Qibla direction
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('tools')">
-
-      <div class="icon">🧮</div>
-
-      <h3 data-i18n="calculator">
-        Super Calculator
-      </h3>
-
-      <p data-i18n="calculatorText">
-        Calculator and financial tools
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('calendar')">
-
-      <div class="icon">📅</div>
-
-      <h3 data-i18n="calendar">
-        Islamic Calendar
-      </h3>
-
-      <p data-i18n="calendarText">
-        Islamic dates
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('ramadan')">
-
-      <div class="icon">🌙</div>
-
-      <h3 data-i18n="ramadan">
-        Ramadan
-      </h3>
-
-      <p data-i18n="ramadanText">
-        Sehri and Iftar
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('weather')">
-
-      <div class="icon">🌦️</div>
-
-      <h3 data-i18n="weather">
-        Weather
-      </h3>
-
-      <p data-i18n="weatherText">
-        Current and 7-day weather
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('tasbih')">
-
-      <div class="icon">📿</div>
-
-      <h3 data-i18n="tasbih">
-        Tasbih
-      </h3>
-
-      <p data-i18n="tasbihText">
-        Digital tasbih counter
-      </p>
-
-    </div>
-
-
-    <div class="card feature" onclick="showPanel('feedback')">
-
-      <div class="icon">⭐</div>
-
-      <h3 data-i18n="feedback">
-        Feedback
-      </h3>
-
-      <p data-i18n="feedbackText">
-        Rate and improve Sakin
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- PRAYER -->
-
-  <div class="section-title">
-
-    <h2 data-i18n="todayPrayer">
-      Today's Prayer
-    </h2>
-
-    <span class="muted">
-      AUTO
-    </span>
-
-  </div>
-
-
-  <div id="prayers">
-
-    <div class="prayer next">
-      <strong>Fajr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Dhuhr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Asr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Maghrib</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Isha</strong>
-      <span>--:--</span>
-    </div>
-
-  </div>
-
-
-  <div class="section-title">
-
-    <h2>
-      🔔 Smart Reminder
-    </h2>
-
-    <span class="muted">
-      AUTO
-    </span>
-
-  </div>
-
-
-  <div class="card">
-
-    <p data-i18n="reminderText">
-      Prayer and Exercise reminders can be prepared
-      to work automatically.
-    </p>
-
-    <div class="notice" data-i18n="reminderNotice">
-      Reminder behavior depends on the device,
-      browser and notification permissions.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= PRAYER ================= -->
-
-<section id="prayer" class="panel">
-
-  <div class="section-title">
-    <h2>🕌 Prayer Times</h2>
-  </div>
-
-  <div class="card">
-
-    <div class="prayer">
-      <strong>Fajr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Dhuhr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Asr</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Maghrib</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Isha</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="notice">
-      Prayer-time calculation will be connected
-      to the selected location and calculation method.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= QURAN ================= -->
-
-<section id="quran" class="panel">
-
-  <div class="section-title">
-    <h2>📖 Quran</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Quran Reading</h3>
-
-    <p class="muted" style="margin-top:7px">
-      Arabic Quran, translations and Tafsir will be
-      organized here.
-    </p>
-
-    <div class="notice">
-      Planned: Arabic • Bangla • English • Urdu •
-      Arabic pronunciation • Tafsir Ibn Kathir •
-      Tafsir al-Jalalayn • Tafsir Ruh al-Ma'ani
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= HADITH ================= -->
-
-<section id="hadith" class="panel">
-
-  <div class="section-title">
-    <h2>📚 Hadith</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Hadith Library</h3>
-
-    <p class="muted" style="margin-top:7px">
-      The Hadith section is reserved for verified
-      Islamic source material.
-    </p>
-
-    <div class="notice">
-      Planned collections: Sahih al-Bukhari,
-      Sahih Muslim, Sunan Abu Dawud,
-      Jami' at-Tirmidhi, Sunan an-Nasa'i and
-      Sunan Ibn Majah.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= FIQH ================= -->
-
-<section id="fiqh" class="panel">
-
-  <div class="section-title">
-    <h2>⚖️ Fiqh</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Islamic Jurisprudence</h3>
-
-    <p class="muted" style="margin-top:7px">
-      Fiqh references will be organized by topic
-      and school of jurisprudence.
-    </p>
-
-    <div class="notice">
-      Planned references include material associated
-      with the Shafi'i, Maliki and Hanbali schools,
-      with source attribution.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= DUA ================= -->
-
-<section id="dua" class="panel">
-
-  <div class="section-title">
-    <h2>🤲 Dua & Dhikr</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Masnun Duas</h3>
-
-    <p class="muted" style="margin-top:7px">
-      Daily duas, meanings and pronunciations.
-    </p>
-
-    <div class="notice">
-      Planned categories: sleep, waking, food,
-      travel, home, Wudu, prayer, Tahajjud,
-      Laylat al-Qadr, Jumu'ah, Eid and Janazah.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= TASBIH ================= -->
-
-<section id="tasbih" class="panel">
-
-  <div class="section-title">
-    <h2>📿 Tasbih Counter</h2>
-  </div>
-
-  <div class="card counter">
-
-    <div id="tasbih-count" class="counter-number">
-      0
-    </div>
-
-    <button
-      class="btn"
-      onclick="increaseTasbih()"
-    >
-      + Tasbih
-    </button>
-
-    <button
-      class="btn secondary"
-      onclick="resetTasbih()"
-    >
-      Reset
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ================= QIBLA ================= -->
-
-<section id="qibla" class="panel">
-
-  <div class="section-title">
-    <h2>🧭 Qibla</h2>
-  </div>
-
-  <div class="card">
-
-    <div
-      id="qibla-direction"
-      style="
-        text-align:center;
-        font-size:55px;
-        padding:25px;
-      "
-    >
-      🧭
-    </div>
-
-    <p
-      class="muted"
-      style="text-align:center"
-    >
-      Qibla direction will use the device
-      location and compass when available.
-    </p>
-
-    <div class="button-row">
       <button
-        class="btn"
+        class="primary-button"
+        type="button"
         onclick="requestLocation()"
       >
-        Allow Location
-      </button>
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= TOOLS ================= -->
-
-<section id="tools" class="panel">
-
-  <div class="section-title">
-    <h2>🛠️ Tools</h2>
-  </div>
-
-
-  <!-- CALCULATOR -->
-
-  <div class="card">
-
-    <h3>🧮 Super Calculator</h3>
-
-    <div
-      id="calc-display"
-      class="calculator-display"
-    >
-      0
-    </div>
-
-    <div class="calc-grid">
-
-      <button onclick="calcClear()">C</button>
-      <button onclick="calcBack()">⌫</button>
-      <button onclick="calcAdd('%')">%</button>
-      <button onclick="calcAdd('/')">÷</button>
-
-      <button onclick="calcAdd('7')">7</button>
-      <button onclick="calcAdd('8')">8</button>
-      <button onclick="calcAdd('9')">9</button>
-      <button onclick="calcAdd('*')">×</button>
-
-      <button onclick="calcAdd('4')">4</button>
-      <button onclick="calcAdd('5')">5</button>
-      <button onclick="calcAdd('6')">6</button>
-      <button onclick="calcAdd('-')">−</button>
-
-      <button onclick="calcAdd('1')">1</button>
-      <button onclick="calcAdd('2')">2</button>
-      <button onclick="calcAdd('3')">3</button>
-      <button onclick="calcAdd('+')">+</button>
-
-      <button onclick="calcAdd('0')">0</button>
-      <button onclick="calcAdd('.')">.</button>
-      <button
-        class="equal"
-        onclick="calcResult()"
-      >
-        =
+        📍 Detect My Location
       </button>
 
-    </div>
-
-  </div>
+    </section>
 
 
-  <!-- DEBT -->
-
-  <div class="card" style="margin-top:12px">
-
-    <h3>💰 Debt / Due Tracker</h3>
-
-    <input
-      id="debt-name"
-      class="input"
-      placeholder="Person / item"
-    >
-
-    <input
-      id="debt-amount"
-      class="input"
-      type="number"
-      placeholder="Amount"
-    >
-
-    <input
-      id="debt-date"
-      class="input"
-      type="date"
-    >
-
-    <div class="button-row">
-
-      <button
-        class="btn"
-        onclick="saveDebt()"
-      >
-        Save
-      </button>
-
-      <button
-        class="btn secondary"
-        onclick="clearDebts()"
-      >
-        Clear All
-      </button>
-
-    </div>
-
-    <div
-      id="debt-list"
-      style="margin-top:12px"
-    ></div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= CALENDAR ================= -->
-
-<section id="calendar" class="panel">
-
-  <div class="section-title">
-    <h2>📅 Islamic Calendar</h2>
-  </div>
-
-  <div class="card">
-
-    <div
-      id="gregorian-date"
-      style="font-size:18px;font-weight:700"
-    ></div>
-
-    <div class="notice">
-      Islamic calendar data will be connected
-      to a verified offline calendar dataset.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= RAMADAN ================= -->
-
-<section id="ramadan" class="panel">
-
-  <div class="section-title">
-    <h2>🌙 Ramadan</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Sehri & Iftar</h3>
-
-    <div class="prayer" style="margin-top:12px">
-      <strong>Sehri</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="prayer">
-      <strong>Iftar</strong>
-      <span>--:--</span>
-    </div>
-
-    <div class="notice">
-      Times will be calculated according to location
-      and the selected calculation method.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= WEATHER ================= -->
-
-<section id="weather" class="panel">
-
-  <div class="section-title">
-    <h2>🌦️ Weather</h2>
-  </div>
-
-  <div class="card">
-
-    <h3>Today's Weather</h3>
-
-    <div
-      id="weather-status"
-      class="notice"
-    >
-      Weather data will appear here when an
-      internet connection/API is available.
-    </div>
+    <!-- ===================================================
+         WEATHER
+         =================================================== -->
 
     <div class="section-title">
-      <h2>Next 7 Days</h2>
+
+      <h2>🌤️ Weather</h2>
+
+      <p>
+        Today and the next 7 days
+      </p>
+
     </div>
 
-    <div class="empty">
-      7-day weather data will be displayed here.
+    <section class="weather-card">
+
+      <div class="weather-main">
+
+        <div>
+
+          <div
+            id="weather-temperature"
+            class="weather-temperature"
+          >
+            --°C
+          </div>
+
+          <div
+            id="weather-condition"
+            class="weather-info"
+          >
+            Weather data will appear here.
+          </div>
+
+        </div>
+
+        <div
+          id="weather-icon"
+          style="font-size:48px;"
+        >
+          🌤️
+        </div>
+
+      </div>
+
+      <div
+        id="weather-forecast"
+        class="weather-forecast"
+      >
+
+        <div class="forecast-day">
+          Weather<br>loading...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         QUICK ACCESS
+         =================================================== -->
+
+    <div class="section-title">
+
+      <h2>✨ Sakin</h2>
+
+      <p>
+        Your Islamic tools and library
+      </p>
+
     </div>
 
-    <div class="notice">
-      Offline mode can show the last saved weather
-      data. A new live weather update requires
-      internet access.
+    <section class="module-grid">
+
+      <button
+        class="module-card"
+        onclick="openModule('quran')"
+      >
+        <div class="module-icon">📖</div>
+        <h3>Qur'an</h3>
+        <p>
+          30 Juz, 114 Surahs, Ayah,
+          translation and Tafsir.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('dua')"
+      >
+        <div class="module-icon">🤲</div>
+        <h3>Du'a & Dhikr</h3>
+        <p>
+          Masnun Du'a, Niyyah,
+          Dhikr and daily supplications.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('hadith')"
+      >
+        <div class="module-icon">📚</div>
+        <h3>Hadith</h3>
+        <p>
+          Six major collections and
+          additional Hadith books.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('fiqh')"
+      >
+        <div class="module-icon">⚖️</div>
+        <h3>Fiqh</h3>
+        <p>
+          Hanafi, Shafi'i, Maliki,
+          Hanbali and related works.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('fatwa')"
+      >
+        <div class="module-icon">📜</div>
+        <h3>Fatwa Library</h3>
+        <p>
+          Fatawa books and reference
+          collections.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('qibla')"
+      >
+        <div class="module-icon">🧭</div>
+        <h3>Qibla & Compass</h3>
+        <p>
+          GPS, Qibla direction,
+          compass and map.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('calendar')"
+      >
+        <div class="module-icon">📅</div>
+        <h3>Super Calendar</h3>
+        <p>
+          Hijri, Gregorian and
+          Bangla calendar.
+        </p>
+      </button>
+
+
+      <button
+        class="module-card"
+        onclick="openModule('calculator')"
+      >
+        <div class="module-icon">🧮</div>
+        <h3>Super Calculator</h3>
+        <p>
+          Calculator, debt,
+          loan and payment tracking.
+        </p>
+      </button>
+
+    </section>
+
+
+    <!-- ===================================================
+         SMART REMINDER
+         =================================================== -->
+
+    <div class="section-title">
+
+      <h2>🔔 Smart Reminder</h2>
+
+      <p>
+        Sakin reminder system
+      </p>
+
     </div>
 
-  </div>
+    <section class="reminder-box">
 
-</section>
+      <div class="reminder-row">
+
+        <div>
+          <strong>Five Daily Prayers</strong>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
 
 
-<!-- ================= FEEDBACK ================= -->
+      <div class="reminder-row">
 
-<section id="feedback" class="panel">
+        <div>
+          <strong>Qur'an Reminder</strong>
+        </div>
 
-  <div class="section-title">
-    <h2>⭐ Feedback & Rating</h2>
-  </div>
+        <span class="status-badge">
+          Ready
+        </span>
 
-  <div class="card">
+      </div>
 
-    <h3>Rate Sakin</h3>
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>Exercise Reminder</strong>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
+
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>30-Minute Smart Reminder</strong>
+        </div>
+
+        <span
+          id="reminder-status"
+          class="status-badge"
+        >
+          ON
+        </span>
+
+      </div>
+
+
+      <button
+        class="primary-button"
+        onclick="testNotification()"
+      >
+        🔔 Test Notification
+      </button>
+
+    </section>
+
+
+    <!-- ===================================================
+         ISLAMIC LIBRARY
+         =================================================== -->
+
+    <div class="section-title">
+
+      <h2>📚 Islamic Library</h2>
+
+      <p>
+        Content can be added book-by-book later.
+      </p>
+
+    </div>
+
+
+    <!-- QURAN -->
+
+    <section class="library-card">
+
+      <button
+        class="library-header"
+        onclick="toggleLibrary('quran-library')"
+      >
+
+        <div class="library-title">
+
+          <div class="library-icon">
+            📖
+          </div>
+
+          <div>
+            <strong>Qur'an Library</strong>
+            <div style="font-size:11px;color:var(--muted);">
+              30 Juz • 114 Surahs • Tafsir
+            </div>
+          </div>
+
+        </div>
+
+        <span>▼</span>
+
+      </button>
+
+
+      <div
+        id="quran-library"
+        class="library-body"
+      >
+
+        <div class="book-list">
+
+          <div class="book-item">
+            Juz 01
+            <small>
+              Content module ready for insertion
+            </small>
+          </div>
+
+          <div class="book-item">
+            Juz 02
+            <small>
+              Content module ready for insertion
+            </small>
+          </div>
+
+          <div class="book-item">
+            Juz 03
+            <small>
+              Content module ready for insertion
+            </small>
+          </div>
+
+          <div class="book-item">
+            + Add remaining Juz 04–30
+            <small>
+              New content can be added without changing the Home structure.
+            </small>
+          </div>
+
+          <div class="book-item">
+            Tafsir Library
+            <small>
+              Individual Tafsir sources can be added here.
+            </small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DU'A -->
+
+    <section class="library-card">
+
+      <button
+        class="library-header"
+        onclick="toggleLibrary('dua-library')"
+      >
+
+        <div class="library-title">
+
+          <div class="library-icon">
+            🤲
+          </div>
+
+          <div>
+            <strong>Du'a & Dhikr Library</strong>
+            <div style="font-size:11px;color:var(--muted);">
+              Masnun Du'a • Niyyah • Dhikr
+            </div>
+          </div>
+
+        </div>
+
+        <span>▼</span>
+
+      </button>
+
+
+      <div
+        id="dua-library"
+        class="library-body"
+      >
+
+        <div class="book-list">
+
+          <div class="book-item">
+            Masnun Du'a
+          </div>
+
+          <div class="book-item">
+            Five Daily Prayer Niyyah
+          </div>
+
+          <div class="book-item">
+            Tahajjud
+          </div>
+
+          <div class="book-item">
+            Jumu'ah & Eid
+          </div>
+
+          <div class="book-item">
+            Ayatul Kursi
+          </div>
+
+          <div class="book-item">
+            Sayyidul Istighfar
+          </div>
+
+          <div class="book-item">
+            Surah Al-Hashr — Last Three Ayahs
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HADITH -->
+
+    <section class="library-card">
+
+      <button
+        class="library-header"
+        onclick="toggleLibrary('hadith-library')"
+      >
+
+        <div class="library-title">
+
+          <div class="library-icon">
+            📚
+          </div>
+
+          <div>
+            <strong>Hadith Library</strong>
+            <div style="font-size:11px;color:var(--muted);">
+              Major collections and additional books
+            </div>
+          </div>
+
+        </div>
+
+        <span>▼</span>
+
+      </button>
+
+
+      <div
+        id="hadith-library"
+        class="library-body"
+      >
+
+        <div class="book-list">
+
+          <div class="book-item">
+            Sahih al-Bukhari
+          </div>
+
+          <div class="book-item">
+            Sahih Muslim
+          </div>
+
+          <div class="book-item">
+            Sunan Abi Dawud
+          </div>
+
+          <div class="book-item">
+            Jami' at-Tirmidhi
+          </div>
+
+          <div class="book-item">
+            Sunan an-Nasa'i
+          </div>
+
+          <div class="book-item">
+            Sunan Ibn Majah
+          </div>
+
+          <div class="book-item">
+            Muwatta Imam Malik
+          </div>
+
+          <div class="book-item">
+            + Add More Hadith Books
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FIQH -->
+
+    <section class="library-card">
+
+      <button
+        class="library-header"
+        onclick="toggleLibrary('fiqh-library')"
+      >
+
+        <div class="library-title">
+
+          <div class="library-icon">
+            ⚖️
+          </div>
+
+          <div>
+            <strong>Fiqh Library</strong>
+            <div style="font-size:11px;color:var(--muted);">
+              Four Madhhabs and related works
+            </div>
+          </div>
+
+        </div>
+
+        <span>▼</span>
+
+      </button>
+
+
+      <div
+        id="fiqh-library"
+        class="library-body"
+      >
+
+        <div class="book-list">
+
+          <div class="book-item">
+            Hanafi Fiqh
+          </div>
+
+          <div class="book-item">
+            Shafi'i Fiqh
+          </div>
+
+          <div class="book-item">
+            Maliki Fiqh
+          </div>
+
+          <div class="book-item">
+            Hanbali Fiqh
+          </div>
+
+          <div class="book-item">
+            Four Imams — Reference Library
+          </div>
+
+          <div class="book-item">
+            + Add Fiqh Books
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FATWA -->
+
+    <section class="library-card">
+
+      <button
+        class="library-header"
+        onclick="toggleLibrary('fatwa-library')"
+      >
+
+        <div class="library-title">
+
+          <div class="library-icon">
+            📜
+          </div>
+
+          <div>
+            <strong>Fatwa Library</strong>
+            <div style="font-size:11px;color:var(--muted);">
+              Fatawa reference books
+            </div>
+          </div>
+
+        </div>
+
+        <span>▼</span>
+
+      </button>
+
+
+      <div
+        id="fatwa-library"
+        class="library-body"
+      >
+
+        <div class="book-list">
+
+          <div class="book-item">
+            Fatawa Shami
+          </div>
+
+          <div class="book-item">
+            Fatawa Alamgiri
+          </div>
+
+          <div class="book-item">
+            Other Fatawa Collections
+          </div>
+
+          <div class="book-item">
+            + Add More Fatwa Books
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         SYSTEM STATUS
+         =================================================== -->
+
+    <div class="section-title">
+
+      <h2>🛡️ Sakin System</h2>
+
+    </div>
+
+    <section class="reminder-box">
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>PWA Foundation</strong>
+          <span>Ready for installation system</span>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
+
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>Offline Architecture</strong>
+          <span>Content system prepared</span>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
+
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>Responsive Design</strong>
+          <span>Mobile • Tablet • Desktop</span>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
+
+
+      <div class="reminder-row">
+
+        <div>
+          <strong>Language System</strong>
+          <span>Expandable multilingual structure</span>
+        </div>
+
+        <span class="status-badge">
+          Ready
+        </span>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+
+  <footer>
+    <div>
+      Sakin — Islamic Super App
+    </div>
+
+    <div style="margin-top:5px;">
+      Built with a modular architecture.
+    </div>
+  </footer>
+
+
+  <!-- =====================================================
+       SETTINGS PANEL
+       ===================================================== -->
+
+  <div
+    id="settings-panel"
+    class="settings-panel"
+    onclick="closeSettingsOutside(event)"
+  >
 
     <div
-      id="star-buttons"
-      class="stars"
+      class="settings-sheet"
+      onclick="event.stopPropagation()"
     >
 
-      <button onclick="setRating(1)">★</button>
-      <button onclick="setRating(2)">★</button>
-      <button onclick="setRating(3)">★</button>
-      <button onclick="setRating(4)">★</button>
-      <button onclick="setRating(5)">★</button>
+      <div class="settings-top">
+
+        <h2>⚙️ Settings</h2>
+
+        <button
+          class="secondary-button"
+          onclick="closeSettings()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+          <strong>🌙 Dark Mode</strong>
+          <span>
+            Change Sakin appearance
+          </span>
+        </div>
+
+        <button
+          class="secondary-button"
+          onclick="toggleDarkMode()"
+        >
+          Toggle
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+          <strong>🔔 Smart Reminder</strong>
+          <span>
+            Enable or disable reminder system
+          </span>
+        </div>
+
+        <button
+          id="reminder-toggle"
+          class="secondary-button"
+          onclick="toggleReminder()"
+        >
+          ON
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+          <strong>🌐 Language</strong>
+          <span>
+            Default language: English
+          </span>
+        </div>
+
+        <select
+          id="language-select"
+          onchange="changeLanguage(this.value)"
+        >
+
+          <option value="en">
+            English
+          </option>
+
+          <option value="bn">
+            বাংলা
+          </option>
+
+          <option value="ar">
+            العربية
+          </option>
+
+          <option value="ur">
+            اردو
+          </option>
+
+          <option value="tr">
+            Türkçe
+          </option>
+
+          <option value="id">
+            Indonesian
+          </option>
+
+          <option value="ms">
+            Malay
+          </option>
+
+          <option value="fa">
+            فارسی
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+          <strong>📍 Location</strong>
+          <span id="settings-location">
+            Location not detected
+          </span>
+        </div>
+
+        <button
+          class="secondary-button"
+          onclick="requestLocation()"
+        >
+          Detect
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
+          <strong>🔔 Notification Permission</strong>
+          <span>
+            Browser notification permission
+          </span>
+        </div>
+
+        <button
+          class="secondary-button"
+          onclick="requestNotificationPermission()"
+        >
+          Allow
+        </button>
+
+      </div>
+
+
+      <div style="margin-top:18px;">
+
+        <button
+          class="primary-button"
+          onclick="closeSettings()"
+        >
+          Done
+        </button>
+
+      </div>
 
     </div>
 
-    <textarea
-      id="feedback-text"
-      class="input"
-      rows="5"
-      placeholder="Write your feedback..."
-    ></textarea>
+  </div>
 
-    <div class="button-row">
 
-      <button
-        class="btn"
-        onclick="saveFeedback()"
-      >
-        Submit Feedback
-      </button>
+  <!-- =====================================================
+       GENERAL MODULE MODAL
+       ===================================================== -->
 
-    </div>
+  <div
+    id="module-modal"
+    class="modal"
+    onclick="closeModuleOutside(event)"
+  >
 
     <div
-      id="feedback-status"
-      class="notice"
-      style="display:none"
-    ></div>
+      class="modal-box"
+      onclick="event.stopPropagation()"
+    >
 
-  </div>
-
-</section>
-
-
-<!-- ================= SETTINGS ================= -->
-
-<section id="settings" class="panel">
-
-  <div class="section-title">
-    <h2>⚙️ Settings</h2>
-  </div>
-
-  <div class="card">
-
-
-    <div class="setting">
-
-      <div>
-        <strong>🌙 Dark Mode</strong>
-        <div class="muted">
-          Dark theme
-        </div>
-      </div>
-
-      <button
-        class="btn secondary"
-        onclick="setDark()"
-      >
-        ON / OFF
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div>
-        <strong>🌃 Night Mode</strong>
-        <div class="muted">
-          Night theme
-        </div>
-      </div>
-
-      <button
-        class="btn secondary"
-        onclick="setNight()"
-      >
-        ON / OFF
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div>
-        <strong>🔔 Smart Reminder</strong>
-        <div class="muted">
-          Prayer and exercise reminders
-        </div>
-      </div>
-
-      <button
-        class="btn secondary"
-        onclick="toggleReminder()"
-      >
-        ON / OFF
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div>
-        <strong>📍 Live Location</strong>
-        <div class="muted">
-          Location-based features
-        </div>
-      </div>
-
-      <button
-        class="btn secondary"
-        onclick="requestLocation()"
-      >
-        Allow
-      </button>
-
-    </div>
-
-
-    <div class="setting">
-
-      <div>
-        <strong>🌐 Language</strong>
-        <div class="muted">
-          Change application language
-        </div>
-      </div>
-
-      <select
-        onchange="
-          document
-          .getElementById('language-selector')
-          .value=this.value;
-          changeLanguage(this.value);
-        "
-        id="settings-language"
+      <div
         style="
-          padding:8px;
-          border-radius:10px;
-          background:var(--soft);
-          color:var(--text);
-          border:1px solid var(--border);
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:10px;
         "
       >
-        <option value="en">English</option>
-        <option value="bn">বাংলা</option>
-        <option value="ar">العربية</option>
-      </select>
+
+        <h2 id="module-title">
+          Sakin Module
+        </h2>
+
+        <button
+          class="secondary-button"
+          onclick="closeModule()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div
+        id="module-content"
+        style="margin-top:16px;"
+      >
+      </div>
 
     </div>
 
   </div>
 
-</section>
 
-</main>
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
 
+  <script>
 
-<!-- ================= BOTTOM NAV ================= -->
+    /* =====================================================
+       SAKIN GLOBAL STATE
+       ===================================================== */
 
-<nav class="bottom-nav">
+    const SAKIN = {
 
-  <button
-    id="nav-home"
-    class="active"
-    onclick="showPanel('home')"
-  >
-    <div>⌂</div>
-    <small data-i18n="home">Home</small>
-  </button>
+      language:
+        localStorage.getItem("sakinLanguage")
+        || "en",
 
-  <button onclick="showPanel('quran')">
-    <div>📖</div>
-    <small data-i18n="quran">Quran</small>
-  </button>
+      darkMode:
+        localStorage.getItem("sakinDarkMode")
+        === "true",
 
-  <button onclick="showPanel('dua')">
-    <div>🤲</div>
-    <small data-i18n="dua">Dua</small>
-  </button>
+      reminder:
+        localStorage.getItem("sakinReminder")
+        !== "false",
 
-  <button onclick="showPanel('tools')">
-    <div>🛠️</div>
-    <small data-i18n="tools">Tools</small>
-  </button>
+      latitude:
+        localStorage.getItem("sakinLatitude"),
 
-  <button onclick="showPanel('settings')">
-    <div>⚙️</div>
-    <small data-i18n="settings">Settings</small>
-  </button>
-
-</nav>
-
-
-<script>
-
-  /* ==========================================
-     SAKIN CORE
-     ========================================== */
-
-  let deferredPrompt = null;
-
-
-  function toggleMenu() {
-
-    document
-      .getElementById("menu")
-      .classList
-      .toggle("show");
-
-  }
-
-
-  function showPanel(id) {
-
-    document
-      .querySelectorAll(".panel")
-      .forEach(function(panel) {
-
-        panel.classList.remove("active");
-
-      });
-
-
-    const target =
-      document.getElementById(id);
-
-
-    if (target) {
-
-      target.classList.add("active");
-
-    }
-
-
-    document
-      .getElementById("menu")
-      .classList
-      .remove("show");
-
-
-    document
-      .querySelectorAll(".bottom-nav button")
-      .forEach(function(button) {
-
-        button.classList.remove("active");
-
-      });
-
-
-    if (id === "home") {
-
-      document
-        .getElementById("nav-home")
-        .classList
-        .add("active");
-
-    }
-
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  }
-
-
-  /* ==========================================
-     THEME
-     ========================================== */
-
-  function setDark() {
-
-    document.body.classList.remove("night");
-
-    document.body.classList.toggle("dark");
-
-
-    localStorage.setItem(
-      "sakinTheme",
-      document.body.classList.contains("dark")
-        ? "dark"
-        : "light"
-    );
-
-  }
-
-
-  function setNight() {
-
-    document.body.classList.remove("dark");
-
-    document.body.classList.toggle("night");
-
-
-    localStorage.setItem(
-      "sakinTheme",
-      document.body.classList.contains("night")
-        ? "night"
-        : "light"
-    );
-
-  }
-
-
-  const savedTheme =
-    localStorage.getItem("sakinTheme");
-
-
-  if (savedTheme === "dark") {
-
-    document.body.classList.add("dark");
-
-  }
-
-
-  if (savedTheme === "night") {
-
-    document.body.classList.add("night");
-
-  }
-
-
-  /* ==========================================
-     LOCATION
-     ========================================== */
-
-  function requestLocation() {
-
-    const locationBox =
-      document.getElementById("location");
-
-
-    if (!navigator.geolocation) {
-
-      locationBox.innerText =
-        "📍 Location is not available.";
-
-      return;
-
-    }
-
-
-    locationBox.innerText =
-      "📍 Requesting location permission...";
-
-
-    navigator.geolocation.getCurrentPosition(
-
-      function(position) {
-
-        const lat =
-          position.coords.latitude;
-
-        const lon =
-          position.coords.longitude;
-
-
-        localStorage.setItem(
-          "sakinLatitude",
-          lat
-        );
-
-        localStorage.setItem(
-          "sakinLongitude",
-          lon
-        );
-
-
-        locationBox.innerText =
-          "📍 Location active • " +
-          lat.toFixed(3) +
-          ", " +
-          lon.toFixed(3);
-
-      },
-
-      function() {
-
-        locationBox.innerText =
-          "📍 Location permission was not granted.";
-
-      },
-
-      {
-        enableHighAccuracy: false,
-        timeout: 10000,
-        maximumAge: 300000
-      }
-
-    );
-
-  }
-
-
-  /* ==========================================
-     REMINDER
-     ========================================== */
-
-  function toggleReminder() {
-
-    const current =
-      localStorage.getItem(
-        "sakinReminder"
-      );
-
-
-    const next =
-      current === "on"
-        ? "off"
-        : "on";
-
-
-    localStorage.setItem(
-      "sakinReminder",
-      next
-    );
-
-
-    alert(
-      next === "on"
-        ? "Smart Reminder is ON."
-        : "Smart Reminder is OFF."
-    );
-
-  }
-
-
-  /* ==========================================
-     INSTALL
-     ========================================== */
-
-  window.addEventListener(
-    "beforeinstallprompt",
-    function(event) {
-
-      event.preventDefault();
-
-      deferredPrompt = event;
-
-    }
-  );
-
-
-  function installApp() {
-
-    if (deferredPrompt) {
-
-      deferredPrompt.prompt();
-
-      deferredPrompt.userChoice.then(
-        function() {
-
-          deferredPrompt = null;
-
-        }
-      );
-
-    }
-
-    else {
-
-      alert(
-        "Install availability depends on the browser and device."
-      );
-
-    }
-
-  }
-
-
-  /* ==========================================
-     ABOUT
-     ========================================== */
-
-  function aboutSakin() {
-
-    alert(
-      "Sakin\n\n" +
-      "A modern Islamic super app.\n\n" +
-      "Quran • Hadith • Fiqh • Prayer • " +
-      "Dua • Qibla • Tools • Ramadan"
-    );
-
-  }
-
-
-  /* ==========================================
-     CLOCK
-     ========================================== */
-
-  function updateClock() {
-
-    const now =
-      new Date();
-
-
-    document
-      .getElementById("clock")
-      .innerText =
-      now.toLocaleTimeString(
-        "en-US"
-      );
-
-
-    document
-      .getElementById("date")
-      .innerText =
-      now.toLocaleDateString(
-        "en-US",
-        {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }
-      );
-
-
-    document
-      document
-  .getElementById("date")
-  .innerText =
-      now.toLocaleDateString(
-        "en-US",
-        {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }
-      );
-
-  }
-
-
-  updateClock();
-
-  setInterval(
-    updateClock,
-    1000
-  );
-
-
-  /* ==========================================
-     TASBIH
-     ========================================== */
-
-  let tasbihCount =
-    Number(
-      localStorage.getItem(
-        "sakinTasbih"
-      ) || 0
-    );
-
-
-  function renderTasbih() {
-
-    document
-      .getElementById("tasbih-count")
-      .innerText =
-      tasbihCount;
-
-  }
-
-
-  function increaseTasbih() {
-
-    tasbihCount++;
-
-    localStorage.setItem(
-      "sakinTasbih",
-      tasbihCount
-    );
-
-    renderTasbih();
-
-  }
-
-
-  function resetTasbih() {
-
-    tasbihCount = 0;
-
-    localStorage.setItem(
-      "sakinTasbih",
-      "0"
-    );
-
-    renderTasbih();
-
-  }
-
-
-  renderTasbih();
-
-
-  /* ==========================================
-     SUPER CALCULATOR
-     ========================================== */
-
-  let calcValue = "";
-
-
-  function renderCalc() {
-
-    document
-      .getElementById("calc-display")
-      .innerText =
-      calcValue || "0";
-
-  }
-
-
-  function calcAdd(value) {
-
-    calcValue += value;
-
-    renderCalc();
-
-  }
-
-
-  function calcClear() {
-
-    calcValue = "";
-
-    renderCalc();
-
-  }
-
-
-  function calcBack() {
-
-    calcValue =
-      calcValue.slice(
-        0,
-        -1
-      );
-
-    renderCalc();
-
-  }
-
-
-  function calcResult() {
-
-    try {
-
-      /*
-        Only mathematical characters
-        are allowed.
-      */
-
-      if (
-        !/^[0-9+\-*/%.() ]+$/
-          .test(calcValue)
-      ) {
-
-        throw new Error();
-
-      }
-
-
-      const result =
-        Function(
-          '"use strict"; return (' +
-          calcValue +
-          ')'
-        )();
-
-
-      if (
-        typeof result !== "number" ||
-        !Number.isFinite(result)
-      ) {
-
-        throw new Error();
-
-      }
-
-
-      calcValue =
-        String(result);
-
-      renderCalc();
-
-    }
-
-    catch {
-
-      calcValue = "";
-
-      document
-        .getElementById(
-          "calc-display"
-        )
-        .innerText =
-        "Error";
-
-    }
-
-  }
-
-
-  /* ==========================================
-     DEBT TRACKER
-     ========================================== */
-
-  let debts =
-    JSON.parse(
-      localStorage.getItem(
-        "sakinDebts"
-      ) || "[]"
-    );
-
-
-  function saveDebt() {
-
-    const name =
-      document
-        .getElementById("debt-name")
-        .value
-        .trim();
-
-
-    const amount =
-      Number(
-        document
-          .getElementById("debt-amount")
-          .value
-      );
-
-
-    const date =
-      document
-        .getElementById("debt-date")
-        .value;
-
-
-    if (
-      !name ||
-      !Number.isFinite(amount) ||
-      amount < 0
-    ) {
-
-      alert(
-        "Please enter a valid name and amount."
-      );
-
-      return;
-
-    }
-
-
-    debts.push({
-
-      id: Date.now(),
-
-      name: name,
-
-      amount: amount,
-
-      date: date
-
-    });
-
-
-    localStorage.setItem(
-      "sakinDebts",
-      JSON.stringify(debts)
-    );
-
-
-    document
-      .getElementById("debt-name")
-      .value = "";
-
-
-    document
-      .getElementById("debt-amount")
-      .value = "";
-
-
-    document
-      .getElementById("debt-date")
-      .value = "";
-
-
-    renderDebts();
-
-  }
-
-
-  function deleteDebt(id) {
-
-    debts =
-      debts.filter(
-        function(item) {
-
-          return item.id !== id;
-
-        }
-      );
-
-
-    localStorage.setItem(
-      "sakinDebts",
-      JSON.stringify(debts)
-    );
-
-
-    renderDebts();
-
-  }
-
-
-  function clearDebts() {
-
-    if (
-      !confirm(
-        "Clear all debt records?"
-      )
-    ) {
-
-      return;
-
-    }
-
-
-    debts = [];
-
-
-    localStorage.removeItem(
-      "sakinDebts"
-    );
-
-
-    renderDebts();
-
-  }
-
-
-  function renderDebts() {
-
-    const box =
-      document.getElementById(
-        "debt-list"
-      );
-
-
-    if (!debts.length) {
-
-      box.innerHTML =
-        '<div class="empty">' +
-        'No debt records yet.' +
-        '</div>';
-
-      return;
-
-    }
-
-
-    box.innerHTML =
-      debts.map(
-        function(item) {
-
-          return `
-            <div
-              class="card"
-              style="margin-top:8px;padding:12px"
-            >
-              <strong>
-                ${escapeHTML(item.name)}
-              </strong>
-
-              <div class="muted">
-                Amount: ${item.amount}
-              </div>
-
-              <div class="muted">
-                Due: ${escapeHTML(item.date || "Not set")}
-              </div>
-
-              <button
-                class="btn danger"
-                style="margin-top:8px"
-                onclick="deleteDebt(${item.id})"
-              >
-                Delete
-              </button>
-            </div>
-          `;
-
-        }
-      ).join("");
-
-  }
-
-
-  function escapeHTML(value) {
-
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-
-  }
-
-
-  renderDebts();
-
-
-  /* ==========================================
-     FEEDBACK & STAR RATING
-     ========================================== */
-
-  let selectedRating = 0;
-
-
-  function setRating(rating) {
-
-    selectedRating =
-      rating;
-
-
-    document
-      .querySelectorAll(
-        "#star-buttons button"
-      )
-      .forEach(
-        function(button, index) {
-
-          button.classList.toggle(
-            "selected",
-            index < rating
-          );
-
-        }
-      );
-
-  }
-
-
-  function saveFeedback() {
-
-    const text =
-      document
-        .getElementById(
-          "feedback-text"
-        )
-        .value
-        .trim();
-
-
-    if (!selectedRating) {
-
-      alert(
-        "Please select a star rating."
-      );
-
-      return;
-
-    }
-
-
-    const feedback = {
-
-      rating:
-        selectedRating,
-
-      text:
-        text,
-
-      date:
-        new Date().toISOString()
+      longitude:
+        localStorage.getItem("sakinLongitude")
 
     };
 
 
-    localStorage.setItem(
-      "sakinLastFeedback",
-      JSON.stringify(feedback)
-    );
-
-
-    const status =
-      document.getElementById(
-        "feedback-status"
-      );
-
-
-    status.style.display =
-      "block";
-
-
-    status.innerText =
-      "Thank you. Your feedback has been saved on this device.";
-
-  }
-
-
-  /* ==========================================
-     LANGUAGE SYSTEM
-     ========================================== */
-
-  const translations = {
-
-    en: {
-
-      subtitle:
-        "Peaceful living, every day",
-
-      home:
-        "Home",
-
-      quran:
-        "Quran",
-
-      hadith:
-        "Hadith",
-
-      fiqh:
-        "Fiqh",
-
-      tools:
-        "Tools",
-
-      feedback:
-        "Feedback",
-
-      darkMode:
-        "Dark Mode",
-
-      nightMode:
-        "Night Mode",
-
-      settings:
-        "Settings",
-
-      location:
-        "Live Location",
-
-      install:
-        "Install Sakin",
-
-      about:
-        "About Sakin",
-
-      welcome:
-        "Welcome to Sakin",
-
-      welcomeText:
-        "Peace, worship and a better daily life",
-
-      quickAccess:
-        "Quick Access",
-
-      prayer:
-        "Prayer",
-
-      fivePrayers:
-        "Five daily prayers",
-
-      quranReading:
-        "Quran reading",
-
-      hadithLibrary:
-        "Hadith library",
-
-      dua:
-        "Dua & Dhikr",
-
-      duaText:
-        "Masnun duas and dhikr",
-
-      fiqhText:
-        "Islamic jurisprudence",
-
-      qibla:
-        "Qibla",
-
-      qiblaText:
-        "Qibla direction",
-
-      calculator:
-        "Super Calculator",
-
-      calculatorText:
-        "Calculator and financial tools",
-
-      calendar:
-        "Islamic Calendar",
-
-      calendarText:
-        "Islamic dates",
-
-      ramadan:
-        "Ramadan",
-
-      ramadanText:
-        "Sehri and Iftar",
-
-      weather:
-        "Weather",
-
-      weatherText:
-        "Current and 7-day weather",
-
-      tasbih:
-        "Tasbih",
-
-      tasbihText:
-        "Digital tasbih counter",
-
-      feedbackText:
-        "Rate and improve Sakin",
-
-      todayPrayer:
-        "Today's Prayer",
-
-      reminderText:
-        "Prayer and Exercise reminders can be prepared to work automatically.",
-
-      reminderNotice:
-        "Reminder behavior depends on the device, browser and notification permissions."
-
-    },
-
-
-    bn: {
-
-      subtitle:
-        "শান্তির পথে, প্রতিদিন",
-
-      home:
-        "হোম",
-
-      quran:
-        "কোরআন",
-
-      hadith:
-        "হাদিস",
-
-      fiqh:
-        "ফিকহ",
-
-      tools:
-        "টুলস",
-
-      feedback:
-        "ফিডব্যাক",
-
-      darkMode:
-        "ডার্ক মোড",
-
-      nightMode:
-        "নাইট মোড",
-
-      settings:
-        "সেটিংস",
-
-      location:
-        "লাইভ লোকেশন",
-
-      install:
-        "সাকিন ইনস্টল",
-
-      about:
-        "সাকিন সম্পর্কে",
-
-      welcome:
-        "সাকিনে আপনাকে স্বাগতম",
-
-      welcomeText:
-        "শান্তি, ইবাদত ও সুন্দর দৈনন্দিন জীবনের জন্য",
-
-      quickAccess:
-        "দ্রুত প্রবেশ",
-
-      prayer:
-        "নামাজ",
-
-      fivePrayers:
-        "পাঁচ ওয়াক্ত নামাজ",
-
-      quranReading:
-        "কোরআন পড়া",
-
-      hadithLibrary:
-        "হাদিস লাইব্রেরি",
-
-      dua:
-        "দোয়া ও যিকির",
-
-      duaText:
-        "মাসনুন দোয়া ও যিকির",
-
-      fiqhText:
-        "ইসলামী ফিকহ",
-
-      qibla:
-        "কিবলা",
-
-      qiblaText:
-        "কিবলার দিক",
-
-      calculator:
-        "সুপার ক্যালকুলেটর",
-
-      calculatorText:
-        "ক্যালকুলেটর ও আর্থিক হিসাব",
-
-      calendar:
-        "ইসলামী ক্যালেন্ডার",
-
-      calendarText:
-        "ইসলামী তারিখ",
-
-      ramadan:
-        "রমজান",
-
-      ramadanText:
-        "সেহরি ও ইফতার",
-
-      weather:
-        "আবহাওয়া",
-
-      weatherText:
-        "বর্তমান ও ৭ দিনের আবহাওয়া",
-
-      tasbih:
-        "তাসবিহ",
-
-      tasbihText:
-        "ডিজিটাল তাসবিহ কাউন্টার",
-
-      feedbackText:
-        "সাকিনকে রেটিং ও উন্নত করার মতামত",
-
-      todayPrayer:
-        "আজকের নামাজ",
-
-      reminderText:
-        "নামাজ ও Exercise Reminder স্বয়ংক্রিয়ভাবে কাজ করার জন্য প্রস্তুত করা যাবে।",
-
-      reminderNotice:
-        "Reminder-এর কাজ ডিভাইস, ব্রাউজার এবং Notification permission-এর ওপর নির্ভর করে।"
-
-    },
-
-
-    ar: {
-
-      subtitle:
-        "حياة هادئة كل يوم",
-
-      home:
-        "الرئيسية",
-
-      quran:
-        "القرآن",
-
-      hadith:
-        "الحديث",
-
-      fiqh:
-        "الفقه",
-
-      tools:
-        "الأدوات",
-
-      feedback:
-        "التقييم",
-
-      darkMode:
-        "الوضع الداكن",
-
-      nightMode:
-        "الوضع الليلي",
-
-      settings:
-        "الإعدادات",
-
-      location:
-        "الموقع المباشر",
-
-      install:
-        "تثبيت ساكين",
-
-      about:
-        "عن ساكين",
-
-      welcome:
-        "مرحباً بك في ساكين",
-
-      welcomeText:
-        "للسكينة والعبادة وحياة يومية أفضل",
-
-      quickAccess:
-        "الوصول السريع",
-
-      prayer:
-        "الصلاة",
-
-      fivePrayers:
-        "الصلوات الخمس",
-
-      quranReading:
-        "قراءة القرآن",
-
-      hadithLibrary:
-        "مكتبة الحديث",
-
-      dua:
-        "الدعاء والذكر",
-
-      duaText:
-        "الأدعية والأذكار المأثورة",
-
-      fiqhText:
-        "الفقه الإسلامي",
-
-      qibla:
-        "القبلة",
-
-      qiblaText:
-        "اتجاه القبلة",
-
-      calculator:
-        "الحاسبة المتقدمة",
-
-      calculatorText:
-        "الحسابات والأدوات المالية",
-
-      calendar:
-        "التقويم الإسلامي",
-
-      calendarText:
-        "التواريخ الإسلامية",
-
-      ramadan:
-        "رمضان",
-
-      ramadanText:
-        "السحور والإفطار",
-
-      weather:
-        "الطقس",
-
-      weatherText:
-        "الطقس الحالي وسبعة أيام",
-
-      tasbih:
-        "التسبيح",
-
-      tasbihText:
-        "عداد التسبيح الرقمي",
-
-      feedbackText:
-        "قيّم ساكين وساعد في تطويره",
-
-      todayPrayer:
-        "صلاة اليوم",
-
-      reminderText:
-        "يمكن إعداد تذكيرات الصلاة والتمارين للعمل تلقائياً.",
-
-      reminderNotice:
-        "يعتمد عمل التذكيرات على الجهاز والمتصفح وأذونات الإشعارات."
+    /* =====================================================
+       LIVE CLOCK
+       ===================================================== */
+
+    function updateLiveClock() {
+
+      const now = new Date();
+
+      const time =
+        now.toLocaleTimeString(
+          "en-US",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+      const date =
+        now.toLocaleDateString(
+          "en-US",
+          {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }
+        );
+
+      const timeElement =
+        document.getElementById("live-time");
+
+      const dateElement =
+        document.getElementById("live-date");
+
+      if (timeElement) {
+        timeElement.textContent = time;
+      }
+
+      if (dateElement) {
+        dateElement.textContent = date;
+      }
 
     }
 
-  };
+
+    updateLiveClock();
+
+    setInterval(
+      updateLiveClock,
+      1000
+    );
 
 
-  function changeLanguage(language) {
+    /* =====================================================
+       DARK MODE
+       ===================================================== */
 
-    const dictionary =
-      translations[language] ||
-      translations.en;
+    function applyDarkMode() {
 
+      document.body.classList.toggle(
+        "dark-mode",
+        SAKIN.darkMode
+      );
 
-    document
-      .querySelectorAll(
-        "[data-i18n]"
-      )
-      .forEach(
-        function(element) {
-
-          const key =
-            element.dataset.i18n;
+    }
 
 
-          if (
-            dictionary[key]
+    function toggleDarkMode() {
+
+      SAKIN.darkMode =
+        !SAKIN.darkMode;
+
+      localStorage.setItem(
+        "sakinDarkMode",
+        SAKIN.darkMode
+      );
+
+      applyDarkMode();
+
+    }
+
+
+    applyDarkMode();
+
+
+    /* =====================================================
+       SETTINGS
+       ===================================================== */
+
+    function openSettings() {
+
+      const panel =
+        document.getElementById(
+          "settings-panel"
+        );
+
+      if (panel) {
+        panel.classList.add("open");
+      }
+
+    }
+
+
+    function closeSettings() {
+
+      const panel =
+        document.getElementById(
+          "settings-panel"
+        );
+
+      if (panel) {
+        panel.classList.remove("open");
+      }
+
+    }
+
+
+    function closeSettingsOutside(event) {
+
+      if (
+        event.target &&
+        event.target.id ===
+        "settings-panel"
+      ) {
+        closeSettings();
+      }
+
+    }
+
+
+    /* =====================================================
+       LOCATION
+       ===================================================== */
+
+    function requestLocation() {
+
+      if (
+        !navigator.geolocation
+      ) {
+
+        updateLocationText(
+          "Location is not supported."
+        );
+
+        return;
+
+      }
+
+
+      updateLocationText(
+        "Detecting location..."
+      );
+
+
+      navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+          SAKIN.latitude =
+            position.coords.latitude;
+
+          SAKIN.longitude =
+            position.coords.longitude;
+
+
+          localStorage.setItem(
+            "sakinLatitude",
+            SAKIN.latitude
+          );
+
+          localStorage.setItem(
+            "sakinLongitude",
+            SAKIN.longitude
+          );
+
+
+          updateLocationText(
+            "Location detected successfully."
+          );
+
+
+          loadWeather();
+
+        },
+
+        function() {
+
+          updateLocationText(
+            "Location permission was not granted."
+          );
+
+        },
+
+        {
+
+          enableHighAccuracy: true,
+
+          timeout: 10000,
+
+          maximumAge: 3600000
+
+        }
+
+      );
+
+    }
+
+
+    function updateLocationText(message) {
+
+      const home =
+        document.getElementById(
+          "location-status"
+        );
+
+      const settings =
+        document.getElementById(
+          "settings-location"
+        );
+
+      if (home) {
+        home.textContent =
+          "📍 " + message;
+      }
+
+      if (settings) {
+        settings.textContent =
+          message;
+      }
+
+    }
+
+
+    /* =====================================================
+       WEATHER FOUNDATION
+       ===================================================== */
+
+    async function loadWeather() {
+
+      if (
+        !SAKIN.latitude ||
+        !SAKIN.longitude
+      ) {
+
+        document.getElementById(
+          "weather-condition"
+        ).textContent =
+          "Allow location access to load local weather.";
+
+        return;
+
+      }
+
+
+      try {
+
+        const url =
+          "https://api.open-meteo.com/v1/forecast"
+          + "?latitude="
+          + encodeURIComponent(
+              SAKIN.latitude
+            )
+          + "&longitude="
+          + encodeURIComponent(
+              SAKIN.longitude
+            )
+          + "&current=temperature_2m,weather_code"
+          + "&daily=temperature_2m_max,temperature_2m_min,weather_code"
+          + "&timezone=auto";
+
+
+        const response =
+          await fetch(url);
+
+
+        if (!response.ok) {
+          throw new Error(
+            "Weather request failed."
+          );
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          data.current &&
+          data.current.temperature_2m
+          !== undefined
+        ) {
+
+          document.getElementById(
+            "weather-temperature"
+          ).textContent =
+            Math.round(
+              data.current.temperature_2m
+            )
+            + "°C";
+
+        }
+
+
+        document.getElementById(
+          "weather-condition"
+        ).textContent =
+          "Current local weather";
+
+
+
+        const forecast =
+          document.getElementById(
+            "weather-forecast"
+          );
+
+
+        forecast.innerHTML = "";
+
+
+        if (
+          data.daily &&
+          data.daily.time
+        ) {
+
+          const days =
+            Math.min(
+              7,
+              data.daily.time.length
+            );
+
+
+          for (
+            let i = 0;
+            i < days;
+            i++
           ) {
 
-            element.innerText =
-              dictionary[key];
+            const day =
+              new Date(
+                data.daily.time[i]
+              );
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+            card.className =
+              "forecast-day";
+
+
+            card.innerHTML =
+
+              "<strong>"
+              +
+              day.toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "short"
+                }
+              )
+              +
+              "</strong>"
+              +
+
+              "<div class='forecast-icon'>🌤️</div>"
+              +
+
+              "<div>"
+              +
+              Math.round(
+                data.daily.temperature_2m_max[i]
+              )
+              +
+              "° / "
+              +
+              Math.round(
+                data.daily.temperature_2m_min[i]
+              )
+              +
+              "°C"
+              +
+              "</div>";
+
+
+            forecast.appendChild(
+              card
+            );
 
           }
 
         }
-      );
-
-
-    document.documentElement.lang =
-      language;
-
-
-    document.body.dir =
-      language === "ar"
-        ? "rtl"
-        : "ltr";
-
-
-    localStorage.setItem(
-      "sakinLanguage",
-      language
-    );
-
-
-    document
-      .getElementById(
-        "settings-language"
-      )
-      .value =
-      language;
-
-
-    /*
-      For languages without a built-in
-      verified UI translation yet,
-      English is used safely instead of
-      machine-translating Islamic content.
-    */
-
-  }
-
-
-  const languageSelector =
-    document.getElementById(
-      "language-selector"
-    );
-
-
-  const storedLanguage =
-    localStorage.getItem(
-      "sakinLanguage"
-    );
-
-
-  const supportedLanguages =
-    Array.from(
-      languageSelector.options
-    ).map(
-      function(option) {
-
-        return option.value;
 
       }
-    );
 
-
-  const initialLanguage =
-    supportedLanguages.includes(
-      storedLanguage
-    )
-      ? storedLanguage
-      : "en";
-
-
-  languageSelector.value =
-    initialLanguage;
-
-
-  document
-    .getElementById(
-      "settings-language"
-    )
-    .value =
-    initialLanguage;
-
-
-  languageSelector.addEventListener(
-    "change",
-    function() {
-
-      changeLanguage(
-        this.value
-      );
-
-    }
-  );
-
-
-  changeLanguage(
-    initialLanguage
-  );
-
-
-  /* ==========================================
-     BASIC OFFLINE-FIRST STORAGE
-     ========================================== */
-
-  /*
-    Core user data is stored locally:
-    - Language
-    - Theme
-    - Tasbih
-    - Debt records
-    - Feedback
-    - Reminder setting
-    - Location coordinates
-
-    This allows these parts to remain usable
-    without an internet connection.
-  */
-
-
-  window.addEventListener(
-    "online",
-    function() {
-
-      localStorage.setItem(
-        "sakinLastOnline",
-        new Date().toISOString()
-      );
-
-    }
-  );
-
-
-  window.addEventListener(
-    "offline",
-    function() {
-
-      console.log(
-        "Sakin is currently offline."
-      );
-      <div id="smart-reminder"></div>
-    
-    }
-  );
-
-</script>
-<section id="smart-reminder" class="card">
-  <h2>🧠 Smart Reminder</h2>
-
-  <p id="reminder-status">
-    Smart Reminder is ready.
-  </p>
-
-  <button type="button" onclick="openSmartReminder()">
-    🔔 Open Smart Reminder
-  </button>
-</section>
-
-<script>
-function openSmartReminder() {
-  const status = document.getElementById("reminder-status");
-
-  if (status) {
-    status.textContent =
-      "Smart Reminder is ready. Prayer, Ramadan and exercise reminders will be connected next.";
-  }
-}
-</script>
-  <script>
-/* Sakin Smart Reminder — Location & Prayer Foundation */
-
-let sakinLocation = {
-  latitude: null,
-  longitude: null
-};
-
-function getSakinLocation() {
-  const status = document.getElementById("reminder-status");
-
-  if (!navigator.geolocation) {
-    if (status) {
-      status.textContent = "Location is not supported on this device.";
-    }
-    return;
-  }
-
-  if (status) {
-    status.textContent = "Detecting your location...";
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    function(position) {
-      sakinLocation.latitude = position.coords.latitude;
-      sakinLocation.longitude = position.coords.longitude;
-
-      localStorage.setItem(
-        "sakinLocation",
-        JSON.stringify(sakinLocation)
-      );
-
-      if (status) {
-        status.textContent =
-          "Location detected successfully. Smart Reminder is ready.";
-      }
-
-      console.log("Sakin Location:", sakinLocation);
-    },
-    function() {
-      const saved = localStorage.getItem("sakinLocation");
-
-      if (saved) {
-        sakinLocation = JSON.parse(saved);
-
-        if (status) {
-          status.textContent =
-            "Using your previously saved location.";
-        }
-      } else {
-        if (status) {
-          status.textContent =
-            "Please allow location access for Smart Reminder.";
-        }
-      }
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 3600000
-    }
-  );
-}
-
-/* Load saved location when Sakin opens */
-window.addEventListener("load", function() {
-  const saved = localStorage.getItem("sakinLocation");
-
-  if (saved) {
-    try {
-      sakinLocation = JSON.parse(saved);
-    } catch (error) {
-      console.log("Saved location could not be loaded.");
-    }
-  }
-});
-</script>
-  <script>
-/* Sakin Prayer Time Calculation Foundation */
-
-function calculatePrayerTimes(latitude, longitude, date = new Date()) {
-  const rad = Math.PI / 180;
-  const deg = 180 / Math.PI;
-
-  const dayOfYear = Math.floor(
-    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
-      Date.UTC(date.getFullYear(), 0, 0)) /
-      86400000
-  );
-
-  // Solar declination
-  const declination =
-    23.44 *
-    Math.sin(
-      (360 / 365) * (dayOfYear - 81) * rad
-    );
-
-  // Equation of time (minutes)
-  const B = ((360 / 365) * (dayOfYear - 81)) * rad;
-
-  const equationOfTime =
-    9.87 * Math.sin(2 * B) -
-    7.53 * Math.cos(B) -
-    1.5 * Math.sin(B);
-
-  // Solar noon in local solar time
-  const timezoneOffset = -date.getTimezoneOffset() / 60;
-
-  const solarNoon =
-    12 +
-    timezoneOffset -
-    longitude / 15 -
-    equationOfTime / 60;
-
-  function hourAngle(altitude) {
-    const cosH =
-      (Math.sin(altitude * rad) -
-        Math.sin(latitude * rad) *
-          Math.sin(declination * rad)) /
-      (Math.cos(latitude * rad) *
-        Math.cos(declination * rad));
-
-    if (cosH < -1) return 180;
-    if (cosH > 1) return 0;
-
-    return Math.acos(cosH) * deg;
-  }
-
-  function solarTime(angle, rising) {
-    const minutes = angle / 15 * 60;
-
-    return rising
-      ? solarNoon - minutes / 60
-      : solarNoon + minutes / 60;
-  }
-
-  // Sunrise / Sunset
-  const sunrise = solarTime(hourAngle(-0.833), true);
-  const sunset = solarTime(hourAngle(-0.833), false);
-
-  // Fajr: 18° below horizon
-  const fajr = solarTime(hourAngle(-18), true);
-
-  // Isha: 18° below horizon
-  const isha = solarTime(hourAngle(-18), false);
-
-  // Dhuhr
-  const dhuhr = solarNoon;
-
-  // Asr: approximate shadow factor 1
-  const asrAltitude =
-    Math.atan(
-      1 /
-        (1 +
-          Math.tan(
-            Math.abs((latitude - declination) * rad)
-          ))
-    ) * deg;
-
-  const asr = solarTime(hourAngle(asrAltitude), false);
-
-  function formatTime(decimalHour) {
-    decimalHour =
-      ((decimalHour % 24) + 24) % 24;
-
-    let hours = Math.floor(decimalHour);
-    let minutes = Math.round(
-      (decimalHour - hours) * 60
-    );
-
-    if (minutes >= 60) {
-      minutes = 0;
-      hours++;
-    }
-
-    hours = hours % 24;
-
-    return String(hours).padStart(2, "0") +
-      ":" +
-      String(minutes).padStart(2, "0");
-  }
-
-  return {
-    fajr: formatTime(fajr),
-    sunrise: formatTime(sunrise),
-    dhuhr: formatTime(dhuhr),
-    asr: formatTime(asr),
-    sunset: formatTime(sunset),
-    maghrib: formatTime(sunset),
-    isha: formatTime(isha)
-  };
-}
-
-console.log("Sakin Prayer Time engine loaded.");
-</script>
-  <script>
-/* Connect Sakin Prayer Times with Live Location */
-
-function startSakinPrayerCalculation() {
-  if (!navigator.geolocation) {
-    console.log("Geolocation is not supported.");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    function(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      const prayerTimes = calculatePrayerTimes(
-        latitude,
-        longitude
-      );
-
-      console.log("Sakin Prayer Times:", prayerTimes);
-
-      localStorage.setItem(
-        "sakinPrayerTimes",
-        JSON.stringify({
-          date: new Date().toISOString().slice(0, 10),
-          latitude: latitude,
-          longitude: longitude,
-          times: prayerTimes
-        })
-      );
-
-      const status =
-        document.getElementById("reminder-status");
-
-      if (status) {
-        status.textContent =
-          "Prayer times calculated for your location.";
-      }
-    },
-    function(error) {
-      console.log(
-        "Location permission/error:",
-        error.message
-      );
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 3600000
-    }
-  );
-}
-
-window.addEventListener("load", function() {
-  startSakinPrayerCalculation();
-});
-</script>
-  <section id="sakin-prayer-times" class="card">
-  <h2>🕌 Prayer Times</h2>
-
-  <p>Fajr: <strong id="sakin-fajr">--:--</strong></p>
-  <p>Sunrise: <strong id="sakin-sunrise">--:--</strong></p>
-  <p>Dhuhr: <strong id="sakin-dhuhr">--:--</strong></p>
-  <p>Asr: <strong id="sakin-asr">--:--</strong></p>
-  <p>Maghrib: <strong id="sakin-maghrib">--:--</strong></p>
-  <p>Sunset: <strong id="sakin-sunset">--:--</strong></p>
-  <p>Isha: <strong id="sakin-isha">--:--</strong></p>
-</section>
-
-<script>
-function displaySakinPrayerTimes(times) {
-  if (!times) return;
-
-  const items = {
-    "sakin-fajr": times.fajr,
-    "sakin-sunrise": times.sunrise,
-    "sakin-dhuhr": times.dhuhr,
-    "sakin-asr": times.asr,
-    "sakin-maghrib": times.maghrib,
-    "sakin-sunset": times.sunset,
-    "sakin-isha": times.isha
-  };
-
-  Object.keys(items).forEach(function(id) {
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.textContent = items[id] || "--:--";
-    }
-  });
-}
-
-window.addEventListener("load", function() {
-  const saved =
-    localStorage.getItem("sakinPrayerTimes");
-
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-
-      if (data.times) {
-        displaySakinPrayerTimes(data.times);
-      }
-    } catch (error) {
-      console.log("Saved prayer times could not be loaded.");
-    }
-  }
-});
-</script>
-  <script>
-/* Sakin Sunrise & Sunset Reminder */
-
-function setupSunriseSunsetReminders(times) {
-  if (!times) return;
-
-  const now = new Date();
-
-  function scheduleReminder(timeString, message) {
-    const parts = timeString.split(":");
-
-    if (parts.length !== 2) return;
-
-    const target = new Date();
-
-    target.setHours(
-      Number(parts[0]),
-      Number(parts[1]),
-      0,
-      0
-    );
-
-    // Reminder = 30 minutes after the event
-    target.setMinutes(target.getMinutes() + 30);
-
-    let delay = target.getTime() - now.getTime();
-
-    // If today's reminder already passed, don't schedule it
-    if (delay <= 0) return;
-
-    setTimeout(function() {
-      showSakinReminder(message);
-    }, delay);
-  }
-
-  scheduleReminder(
-    times.sunrise,
-    "🌅 30 minutes have passed since sunrise."
-  );
-
-  scheduleReminder(
-    times.sunset,
-    "🌇 30 minutes have passed since sunset."
-  );
-}
-
-function showSakinReminder(message) {
-  console.log("Sakin Reminder:", message);
-
-  if ("Notification" in window) {
-    if (Notification.permission === "granted") {
-      new Notification("Sakin Smart Reminder", {
-        body: message
-      });
-    }
-  }
-
-  const status =
-    document.getElementById("reminder-status");
-
-  if (status) {
-    status.textContent = message;
-  }
-}
-
-window.addEventListener("load", function() {
-  const saved =
-    localStorage.getItem("sakinPrayerTimes");
-
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-
-      if (data.times) {
-        setupSunriseSunsetReminders(data.times);
-      }
-    } catch (error) {
-      console.log(
-        "Sunrise/Sunset reminder could not be loaded."
-      );
-    }
-  }
-});
-</script>
-  <script>
-/* Sakin Prayer Reminders */
-
-function setupPrayerReminders(times) {
-  if (!times) return;
-
-  schedulePrayerReminder(
-    times.fajr,
-    "🕌 Fajr prayer time has arrived."
-  );
-
-  schedulePrayerReminder(
-    times.dhuhr,
-    "🕌 Dhuhr prayer time has arrived."
-  );
-
-  schedulePrayerReminder(
-    times.asr,
-    "🕌 Asr prayer time has arrived."
-  );
-
-  schedulePrayerReminder(
-    times.maghrib,
-    "🕌 Maghrib prayer time has arrived."
-  );
-
-  schedulePrayerReminder(
-    times.isha,
-    "🕌 Isha prayer time has arrived."
-  );
-}
-
-function schedulePrayerReminder(timeString, message) {
-  if (!timeString) return;
-
-  const parts = timeString.split(":");
-
-  if (parts.length !== 2) return;
-
-  const target = new Date();
-
-  target.setHours(
-    Number(parts[0]),
-    Number(parts[1]),
-    0,
-    0
-  );
-
-  const delay =
-    target.getTime() - Date.now();
-
-  if (delay <= 0) return;
-
-  setTimeout(function() {
-    showSakinReminder(message);
-  }, delay);
-}
-
-window.addEventListener("load", function() {
-  const saved =
-    localStorage.getItem("sakinPrayerTimes");
-
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-
-      if (data.times) {
-        setupPrayerReminders(data.times);
-      }
-    } catch (error) {
-      console.log(
-        "Prayer reminders could not be loaded."
-      );
-    }
-  }
-});
-</script>
-  <script>
-/* Sakin Notification Permission */
-
-async function requestSakinNotificationPermission() {
-  if (!("Notification" in window)) {
-    console.log("Notifications are not supported.");
-    return;
-  }
-
-  if (Notification.permission === "default") {
-    try {
-      const permission =
-        await Notification.requestPermission();
-
-      console.log(
-        "Sakin notification permission:",
-        permission
-      );
-    } catch (error) {
-      console.log(
-        "Notification permission request failed."
-      );
-    }
-  }
-}
-
-window.addEventListener("load", function() {
-  requestSakinNotificationPermission();
-});
-</script>
-
-  <script>
-/* Sakin Exercise Reminder */
-
-function setSakinExerciseReminder(time) {
-  if (!time) return;
-
-  localStorage.setItem(
-    "sakinExerciseTime",
-    time
-  );
-
-  scheduleExerciseReminder(time);
-}
-
-function scheduleExerciseReminder(time) {
-  const parts = time.split(":");
-
-  if (parts.length !== 2) return;
-
-  const target = new Date();
-
-  target.setHours(
-    Number(parts[0]),
-    Number(parts[1]),
-    0,
-    0
-  );
-
-  const delay =
-    target.getTime() - Date.now();
-
-  if (delay <= 0) return;
-
-  setTimeout(function() {
-    showSakinReminder(
-      "🏃 Exercise time. Stay active and healthy."
-    );
-  }, delay);
-}
-
-window.addEventListener("load", function() {
-  const saved =
-    localStorage.getItem("sakinExerciseTime");
-
-  if (saved) {
-    scheduleExerciseReminder(saved);
-  }
-});
-</script>
-  <script>
-/* =========================================
-   SAKIN RAMADAN + SEHRI + IFTAR REMINDER
-   ========================================= */
-
-function getIslamicMonth() {
-  try {
-    const formatter = new Intl.DateTimeFormat(
-      "en-u-ca-islamic",
-      {
-        month: "numeric"
-      }
-    );
-
-    const parts = formatter.formatToParts(new Date());
-    const monthPart = parts.find(
-      part => part.type === "month"
-    );
-
-    return monthPart
-      ? Number(monthPart.value)
-      : null;
-
-  } catch (error) {
-    console.log(
-      "Islamic calendar is not supported."
-    );
-    return null;
-  }
-}
-
-function isRamadan() {
-  return getIslamicMonth() === 9;
-}
-
-function setupRamadanReminders(times) {
-  if (!times) return;
-
-  if (!isRamadan()) {
-    console.log(
-      "Ramadan is not active. Sehri/Iftar reminders are disabled."
-    );
-    return;
-  }
-
-  console.log(
-    "Ramadan detected. Sehri and Iftar reminders enabled."
-  );
-
-  scheduleRamadanReminder(
-    times.fajr,
-    "🌙 Sehri time has ended. Fajr time has arrived."
-  );
-
-  scheduleRamadanReminder(
-    times.maghrib,
-    "🌙 Iftar time has arrived."
-  );
-}
-
-function scheduleRamadanReminder(
-  timeString,
-  message
-) {
-  if (!timeString) return;
-
-  const parts = timeString.split(":");
-
-  if (parts.length !== 2) return;
-
-  const target = new Date();
-
-  target.setHours(
-    Number(parts[0]),
-    Number(parts[1]),
-    0,
-    0
-  );
-
-  const delay =
-    target.getTime() - Date.now();
-
-  if (delay <= 0) return;
-
-  setTimeout(function() {
-    showSakinReminder(message);
-  }, delay);
-}
-
-
-/* =========================================
-   DAILY REFRESH
-   ========================================= */
-
-function saveTodayPrayerDate() {
-  const today =
-    new Date().toISOString().slice(0, 10);
-
-  localStorage.setItem(
-    "sakinPrayerDate",
-    today
-  );
-}
-
-function getSavedPrayerDate() {
-  return localStorage.getItem(
-    "sakinPrayerDate"
-  );
-}
-
-function checkNewDay() {
-  const today =
-    new Date().toISOString().slice(0, 10);
-
-  const savedDate =
-    getSavedPrayerDate();
-
-  if (savedDate !== today) {
-    saveTodayPrayerDate();
-
-    if (typeof startSakinPrayerCalculation === "function") {
-      startSakinPrayerCalculation();
-    }
-  }
-}
-
-
-/* =========================================
-   START RAMADAN SYSTEM
-   ========================================= */
-
-window.addEventListener("load", function() {
-
-  saveTodayPrayerDate();
-
-  checkNewDay();
-
-  const saved =
-    localStorage.getItem(
-      "sakinPrayerTimes"
-    );
-
-  if (!saved) return;
-
-  try {
-
-    const data = JSON.parse(saved);
-
-    if (data.times) {
-      setupRamadanReminders(
-        data.times
-      );
-    }
-
-  } catch (error) {
-
-    console.log(
-      "Ramadan reminder data could not be loaded."
-    );
-
-  }
-
-});
-</script>
-  <script>
-/* =========================================
-   SAKIN OFFLINE PRAYER SCHEDULE
-   ========================================= */
-
-function getOfflinePrayerSchedule() {
-  const saved =
-    localStorage.getItem("sakinPrayerTimes");
-
-  if (!saved) {
-    console.log(
-      "No saved prayer schedule found."
-    );
-    return null;
-  }
-
-  try {
-    const data = JSON.parse(saved);
-
-    if (
-      data &&
-      data.times &&
-      data.latitude !== undefined &&
-      data.longitude !== undefined
-    ) {
-      console.log(
-        "Using saved offline prayer schedule."
-      );
-
-      return data;
-    }
-
-  } catch (error) {
-    console.log(
-      "Saved offline schedule is invalid."
-    );
-  }
-
-  return null;
-}
-
-
-/* Use saved schedule when internet is unavailable */
-
-window.addEventListener("offline", function() {
-  const saved =
-    getOfflinePrayerSchedule();
-
-  if (saved && saved.times) {
-
-    displaySakinPrayerTimes(
-      saved.times
-    );
-
-    const status =
-      document.getElementById(
-        "reminder-status"
-      );
-
-    if (status) {
-      status.textContent =
-        "📵 Offline mode: using your saved prayer schedule.";
-    }
-
-    console.log(
-      "Sakin is working with saved offline data."
-    );
-  }
-});
-
-
-/* Refresh prayer times when internet returns */
-
-window.addEventListener("online", function() {
-
-  console.log(
-    "Internet connection restored."
-  );
-
-  if (
-    typeof startSakinPrayerCalculation ===
-    "function"
-  ) {
-    startSakinPrayerCalculation();
-  }
-
-});
-
-
-/* Load saved data when Sakin starts */
-
-window.addEventListener("load", function() {
-
-  const saved =
-    getOfflinePrayerSchedule();
-
-  if (
-    saved &&
-    saved.times &&
-    typeof displaySakinPrayerTimes ===
-      "function"
-  ) {
-
-    displaySakinPrayerTimes(
-      saved.times
-    );
-
-  }
-
-});
-</script>
-  <section id="sakin-reminder-settings" class="card">
-  <h2>🔔 Reminder Settings</h2>
-
-  <label>
-    Exercise time:
-    <input
-      type="time"
-      id="sakin-exercise-time"
-    >
-  </label>
-
-  <br><br>
-
-  <button
-    type="button"
-    onclick="saveSakinExerciseTime()"
-  >
-    💾 Save Exercise Reminder
-  </button>
-
-  <p id="exercise-reminder-status">
-    Exercise reminder is not set.
-  </p>
-</section>
-
-<script>
-function saveSakinExerciseTime() {
-  const input =
-    document.getElementById(
-      "sakin-exercise-time"
-    );
-
-  if (!input || !input.value) {
-    alert("Please select an exercise time.");
-    return;
-  }
-
-  setSakinExerciseReminder(
-    input.value
-  );
-
-  const status =
-    document.getElementById(
-      "exercise-reminder-status"
-    );
-
-  if (status) {
-    status.textContent =
-      "✅ Exercise reminder saved for " +
-      input.value;
-  }
-}
-
-window.addEventListener("load", function() {
-  const saved =
-    localStorage.getItem(
-      "sakinExerciseTime"
-    );
-
-  const input =
-    document.getElementById(
-      "sakin-exercise-time"
-    );
-
-  const status =
-    document.getElementById(
-      "exercise-reminder-status"
-    );
-
-  if (saved && input) {
-    input.value = saved;
-
-    if (status) {
-      status.textContent =
-        "✅ Exercise reminder is set for " +
-        saved;
-    }
-  }
-});
-</script>
-  <script>
-/* =========================================
-   SAKIN REMINDER MANAGER
-   ========================================= */
-
-const SAKIN_REMINDER_SETTINGS = {
-  prayer: true,
-  sunrise: true,
-  sunset: true,
-  ramadan: true,
-  exercise: true
-};
-
-function saveSakinReminderSettings() {
-  localStorage.setItem(
-    "sakinReminderSettings",
-    JSON.stringify(
-      SAKIN_REMINDER_SETTINGS
-    )
-  );
-
-  console.log(
-    "Sakin reminder settings saved."
-  );
-}
-
-function loadSakinReminderSettings() {
-  const saved =
-    localStorage.getItem(
-      "sakinReminderSettings"
-    );
-
-  if (!saved) {
-    saveSakinReminderSettings();
-    return;
-  }
-
-  try {
-    const settings =
-      JSON.parse(saved);
-
-    Object.keys(
-      SAKIN_REMINDER_SETTINGS
-    ).forEach(function(key) {
-
-      if (
-        typeof settings[key] ===
-        "boolean"
-      ) {
-        SAKIN_REMINDER_SETTINGS[key] =
-          settings[key];
-      }
-
-    });
-
-  } catch (error) {
-    console.log(
-      "Reminder settings could not be loaded."
-    );
-  }
-}
-
-
-/* =========================================
-   REMINDER STATUS
-   ========================================= */
-
-function updateSakinReminderStatus() {
-
-  const status =
-    document.getElementById(
-      "reminder-status"
-    );
-
-  if (!status) return;
-
-  const enabled =
-    Object.values(
-      SAKIN_REMINDER_SETTINGS
-    ).filter(Boolean).length;
-
-  status.textContent =
-    "🔔 " +
-    enabled +
-    " Sakin reminder categories are enabled.";
-}
-
-
-/* =========================================
-   START ALL REMINDER SYSTEMS
-   ========================================= */
-
-function startAllSakinReminders() {
-
-  loadSakinReminderSettings();
-
-  const saved =
-    localStorage.getItem(
-      "sakinPrayerTimes"
-    );
-
-  if (!saved) {
-    console.log(
-      "Prayer schedule is not available yet."
-    );
-
-    updateSakinReminderStatus();
-    return;
-  }
-
-  try {
-
-    const data =
-      JSON.parse(saved);
-
-    if (!data.times) return;
-
-    if (
-      SAKIN_REMINDER_SETTINGS.prayer &&
-      typeof setupPrayerReminders ===
-        "function"
-    ) {
-      setupPrayerReminders(
-        data.times
-      );
-    }
-
-    if (
-      SAKIN_REMINDER_SETTINGS.sunrise ||
-      SAKIN_REMINDER_SETTINGS.sunset
-    ) {
-      if (
-        typeof setupSunriseSunsetReminders ===
-          "function"
-      ) {
-        setupSunriseSunsetReminders(
-          data.times
-        );
-      }
-    }
-
-    if (
-      SAKIN_REMINDER_SETTINGS.ramadan &&
-      typeof setupRamadanReminders ===
-        "function"
-    ) {
-      setupRamadanReminders(
-        data.times
-      );
-    }
-
-    if (
-      SAKIN_REMINDER_SETTINGS.exercise
-    ) {
-      const exerciseTime =
-        localStorage.getItem(
-          "sakinExerciseTime"
-        );
-
-      if (
-        exerciseTime &&
-        typeof scheduleExerciseReminder ===
-          "function"
-      ) {
-        scheduleExerciseReminder(
-          exerciseTime
-        );
-      }
-    }
-
-  } catch (error) {
-
-    console.log(
-      "Sakin reminder manager error:",
-      error
-    );
-
-  }
-
-  updateSakinReminderStatus();
-}
-
-
-/* Start after the page loads */
-
-window.addEventListener(
-  "load",
-  function() {
-    startAllSakinReminders();
-  }
-);
-</script>
-  <script>
-/* =========================================
-   SAKIN SERVICE WORKER CONNECTION
-   ========================================= */
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-
-    navigator.serviceWorker
-      .register("./sw.js")
-      .then(function(registration) {
+      catch (error) {
 
         console.log(
-          "Sakin Service Worker registered:",
-          registration.scope
-        );
-
-      })
-      .catch(function(error) {
-
-        console.log(
-          "Sakin Service Worker registration failed:",
+          "Sakin weather error:",
           error
         );
 
-      });
 
-  });
-}
-</script>
-  <!-- SAKIN NOTIFICATION TEST -->
+        document.getElementById(
+          "weather-condition"
+        ).textContent =
+          "Weather update is temporarily unavailable.";
 
-<section class="card" id="notification-test">
-  <h2>🔔 Notification Test</h2>
-
-  <button type="button" onclick="testSakinNotification()">
-    🔔 Test Notification
-  </button>
-
-  <p id="notification-test-status">
-    Press the button to test Sakin notifications.
-  </p>
-</section>
-
-<script>
-async function testSakinNotification() {
-  const status = document.getElementById(
-    "notification-test-status"
-  );
-
-  if (!("Notification" in window)) {
-    if (status) {
-      status.textContent =
-        "❌ Notifications are not supported on this device.";
-    }
-    return;
-  }
-
-  if (Notification.permission !== "granted") {
-    const permission =
-      await Notification.requestPermission();
-
-    if (permission !== "granted") {
-      if (status) {
-        status.textContent =
-          "❌ Notification permission was not granted.";
       }
-      return;
+
     }
-  }
 
-  if (status) {
-    status.textContent =
-      "✅ Permission granted. Sending test notification...";
-  }
 
-  setTimeout(() => {
-    new Notification("Sakin Smart Reminder", {
-      body: "🔔 Notification test successful."
-    });
+    /* =====================================================
+       REMINDER
+       ===================================================== */
 
-    if (status) {
-      status.textContent =
-        "✅ Test notification sent.";
+    function toggleReminder() {
+
+      SAKIN.reminder =
+        !SAKIN.reminder;
+
+
+      localStorage.setItem(
+        "sakinReminder",
+        SAKIN.reminder
+      );
+
+
+      const button =
+        document.getElementById(
+          "reminder-toggle"
+        );
+
+      const status =
+        document.getElementById(
+          "reminder-status"
+        );
+
+
+      if (button) {
+
+        button.textContent =
+          SAKIN.reminder
+          ? "ON"
+          : "OFF";
+
+      }
+
+
+      if (status) {
+
+        status.textContent =
+          SAKIN.reminder
+          ? "ON"
+          : "OFF";
+
+      }
+
     }
-  }, 3000);
-}
-</script>
-  <section class="card" id="sakin-live-clock">
-  <h2>🕐 Live Time & Date</h2>
-  <p id="sakin-live-time">--:--:--</p>
-  <p id="sakin-live-date">Loading date...</p>
-</section>
 
-<script>
-function updateSakinLiveClock() {
-  const now = new Date();
 
-  const time = now.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+    /* =====================================================
+       NOTIFICATIONS
+       ===================================================== */
 
-  const date = now.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  });
+    async function requestNotificationPermission() {
 
-  const timeElement =
-    document.getElementById("sakin-live-time");
+      if (
+        !("Notification" in window)
+      ) {
 
-  const dateElement =
-    document.getElementById("sakin-live-date");
+        alert(
+          "Notifications are not supported by this browser."
+        );
 
-  if (timeElement) {
-    timeElement.textContent = time;
-  }
+        return;
 
-  if (dateElement) {
-    dateElement.textContent = date;
-  }
-}
+      }
 
-updateSakinLiveClock();
-setInterval(updateSakinLiveClock, 1000);
-</script>
+
+      const permission =
+        await Notification.requestPermission();
+
+
+      if (
+        permission === "granted"
+      ) {
+
+        alert(
+          "Sakin notification permission is enabled."
+        );
+
+      }
+
+    }
+
+
+    async function testNotification() {
+
+      if (
+        !("Notification" in window)
+      ) {
+
+        alert(
+          "Notifications are not supported."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        Notification.permission
+        !== "granted"
+      ) {
+
+        const permission =
+          await Notification.requestPermission();
+
+
+        if (
+          permission !== "granted"
+        ) {
+
+          return;
+
+        }
+
+      }
+
+
+      new Notification(
+        "Sakin Smart Reminder",
+        {
+          body:
+            "Sakin notification system is working."
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       LIBRARY ACCORDION
+       ===================================================== */
+
+    function toggleLibrary(id) {
+
+      const element =
+        document.getElementById(id);
+
+
+      if (element) {
+
+        element.classList.toggle(
+          "open"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       MODULE SYSTEM
+       ===================================================== */
+
+    function openModule(module) {
+
+      const modal =
+        document.getElementById(
+          "module-modal"
+        );
+
+      const title =
+        document.getElementById(
+          "module-title"
+        );
+
+      const content =
+        document.getElementById(
+          "module-content"
+        );
+
+
+      const modules = {
+
+        quran: {
+
+          title:
+            "📖 Qur'an",
+
+          content:
+            `
+            <p>
+              Qur'an module foundation is ready.
+            </p>
+
+            <div class="book-list" style="margin-top:14px;">
+
+              <div class="book-item">
+                30 Juz
+              </div>
+
+              <div class="book-item">
+                114 Surahs
+              </div>
+
+              <div class="book-item">
+                Arabic • Bangla • English
+              </div>
+
+              <div class="book-item">
+                Tafsir Library
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        dua: {
+
+          title:
+            "🤲 Du'a & Dhikr",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Masnun Du'a
+              </div>
+
+              <div class="book-item">
+                Five Daily Prayer Niyyah
+              </div>
+
+              <div class="book-item">
+                Tahajjud
+              </div>
+
+              <div class="book-item">
+                Jumu'ah & Eid
+              </div>
+
+              <div class="book-item">
+                Ayatul Kursi
+              </div>
+
+              <div class="book-item">
+                Sayyidul Istighfar
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        hadith: {
+
+          title:
+            "📚 Hadith",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Sahih al-Bukhari
+              </div>
+
+              <div class="book-item">
+                Sahih Muslim
+              </div>
+
+              <div class="book-item">
+                Sunan Abi Dawud
+              </div>
+
+              <div class="book-item">
+                Jami' at-Tirmidhi
+              </div>
+
+              <div class="book-item">
+                Sunan an-Nasa'i
+              </div>
+
+              <div class="book-item">
+                Sunan Ibn Majah
+              </div>
+
+              <div class="book-item">
+                Muwatta Imam Malik
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        fiqh: {
+
+          title:
+            "⚖️ Fiqh",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Hanafi
+              </div>
+
+              <div class="book-item">
+                Shafi'i
+              </div>
+
+              <div class="book-item">
+                Maliki
+              </div>
+
+              <div class="book-item">
+                Hanbali
+              </div>
+
+              <div class="book-item">
+                Four Imams Reference Library
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        fatwa: {
+
+          title:
+            "📜 Fatwa Library",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Fatawa Shami
+              </div>
+
+              <div class="book-item">
+                Fatawa Alamgiri
+              </div>
+
+              <div class="book-item">
+                Additional Fatawa Books
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        qibla: {
+
+          title:
+            "🧭 Qibla & Compass",
+
+          content:
+            `
+            <p>
+              Qibla and compass foundation is ready.
+            </p>
+
+            <p style="margin-top:10px;color:var(--muted);">
+              GPS and device compass integration
+              will be connected in the next module.
+            </p>
+            `
+
+        },
+
+
+        calendar: {
+
+          title:
+            "📅 Super Calendar",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Gregorian Calendar
+              </div>
+
+              <div class="book-item">
+                Hijri Calendar
+              </div>
+
+              <div class="book-item">
+                Bangla Calendar
+              </div>
+
+              <div class="book-item">
+                Location-based Holidays
+              </div>
+
+            </div>
+            `
+
+        },
+
+
+        calculator: {
+
+          title:
+            "🧮 Super Calculator",
+
+          content:
+            `
+            <div class="book-list">
+
+              <div class="book-item">
+                Super Calculator
+              </div>
+
+              <div class="book-item">
+                Loan Tracking
+              </div>
+
+              <div class="book-item">
+                Debt / Due Tracking
+              </div>
+
+              <div class="book-item">
+                Payment Reminder
+              </div>
+
+            </div>
+            `
+
+        }
+
+      };
+
+
+      const selected =
+        modules[module];
+
+
+      if (!selected) {
+        return;
+      }
+
+
+      title.textContent =
+        selected.title;
+
+
+      content.innerHTML =
+        selected.content;
+
+
+      modal.classList.add(
+        "open"
+      );
+
+    }
+
+
+    function closeModule() {
+
+      document.getElementById(
+        "module-modal"
+      ).classList.remove(
+        "open"
+      );
+
+    }
+
+
+    function closeModuleOutside(event) {
+
+      if (
+        event.target &&
+        event.target.id ===
+        "module-modal"
+      ) {
+
+        closeModule();
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LANGUAGE FOUNDATION
+       ===================================================== */
+
+    function changeLanguage(language) {
+
+      SAKIN.language =
+        language;
+
+
+      localStorage.setItem(
+        "sakinLanguage",
+        language
+      );
+
+
+      /*
+        Full multilingual content system
+        will be connected to the content
+        database/module in a later stage.
+      */
+
+      console.log(
+        "Sakin language:",
+        language
+      );
+
+    }
+
+
+    /* =====================================================
+       INITIALIZATION
+       ===================================================== */
+
+    function initializeSakin() {
+
+      const language =
+        document.getElementById(
+          "language-select"
+        );
+
+      if (language) {
+
+        language.value =
+          SAKIN.language;
+
+      }
+
+
+      const reminder =
+        document.getElementById(
+          "reminder-toggle"
+        );
+
+      if (reminder) {
+
+        reminder.textContent =
+          SAKIN.reminder
+          ? "ON"
+          : "OFF";
+
+      }
+
+
+      const status =
+        document.getElementById(
+          "reminder-status"
+        );
+
+      if (status) {
+
+        status.textContent =
+          SAKIN.reminder
+          ? "ON"
+          : "OFF";
+
+      }
+
+
+      if (
+        SAKIN.latitude &&
+        SAKIN.longitude
+      ) {
+
+        updateLocationText(
+          "Previously saved location available."
+        );
+
+        loadWeather();
+
+      }
+
+    }
+
+
+    initializeSakin();
+
+  </script>
+
 </body>
 </html>
-
