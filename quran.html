@@ -1,1325 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b5d3b">
-<meta name="description" content="Sakin Qur'an - Read, Listen, Translate and Study the Holy Qur'an">
-<title>Sakin Qur'an</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root{
-  --primary:#0b5d3b;
-  --primary-dark:#07452c;
-  --secondary:#d4af37;
-  --bg:#f5f7f6;
-  --card:#ffffff;
-  --text:#17201b;
-  --muted:#65736b;
-  --border:#dce4df;
-  --shadow:0 4px 18px rgba(0,0,0,.08);
-  --radius:16px;
-}
+  <title>Sakin Qur'an</title>
 
-*{
-  box-sizing:border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7f5;
+      color: #222;
+    }
 
-button,select{
-  font:inherit;
-}
+    header {
+      background: #14532d;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
 
-button{
-  cursor:pointer;
-}
+    header h1 {
+      margin: 0;
+      font-size: 25px;
+    }
 
-.top-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:var(--primary);
-  color:#fff;
-  box-shadow:0 2px 10px rgba(0,0,0,.15);
-}
+    header p {
+      margin: 6px 0 0;
+      font-size: 14px;
+    }
 
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-  min-height:68px;
-  padding:10px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 15px;
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    }
 
-.brand-icon{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:rgba(255,255,255,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-}
+    .card h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
 
-.brand-title{
-  font-size:20px;
-  font-weight:700;
-}
+    select,
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      background: white;
+    }
 
-.brand-subtitle{
-  font-size:12px;
-  opacity:.8;
-  margin-top:2px;
-}
+    button {
+      cursor: pointer;
+    }
 
-.header-actions{
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
+    .primary {
+      background: #14532d;
+      color: white;
+      border: none;
+    }
 
-.header-btn{
-  border:0;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  font-size:18px;
-}
+    .secondary {
+      background: #e8f5e9;
+      color: #14532d;
+      border: 1px solid #14532d;
+    }
 
-.header-btn:hover{
-  background:rgba(255,255,255,.2);
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
 
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:18px 14px 40px;
-}
+    .juz-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+    }
 
-.back-btn{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--primary);
-  padding:10px 15px;
-  border-radius:12px;
-  font-weight:700;
-  box-shadow:var(--shadow);
-}
+    .ayah {
+      background: white;
+      padding: 18px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      transition: .2s;
+    }
 
-.page-title{
-  margin:18px 0 5px;
-  font-size:28px;
-}
+    .ayah.active {
+      border: 2px solid #14532d;
+      background: #f0f8f2;
+    }
 
-.page-subtitle{
-  color:var(--muted);
-  margin:0 0 18px;
-}
+    .ayah-number {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+    }
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:18px;
-  margin-bottom:16px;
-}
+    .arabic {
+      direction: rtl;
+      text-align: right;
+      font-size: 30px;
+      line-height: 2.1;
+      margin-bottom: 12px;
+    }
 
-.card-title{
-  margin:0 0 12px;
-  font-size:18px;
-}
+    .translation {
+      line-height: 1.7;
+      font-size: 16px;
+    }
 
-.progress-box{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
-  justify-content:space-between;
-}
+    .tafsir {
+      background: #fafafa;
+      border-left: 4px solid #14532d;
+      padding: 12px;
+      margin-top: 12px;
+      line-height: 1.7;
+    }
 
-.progress-text{
-  color:var(--muted);
-  font-size:14px;
-}
+    .audio-panel {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      border-top: 1px solid #ddd;
+      padding: 12px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.08);
+      z-index: 10;
+    }
 
-.primary-btn{
-  border:0;
-  background:var(--primary);
-  color:#fff;
-  padding:11px 16px;
-  border-radius:12px;
-  font-weight:700;
-}
+    .audio-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
 
-.primary-btn:hover{
-  background:var(--primary-dark);
-}
+    .audio-buttons button {
+      margin: 0;
+      padding: 10px 5px;
+    }
 
-.secondary-btn{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:10px 14px;
-  border-radius:12px;
-}
+    #audioStatus {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
 
-.tab-row{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:4px;
-}
+    .hidden {
+      display: none;
+    }
 
-.tab-btn{
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:10px 14px;
-  border-radius:12px;
-}
+    @media (max-width: 600px) {
 
-.tab-btn.active{
-  background:var(--primary);
-  color:#fff;
-  border-color:var(--primary);
-}
+      .juz-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-.controls-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
+      .arabic {
+        font-size: 26px;
+      }
 
-.control-group label{
-  display:block;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:6px;
-}
+      .audio-buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-.control-group select{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:11px;
-  border-radius:11px;
-}
-
-.search-box{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:12px 14px;
-  border-radius:12px;
-  outline:none;
-}
-
-.search-box:focus{
-  border-color:var(--primary);
-}
-
-.surah-grid,
-.juz-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.item-btn{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:13px;
-  border-radius:12px;
-  text-align:left;
-}
-
-.item-btn:hover{
-  border-color:var(--primary);
-}
-
-.item-number{
-  color:var(--primary);
-  font-weight:700;
-  margin-right:6px;
-}
-
-.item-arabic{
-  display:block;
-  direction:rtl;
-  text-align:right;
-  font-size:20px;
-  margin-top:5px;
-}
-
-.reader{
-  display:none;
-}
-
-.reader.open{
-  display:block;
-}
-
-.reader-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.reader-title{
-  margin:0;
-}
-
-.ayah{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:18px;
-  margin-top:12px;
-  background:var(--card);
-}
-
-.ayah.active{
-  border-color:var(--secondary);
-  box-shadow:0 0 0 2px rgba(212,175,55,.15);
-}
-
-.ayah-number{
-  color:var(--primary);
-  font-weight:700;
-}
-
-.arabic-text{
-  direction:rtl;
-  text-align:right;
-  font-size:30px;
-  line-height:2.2;
-  margin:14px 0;
-  font-family:"Amiri","Noto Naskh Arabic",serif;
-}
-
-.translation{
-  line-height:1.7;
-  margin-top:10px;
-}
-
-.tafsir{
-  margin-top:14px;
-  padding:13px;
-  border-left:4px solid var(--secondary);
-  background:rgba(212,175,55,.08);
-  border-radius:8px;
-  line-height:1.7;
-}
-
-.audio-bar{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:8px;
-  margin-top:12px;
-}
-
-.audio-status{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.tafsir-select{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:11px;
-  border-radius:11px;
-}
-
-.empty-state{
-  text-align:center;
-  color:var(--muted);
-  padding:20px 10px;
-}
-
-footer{
-  text-align:center;
-  color:var(--muted);
-  padding:20px 10px;
-  font-size:13px;
-}
-
-/* Dark Mode */
-body.dark-mode{
-  --bg:#0b1410;
-  --card:#111e18;
-  --text:#e7efe9;
-  --muted:#9aaca2;
-  --border:#263a31;
-  --shadow:0 4px 18px rgba(0,0,0,.28);
-}
-
-/* Mobile */
-@media(max-width:650px){
-  .brand-title{
-    font-size:17px;
-  }
-
-  .brand-subtitle{
-    font-size:10px;
-  }
-
-  .header-btn{
-    width:38px;
-    height:38px;
-  }
-
-  .page-title{
-    font-size:24px;
-  }
-
-  .controls-grid{
-    grid-template-columns:1fr;
-  }
-
-  .surah-grid,
-  .juz-grid{
-    grid-template-columns:1fr;
-  }
-
-  .arabic-text{
-    font-size:26px;
-  }
-}
-</style>
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="top-header">
-  <div class="header-inner">
+<header>
+  <h1>📖 Sakin Qur'an</h1>
+  <p>Qur'an Reading • Translation • Tafsir • Audio</p>
+</header>
 
-    <div class="brand">
-      <div class="brand-icon">☪</div>
-      <div>
-        <div class="brand-title">Sakin Qur'an</div>
-        <div class="brand-subtitle">Read • Listen • Understand</div>
-      </div>
-    </div>
+<div class="container">
 
-    <div class="header-actions">
-      <button class="header-btn" type="button" onclick="toggleDarkMode()" title="Dark Mode">🌙</button>
+  <!-- Continue Reading -->
 
-      <button class="header-btn" type="button" onclick="goHome()" title="Sakin Home">🏠</button>
+  <div class="card">
+
+    <h2>Continue Reading</h2>
+
+    <button
+      class="primary"
+      onclick="continueSakinReading()"
+    >
+      Continue from where I stopped
+    </button>
+
+  </div>
+
+
+  <!-- Surah -->
+
+  <div class="card">
+
+    <h2>Surah</h2>
+
+    <select id="surahSelect">
+      <option value="">Select Surah</option>
+    </select>
+
+    <button
+      class="primary"
+      onclick="openSelectedSurah()"
+    >
+      Open Surah
+    </button>
+
+  </div>
+
+
+  <!-- Juz -->
+
+  <div class="card">
+
+    <h2>30 Juz</h2>
+
+    <div
+      id="juzContainer"
+      class="juz-grid"
+    ></div>
+
+  </div>
+
+
+  <!-- Arabic Display -->
+
+  <div class="card">
+
+    <h2>Arabic Qur'an Display</h2>
+
+    <select id="arabicStyle">
+
+      <option value="uthmani">
+        Uthmani
+      </option>
+
+      <option value="indopak">
+        Indo-Pak
+      </option>
+
+      <option value="naskh">
+        Arabic Naskh
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- Translation -->
+
+  <div class="card">
+
+    <h2>Translation</h2>
+
+    <select id="translationLanguage">
+
+      <option value="bn">
+        বাংলা
+      </option>
+
+      <option value="en">
+        English
+      </option>
+
+      <option value="ar">
+        العربية
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- Tafsir -->
+
+  <div class="card">
+
+    <h2>Tafsir</h2>
+
+    <select id="tafsirSelect">
+
+      <option value="ibn-kathir">
+        Tafsir Ibn Kathir
+      </option>
+
+      <option value="ruh-al-maani">
+        Tafsir Ruh al-Ma'ani
+      </option>
+
+      <option value="jalalayn">
+        Tafsir al-Jalalayn
+      </option>
+
+      <option value="saeedi">
+        Tafsir Saeedi
+      </option>
+
+      <option value="abu-bakr-zakaria">
+        Tafsir Abu Bakr Zakaria
+      </option>
+
+      <option value="tafsir-6">
+        Tafsir Collection 6
+      </option>
+
+      <option value="tafsir-7">
+        Tafsir Collection 7
+      </option>
+
+      <option value="tafsir-8">
+        Tafsir Collection 8
+      </option>
+
+      <option value="tafsir-9">
+        Tafsir Collection 9
+      </option>
+
+      <option value="tafsir-10">
+        Tafsir Collection 10
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- Qur'an Reading Area -->
+
+  <div class="card">
+
+    <h2 id="surahTitle">
+      Select a Surah
+    </h2>
+
+    <div id="quranContent">
+
+      <p>
+        Select a Surah to start reading.
+      </p>
+
     </div>
 
   </div>
-</header>
 
-<main class="container">
+</div>
 
-  <button class="back-btn" type="button" onclick="goHome()">
-    ← Back to Sakin
-  </button>
 
-  <h1 class="page-title">📖 Qur'an</h1>
-  <p class="page-subtitle">
-    30 Juz • 114 Surahs • Translation • Tafsir • Audio
-  </p>
+<!-- Audio Player -->
 
-  <!-- Continue Reading -->
-  <section class="card">
-    <h2 class="card-title">Continue Reading</h2>
+<div class="audio-panel">
 
-    <div class="progress-box">
-      <div>
-        <strong id="continueTitle">No saved position yet</strong>
-        <div class="progress-text" id="continueText">
-          Your reading position will appear here automatically.
-        </div>
-      </div>
+  <div id="audioStatus">
+    Audio ready
+  </div>
 
-      <button
-        class="primary-btn"
-        type="button"
-        id="continueBtn"
-        onclick="continueReading()"
-        style="display:none;">
-        Continue
-      </button>
-    </div>
-  </section>
+  <div class="audio-buttons">
 
-  <!-- Reading / Listening mode -->
-  <section class="card">
+    <button
+      onclick="playPreviousSakinAyah()"
+    >
+      ⏮ Previous
+    </button>
 
-    <h2 class="card-title">Qur'an Navigation</h2>
+    <button
+      class="primary"
+      onclick="playCurrentSakinAudio()"
+    >
+      ▶ Play
+    </button>
 
-    <div class="tab-row">
-      <button
-        class="tab-btn active"
-        id="surahTab"
-        type="button"
-        onclick="showSection('surah')">
-        📖 Surah by Surah
-      </button>
+    <button
+      onclick="pauseSakinAudio()"
+    >
+      ⏸ Pause
+    </button>
 
-      <button
-        class="tab-btn"
-        id="juzTab"
-        type="button"
-        onclick="showSection('juz')">
-        📚 Juz by Juz
-      </button>
-    </div>
+    <button
+      onclick="playNextSakinAyah()"
+    >
+      Next ⏭
+    </button>
 
-  </section>
+    <button
+      onclick="toggleSakinAudioRepeat()"
+    >
+      🔁 Repeat
+    </button>
 
-  <!-- Display controls -->
-  <section class="card">
+  </div>
 
-    <h2 class="card-title">Qur'an Display</h2>
+</div>
 
-    <div class="controls-grid">
 
-      <div class="control-group">
-        <label for="arabicStyle">Arabic Display</label>
+<!-- =====================================================
+     IMPORTANT:
+     Data file loads first.
+     Audio file loads after it.
+     ===================================================== -->
 
-        <select id="arabicStyle" onchange="changeArabicStyle()">
-          <option value="uthmani">Uthmani</option>
-          <option value="indopak">Indo-Pak / Hafizi Style</option>
-          <option value="naskh">Arabic Naskh</option>
-        </select>
-      </div>
+<script src="./quran-data.js"></script>
 
-      <div class="control-group">
-        <label for="translationLanguage">Translation Language</label>
+<script src="./quran-audio.js"></script>
 
-        <select id="translationLanguage">
-          <option value="bn">বাংলা</option>
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-          <option value="ur">اردو</option>
-          <option value="hi">हिन्दी</option>
-          <option value="tr">Türkçe</option>
-          <option value="id">Bahasa Indonesia</option>
-          <option value="ms">Bahasa Melayu</option>
-          <option value="fa">فارسی</option>
-          <option value="more">More languages...</option>
-        </select>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Surah section -->
-  <section class="card" id="surahSection">
-
-    <h2 class="card-title">114 Surahs</h2>
-
-    <input
-      class="search-box"
-      id="surahSearch"
-      type="search"
-      placeholder="Search Surah..."
-      oninput="filterSurahs()">
-
-    <div
-      class="surah-grid"
-      id="surahGrid"
-      style="margin-top:12px;">
-    </div>
-
-  </section>
-
-  <!-- Juz section -->
-  <section
-    class="card"
-    id="juzSection"
-    style="display:none;">
-
-    <h2 class="card-title">30 Juz</h2>
-
-    <div class="juz-grid" id="juzGrid"></div>
-
-  </section>
-
-  <!-- Reader -->
-  <section class="card reader" id="reader">
-
-    <div class="reader-top">
-
-      <div>
-        <h2 class="reader-title" id="readerTitle">
-          Qur'an Reader
-        </h2>
-
-        <div
-          class="progress-text"
-          id="readerSubtitle">
-        </div>
-      </div>
-
-      <button
-        class="secondary-btn"
-        type="button"
-        onclick="closeReader()">
-        Close
-      </button>
-
-    </div>
-
-    <!-- Audio -->
-    <div class="audio-bar">
-
-      <button
-        class="primary-btn"
-        type="button"
-        onclick="playCurrentAudio()">
-        ▶️ Play
-      </button>
-
-      <button
-        class="secondary-btn"
-        type="button"
-        onclick="pauseAudio()">
-        ⏸️ Pause
-      </button>
-
-      <button
-        class="secondary-btn"
-        type="button"
-        onclick="repeatCurrentAudio()">
-        🔁 Repeat
-      </button>
-
-      <span
-        class="audio-status"
-        id="audioStatus">
-        Audio ready
-      </span>
-
-    </div>
-
-    <!-- Tafsir -->
-    <div style="margin-top:16px;">
-
-      <label
-        for="tafsirSelect"
-        style="display:block;font-size:13px;color:var(--muted);margin-bottom:6px;">
-        Tafsir
-      </label>
-
-      <select
-        class="tafsir-select"
-        id="tafsirSelect"
-        onchange="changeTafsir()">
-
-        <option value="ibn-kathir">
-          Tafsir Ibn Kathir
-        </option>
-
-        <option value="ruh-al-mani">
-          Tafsir Ruh al-Ma'ani
-        </option>
-
-        <option value="jalalayn">
-          Tafsir al-Jalalayn
-        </option>
-
-        <option value="tabari">
-          Tafsir al-Tabari
-        </option>
-
-        <option value="qurtubi">
-          Tafsir al-Qurtubi
-        </option>
-
-        <option value="sadi">
-          Tafsir as-Sa'di
-        </option>
-
-        <option value="maariful-quran">
-          Ma'ariful Qur'an
-        </option>
-
-        <option value="abu-bakr-zakaria">
-          Tafsir Abu Bakr Zakaria
-        </option>
-
-        <option value="saeedi">
-          Tafsir Saeedi
-        </option>
-
-        <option value="other">
-          More Tafsir
-        </option>
-
-      </select>
-
-    </div>
-
-    <div id="ayahContainer"></div>
-
-  </section>
-
-  <footer>
-    Sakin • Qur'an Module
-  </footer>
-
-</main>
 
 <script>
 
-/* =========================================
-   SAKIN QUR'AN FOUNDATION
-   ========================================= */
+  /* =====================================================
+     SAKIN QUR'AN PAGE
+     ===================================================== */
 
-const SAKIN_QURAN = {
-  lastSurah: Number(localStorage.getItem("sakinLastSurah") || 0),
-  lastAyah: Number(localStorage.getItem("sakinLastAyah") || 0),
-  lastJuz: Number(localStorage.getItem("sakinLastJuz") || 0),
-  lastAudioSurah: Number(localStorage.getItem("sakinLastAudioSurah") || 0),
-  lastAudioAyah: Number(localStorage.getItem("sakinLastAudioAyah") || 0),
-  arabicStyle: localStorage.getItem("sakinArabicStyle") || "uthmani",
-  translationLanguage: localStorage.getItem("sakinTranslationLanguage") || "bn",
-  tafsir: localStorage.getItem("sakinTafsir") || "ibn-kathir"
-};
-
-let currentSurah = 0;
-let currentAyah = 0;
-let audio = null;
+  let selectedSurah = 0;
+  let selectedAyah = 1;
 
 
-/* =========================================
-   114 SURAH FOUNDATION
-   ========================================= */
+  /* =====================================================
+     SURAH LIST
+     ===================================================== */
 
-const surahNames = [
-  "Al-Fatihah",
-  "Al-Baqarah",
-  "Aal-E-Imran",
-  "An-Nisa",
-  "Al-Ma'idah",
-  "Al-An'am",
-  "Al-A'raf",
-  "Al-Anfal",
-  "At-Tawbah",
-  "Yunus",
-  "Hud",
-  "Yusuf",
-  "Ar-Ra'd",
-  "Ibrahim",
-  "Al-Hijr",
-  "An-Nahl",
-  "Al-Isra",
-  "Al-Kahf",
-  "Maryam",
-  "Ta-Ha",
-  "Al-Anbiya",
-  "Al-Hajj",
-  "Al-Mu'minun",
-  "An-Nur",
-  "Al-Furqan",
-  "Ash-Shu'ara",
-  "An-Naml",
-  "Al-Qasas",
-  "Al-Ankabut",
-  "Ar-Rum",
-  "Luqman",
-  "As-Sajdah",
-  "Al-Ahzab",
-  "Saba",
-  "Fatir",
-  "Ya-Sin",
-  "As-Saffat",
-  "Sad",
-  "Az-Zumar",
-  "Ghafir",
-  "Fussilat",
-  "Ash-Shura",
-  "Az-Zukhruf",
-  "Ad-Dukhan",
-  "Al-Jathiyah",
-  "Al-Ahqaf",
-  "Muhammad",
-  "Al-Fath",
-  "Al-Hujurat",
-  "Qaf",
-  "Adh-Dhariyat",
-  "At-Tur",
-  "An-Najm",
-  "Al-Qamar",
-  "Ar-Rahman",
-  "Al-Waqi'ah",
-  "Al-Hadid",
-  "Al-Mujadilah",
-  "Al-Hashr",
-  "Al-Mumtahanah",
-  "As-Saff",
-  "Al-Jumu'ah",
-  "Al-Munafiqun",
-  "At-Taghabun",
-  "At-Talaq",
-  "At-Tahrim",
-  "Al-Mulk",
-  "Al-Qalam",
-  "Al-Haqqah",
-  "Al-Ma'arij",
-  "Nuh",
-  "Al-Jinn",
-  "Al-Muzzammil",
-  "Al-Muddaththir",
-  "Al-Qiyamah",
-  "Al-Insan",
-  "Al-Mursalat",
-  "An-Naba",
-  "An-Nazi'at",
-  "Abasa",
-  "At-Takwir",
-  "Al-Infitar",
-  "Al-Mutaffifin",
-  "Al-Inshiqaq",
-  "Al-Buruj",
-  "At-Tariq",
-  "Al-A'la",
-  "Al-Ghashiyah",
-  "Al-Fajr",
-  "Al-Balad",
-  "Ash-Shams",
-  "Al-Layl",
-  "Ad-Duha",
-  "Ash-Sharh",
-  "At-Tin",
-  "Al-Alaq",
-  "Al-Qadr",
-  "Al-Bayyinah",
-  "Az-Zalzalah",
-  "Al-Adiyat",
-  "Al-Qari'ah",
-  "At-Takathur",
-  "Al-Asr",
-  "Al-Humazah",
-  "Al-Fil",
-  "Quraysh",
-  "Al-Ma'un",
-  "Al-Kawthar",
-  "Al-Kafirun",
-  "An-Nasr",
-  "Al-Masad",
-  "Al-Ikhlas",
-  "Al-Falaq",
-  "An-Nas"
-];
+  function loadSurahList(){
 
+    const select =
+      document.getElementById(
+        "surahSelect"
+      );
 
-/* =========================================
-   30 JUZ FOUNDATION
-   ========================================= */
+    if(
+      typeof SAKIN_SURAH_NAMES ===
+      "undefined"
+    ){
 
-function buildJuzList(){
+      return;
 
-  const grid = document.getElementById("juzGrid");
+    }
 
-  grid.innerHTML = "";
+    select.innerHTML =
+      '<option value="">Select Surah</option>';
 
-  for(let i = 1; i <= 30; i++){
+    SAKIN_SURAH_NAMES.forEach(
+      function(name, index){
 
-    const button = document.createElement("button");
+        const option =
+          document.createElement(
+            "option"
+          );
 
-    button.className = "item-btn";
-    button.type = "button";
+        option.value =
+          index + 1;
 
-    button.innerHTML =
-      `<span class="item-number">${i}</span> Juz ${i}`;
+        option.textContent =
+          `${index + 1}. ${name}`;
 
-    button.onclick = function(){
-      openJuz(i);
-    };
+        select.appendChild(
+          option
+        );
 
-    grid.appendChild(button);
-  }
-}
-
-
-/* =========================================
-   BUILD 114 SURAH BUTTONS
-   ========================================= */
-
-function buildSurahList(){
-
-  const grid = document.getElementById("surahGrid");
-
-  grid.innerHTML = "";
-
-  surahNames.forEach((name,index)=>{
-
-    const button = document.createElement("button");
-
-    button.className = "item-btn";
-    button.type = "button";
-
-    button.dataset.name = name.toLowerCase();
-
-    button.innerHTML =
-      `<span class="item-number">${index + 1}.</span>${name}`;
-
-    button.onclick = function(){
-      openSurah(index + 1);
-    };
-
-    grid.appendChild(button);
-
-  });
-}
-
-
-/* =========================================
-   SEARCH SURAH
-   ========================================= */
-
-function filterSurahs(){
-
-  const search =
-    document.getElementById("surahSearch")
-      .value
-      .toLowerCase()
-      .trim();
-
-  document
-    .querySelectorAll("#surahGrid .item-btn")
-    .forEach(button=>{
-
-      const name = button.dataset.name || "";
-
-      button.style.display =
-        name.includes(search) ? "" : "none";
-
-    });
-}
-
-
-/* =========================================
-   SECTION SWITCH
-   ========================================= */
-
-function showSection(section){
-
-  const surahSection =
-    document.getElementById("surahSection");
-
-  const juzSection =
-    document.getElementById("juzSection");
-
-  const surahTab =
-    document.getElementById("surahTab");
-
-  const juzTab =
-    document.getElementById("juzTab");
-
-  if(section === "surah"){
-
-    surahSection.style.display = "";
-    juzSection.style.display = "none";
-
-    surahTab.classList.add("active");
-    juzTab.classList.remove("active");
-
-  }else{
-
-    surahSection.style.display = "none";
-    juzSection.style.display = "";
-
-    surahTab.classList.remove("active");
-    juzTab.classList.add("active");
+      }
+    );
 
   }
-}
 
 
-/* =========================================
-   OPEN SURAH
-   ========================================= */
+  /* =====================================================
+     JUZ BUTTONS
+     ===================================================== */
 
-function openSurah(surahNumber){
+  function loadJuzList(){
 
-  currentSurah = surahNumber;
-  currentAyah = 1;
+    const container =
+      document.getElementById(
+        "juzContainer"
+      );
 
-  document.getElementById("reader").classList.add("open");
+    container.innerHTML = "";
 
-  document.getElementById("readerTitle").textContent =
-    `${surahNumber}. ${surahNames[surahNumber - 1]}`;
+    for(
+      let i = 1;
+      i <= 30;
+      i++
+    ){
 
-  document.getElementById("readerSubtitle").textContent =
-    "Qur'an reader • Audio • Translation • Tafsir";
+      const button =
+        document.createElement(
+          "button"
+        );
 
-  renderAyahFoundation();
+      button.textContent =
+        "Juz " + i;
 
-  saveReadingProgress();
+      button.onclick =
+        function(){
 
-  document
-    .getElementById("reader")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-}
+          openJuz(i);
 
+        };
 
-/* =========================================
-   OPEN JUZ
-   ========================================= */
+      container.appendChild(
+        button
+      );
 
-function openJuz(juzNumber){
+    }
 
-  SAKIN_QURAN.lastJuz = juzNumber;
-
-  localStorage.setItem(
-    "sakinLastJuz",
-    String(juzNumber)
-  );
-
-  document.getElementById("reader").classList.add("open");
-
-  document.getElementById("readerTitle").textContent =
-    `Juz ${juzNumber}`;
-
-  document.getElementById("readerSubtitle").textContent =
-    "Juz reader • Surah and Ayah navigation will be connected here";
-
-  document.getElementById("ayahContainer").innerHTML = `
-    <div class="empty-state">
-      <strong>Juz ${juzNumber}</strong><br><br>
-      The complete verified Qur'an data will be connected through the next Qur'an data file.
-    </div>
-  `;
-
-  document
-    .getElementById("reader")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-}
+  }
 
 
-/* =========================================
-   AYAH READER FOUNDATION
-   ========================================= */
+  /* =====================================================
+     OPEN SURAH
+     ===================================================== */
 
-function renderAyahFoundation(){
+  function openSelectedSurah(){
 
-  const container =
-    document.getElementById("ayahContainer");
+    const value =
+      document.getElementById(
+        "surahSelect"
+      ).value;
 
-  const name =
-    surahNames[currentSurah - 1] || "Qur'an";
+    if(!value){
 
-  container.innerHTML = `
-    <div class="ayah active">
+      return;
 
-      <div class="ayah-number">
-        Surah ${currentSurah} • Ayah ${currentAyah}
-      </div>
+    }
 
-      <div class="arabic-text">
-        Qur'an Arabic text will load from the verified Qur'an data file.
-      </div>
+    openSurah(
+      Number(value)
+    );
 
-      <div class="translation">
-        <strong>বাংলা অনুবাদ</strong><br>
-        Verified Qur'an translation will appear here.
-      </div>
-
-      <div class="tafsir">
-        <strong>Tafsir</strong><br>
-        The selected verified tafsir will appear here.
-      </div>
-
-    </div>
-  `;
-
-  document.getElementById("audioStatus").textContent =
-    `Ready: ${name} • Ayah ${currentAyah}`;
-}
+  }
 
 
-/* =========================================
-   SAVE READING PROGRESS
-   ========================================= */
+  /* =====================================================
+     OPEN SURAH
+     ===================================================== */
 
-function saveReadingProgress(){
-
-  SAKIN_QURAN.lastSurah = currentSurah;
-  SAKIN_QURAN.lastAyah = currentAyah;
-
-  localStorage.setItem(
-    "sakinLastSurah",
-    String(currentSurah)
-  );
-
-  localStorage.setItem(
-    "sakinLastAyah",
-    String(currentAyah)
-  );
-
-  updateContinueCard();
-}
-
-
-/* =========================================
-   CONTINUE READING
-   ========================================= */
-
-function updateContinueCard(){
-
-  const title =
-    document.getElementById("continueTitle");
-
-  const text =
-    document.getElementById("continueText");
-
-  const button =
-    document.getElementById("continueBtn");
-
-  if(
-    SAKIN_QURAN.lastSurah > 0 &&
-    SAKIN_QURAN.lastAyah > 0
+  function openSurah(
+    surahNumber
   ){
 
-    const name =
-      surahNames[SAKIN_QURAN.lastSurah - 1];
+    selectedSurah =
+      Number(surahNumber);
+
+    selectedAyah = 1;
+
+    localStorage.setItem(
+      "sakinQuranSurah",
+      selectedSurah
+    );
+
+    localStorage.setItem(
+      "sakinQuranAyah",
+      selectedAyah
+    );
+
+    const select =
+      document.getElementById(
+        "surahSelect"
+      );
+
+    select.value =
+      selectedSurah;
+
+    const title =
+      document.getElementById(
+        "surahTitle"
+      );
+
+    let surahName =
+      "Surah " +
+      selectedSurah;
+
+    if(
+      typeof SAKIN_SURAH_NAMES !==
+      "undefined" &&
+      SAKIN_SURAH_NAMES[
+        selectedSurah - 1
+      ]
+    ){
+
+      surahName =
+        SAKIN_SURAH_NAMES[
+          selectedSurah - 1
+        ];
+
+    }
 
     title.textContent =
-      `${name} • Ayah ${SAKIN_QURAN.lastAyah}`;
+      `${selectedSurah}. ${surahName}`;
 
-    text.textContent =
-      "Your last reading position is saved on this device.";
+    renderQuranContent();
 
-    button.style.display = "";
+  }
 
-  }else{
+
+  /* =====================================================
+     OPEN JUZ
+     ===================================================== */
+
+  function openJuz(juzNumber){
+
+    localStorage.setItem(
+      "sakinQuranJuz",
+      juzNumber
+    );
+
+    const title =
+      document.getElementById(
+        "surahTitle"
+      );
 
     title.textContent =
-      "No saved position yet";
+      "Juz " + juzNumber;
 
-    text.textContent =
-      "Your reading position will appear here automatically.";
+    const content =
+      document.getElementById(
+        "quranContent"
+      );
 
-    button.style.display = "none";
+    content.innerHTML = `
+
+      <div class="tafsir">
+
+        Juz ${juzNumber} selected.
+
+        <br><br>
+
+        The verified Qur'an dataset will
+        populate the complete Juz reading
+        section.
+
+      </div>
+
+    `;
 
   }
-}
 
 
-function continueReading(){
+  /* =====================================================
+     RENDER QUR'AN
+     ===================================================== */
 
-  if(!SAKIN_QURAN.lastSurah){
-    return;
+  function renderQuranContent(){
+
+    const content =
+      document.getElementById(
+        "quranContent"
+      );
+
+    content.innerHTML = "";
+
+    /*
+      If complete Qur'an data exists,
+      it will be rendered here.
+    */
+
+    if(
+      typeof SAKIN_QURAN_DATA ===
+      "undefined"
+    ){
+
+      content.innerHTML = `
+
+        <div class="tafsir">
+
+          Qur'an data is ready to be
+          connected.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+    const surah =
+      SAKIN_QURAN_DATA[
+        selectedSurah
+      ];
+
+    if(!surah){
+
+      content.innerHTML = `
+
+        <div class="tafsir">
+
+          This Surah's verified Ayah data
+          has not been added yet.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+    if(!Array.isArray(surah.ayahs)){
+
+      content.innerHTML = `
+
+        <div class="tafsir">
+
+          Ayah data is not available yet.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+    surah.ayahs.forEach(
+      function(ayah){
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+        div.className =
+          "ayah";
+
+        div.dataset.surah =
+          selectedSurah;
+
+        div.dataset.ayah =
+          ayah.number;
+
+        div.innerHTML = `
+
+          <div class="ayah-number">
+
+            Ayah ${ayah.number}
+
+          </div>
+
+          <div class="arabic">
+
+            ${ayah.arabic || ""}
+
+          </div>
+
+          <div class="translation">
+
+            ${ayah.translation || ""}
+
+          </div>
+
+          ${
+            ayah.tafsir
+              ? `
+                <div class="tafsir">
+                  ${ayah.tafsir}
+                </div>
+              `
+              : ""
+          }
+
+        `;
+
+        div.onclick =
+          function(){
+
+            selectedAyah =
+              Number(
+                ayah.number
+              );
+
+            localStorage.setItem(
+              "sakinQuranSurah",
+              selectedSurah
+            );
+
+            localStorage.setItem(
+              "sakinQuranAyah",
+              selectedAyah
+            );
+
+            if(
+              typeof setSakinAudioPosition ===
+              "function"
+            ){
+
+              setSakinAudioPosition(
+                selectedSurah,
+                selectedAyah
+              );
+
+            }
+
+          };
+
+        content.appendChild(
+          div
+        );
+
+      }
+    );
+
   }
 
-  currentSurah =
-    SAKIN_QURAN.lastSurah;
 
-  currentAyah =
-    SAKIN_QURAN.lastAyah || 1;
+  /* =====================================================
+     CONTINUE READING
+     ===================================================== */
 
-  document.getElementById("reader").classList.add("open");
+  function continueSakinReading(){
 
-  document.getElementById("readerTitle").textContent =
-    `${currentSurah}. ${surahNames[currentSurah - 1]}`;
+    const savedSurah =
+      localStorage.getItem(
+        "sakinQuranSurah"
+      );
 
-  renderAyahFoundation();
+    const savedAyah =
+      localStorage.getItem(
+        "sakinQuranAyah"
+      );
 
-  document
-    .getElementById("reader")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-}
+    if(savedSurah){
 
+      selectedSurah =
+        Number(savedSurah);
 
-/* =========================================
-   AUDIO FOUNDATION
-   ========================================= */
+      selectedAyah =
+        Number(
+          savedAyah || 1
+        );
 
-function playCurrentAudio(){
+      openSurah(
+        selectedSurah
+      );
 
-  /*
-    Real verified Qur'an audio will be connected
-    through quran-audio.js in the next step.
-  */
+      setTimeout(
+        function(){
 
-  SAKIN_QURAN.lastAudioSurah = currentSurah;
-  SAKIN_QURAN.lastAudioAyah = currentAyah;
+          highlightSakinAyah(
+            selectedSurah,
+            selectedAyah
+          );
 
-  localStorage.setItem(
-    "sakinLastAudioSurah",
-    String(currentSurah)
-  );
+        },
+        300
+      );
 
-  localStorage.setItem(
-    "sakinLastAudioAyah",
-    String(currentAyah)
-  );
+    }else{
 
-  document.getElementById("audioStatus").textContent =
-    "Audio system foundation ready. Verified audio source will be connected next.";
-}
+      alert(
+        "No saved reading position yet."
+      );
 
+    }
 
-function pauseAudio(){
-
-  if(audio){
-    audio.pause();
   }
 
-  document.getElementById("audioStatus").textContent =
-    "Audio paused";
-}
+
+  /* =====================================================
+     SAVE POSITION
+     ===================================================== */
+
+  function saveSakinQuranAudioPosition(
+    surah,
+    ayah
+  ){
+
+    localStorage.setItem(
+      "sakinQuranSurah",
+      surah
+    );
+
+    localStorage.setItem(
+      "sakinQuranAyah",
+      ayah
+    );
+
+  }
 
 
-function repeatCurrentAudio(){
+  /* =====================================================
+     GET POSITION
+     ===================================================== */
 
-  document.getElementById("audioStatus").textContent =
-    "Repeat mode selected";
-}
+  function getSakinQuranAudioPosition(){
+
+    const surah =
+      localStorage.getItem(
+        "sakinQuranSurah"
+      );
+
+    const ayah =
+      localStorage.getItem(
+        "sakinQuranAyah"
+      );
+
+    if(!surah){
+
+      return null;
+
+    }
+
+    return {
+
+      surah:
+        Number(surah),
+
+      ayah:
+        Number(ayah || 1)
+
+    };
+
+  }
 
 
-/* =========================================
-   ARABIC DISPLAY
-   ========================================= */
+  /* =====================================================
+     INITIALIZE PAGE
+     ===================================================== */
 
-function changeArabicStyle(){
+  document.addEventListener(
+    "DOMContentLoaded",
+    function(){
 
-  const style =
-    document.getElementById("arabicStyle").value;
+      loadSurahList();
 
-  SAKIN_QURAN.arabicStyle = style;
+      loadJuzList();
 
-  localStorage.setItem(
-    "sakinArabicStyle",
-    style
+      const savedSurah =
+        localStorage.getItem(
+          "sakinQuranSurah"
+        );
+
+      if(savedSurah){
+
+        openSurah(
+          Number(savedSurah)
+        );
+
+      }
+
+    }
   );
-
-  document.getElementById("audioStatus").textContent =
-    `Arabic display: ${style}`;
-}
-
-
-/* =========================================
-   TAFSIR
-   ========================================= */
-
-function changeTafsir(){
-
-  const value =
-    document.getElementById("tafsirSelect").value;
-
-  SAKIN_QURAN.tafsir = value;
-
-  localStorage.setItem(
-    "sakinTafsir",
-    value
-  );
-
-  document.getElementById("audioStatus").textContent =
-    "Tafsir selection saved";
-}
-
-
-/* =========================================
-   DARK MODE
-   ========================================= */
-
-function applyDarkMode(){
-
-  const enabled =
-    localStorage.getItem("sakinQuranDarkMode") === "true";
-
-  document.body.classList.toggle(
-    "dark-mode",
-    enabled
-  );
-}
-
-
-function toggleDarkMode(){
-
-  const enabled =
-    !document.body.classList.contains("dark-mode");
-
-  document.body.classList.toggle(
-    "dark-mode",
-    enabled
-  );
-
-  localStorage.setItem(
-    "sakinQuranDarkMode",
-    String(enabled)
-  );
-}
-
-
-/* =========================================
-   BACK TO SAKIN HOME
-   ========================================= */
-
-function goHome(){
-
-  window.location.href = "./index.html";
-}
-
-
-/* =========================================
-   INITIALIZE
-   ========================================= */
-
-function initializeQuran(){
-
-  buildSurahList();
-
-  buildJuzList();
-
-  updateContinueCard();
-
-  document.getElementById("arabicStyle").value =
-    SAKIN_QURAN.arabicStyle;
-
-  document.getElementById("translationLanguage").value =
-    SAKIN_QURAN.translationLanguage;
-
-  document.getElementById("tafsirSelect").value =
-    SAKIN_QURAN.tafsir;
-
-  applyDarkMode();
-}
-
-initializeQuran();
 
 </script>
 
