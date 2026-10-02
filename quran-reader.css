@@ -1,1 +1,500 @@
+/* =========================================================
+   SAKIN QURAN READER
+   File: quran-reader.css
+   ========================================================= */
 
+.sakin-quran-reader {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.sakin-quran-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sakin-quran-toolbar button,
+.sakin-quran-toolbar select {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sakin-quran-toolbar button:hover {
+  background: #f5f5f5;
+}
+
+.sakin-quran-toolbar button.active {
+  font-weight: 700;
+  border-width: 2px;
+}
+
+.sakin-mushaf-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sakin-mushaf-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sakin-mushaf-select {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------
+   Mushaf page
+   --------------------------------------------------------- */
+
+.sakin-mushaf-page {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 14px;
+  border: 1px solid #dedede;
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   Arabic text
+   --------------------------------------------------------- */
+
+.sakin-arabic {
+  direction: rtl;
+  text-align: right;
+  line-height: 2.35;
+  font-size: 29px;
+  word-spacing: 5px;
+  font-family:
+    "KFGQPC Uthmanic Script HAFS",
+    "Amiri",
+    "Scheherazade New",
+    "Noto Naskh Arabic",
+    serif;
+}
+
+.sakin-ayah {
+  position: relative;
+  padding: 16px 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.sakin-ayah:last-child {
+  border-bottom: none;
+}
+
+/* ---------------------------------------------------------
+   15-line IndoPak
+   --------------------------------------------------------- */
+
+.sakin-mushaf-indopak15 .sakin-arabic {
+  font-size: 28px;
+  line-height: 2.15;
+  font-family:
+    "Noto Nastaliq Urdu",
+    "Noto Naskh Arabic",
+    "Amiri",
+    serif;
+}
+
+.sakin-mushaf-indopak15 .sakin-mushaf-page {
+  min-height: 900px;
+}
+
+/* ---------------------------------------------------------
+   Uthmani
+   --------------------------------------------------------- */
+
+.sakin-mushaf-uthmani .sakin-arabic {
+  font-size: 30px;
+  line-height: 2.35;
+  font-family:
+    "KFGQPC Uthmanic Script HAFS",
+    "Amiri",
+    "Noto Naskh Arabic",
+    serif;
+}
+
+/* ---------------------------------------------------------
+   IndoPak
+   --------------------------------------------------------- */
+
+.sakin-mushaf-indopak .sakin-arabic {
+  font-size: 29px;
+  line-height: 2.25;
+  font-family:
+    "Noto Naskh Arabic",
+    "Amiri",
+    serif;
+}
+
+/* ---------------------------------------------------------
+   Word by word
+   --------------------------------------------------------- */
+
+.sakin-word-by-word {
+  direction: rtl;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.sakin-word {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+  text-align: center;
+}
+
+.sakin-word-arabic {
+  direction: rtl;
+  font-family:
+    "KFGQPC Uthmanic Script HAFS",
+    "Noto Naskh Arabic",
+    "Amiri",
+    serif;
+  font-size: 24px;
+  line-height: 1.8;
+}
+
+.sakin-word-translation {
+  direction: ltr;
+  font-size: 11px;
+  line-height: 1.35;
+  opacity: 0.8;
+}
+
+/* ---------------------------------------------------------
+   Translation
+   --------------------------------------------------------- */
+
+.sakin-translation {
+  direction: ltr;
+  text-align: left;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.sakin-translation-bangla {
+  direction: ltr;
+  text-align: left;
+  font-family:
+    "Noto Sans Bengali",
+    "Noto Serif Bengali",
+    sans-serif;
+}
+
+.sakin-translation-english {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ---------------------------------------------------------
+   Tafsir
+   --------------------------------------------------------- */
+
+.sakin-tafsir {
+  margin-top: 12px;
+  padding: 14px;
+  border-left: 4px solid currentColor;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.sakin-tafsir-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.sakin-tafsir-bangla {
+  direction: ltr;
+  text-align: left;
+  font-family:
+    "Noto Sans Bengali",
+    "Noto Serif Bengali",
+    sans-serif;
+}
+
+/* ---------------------------------------------------------
+   Language selector
+   --------------------------------------------------------- */
+
+.sakin-language-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.sakin-language-panel select {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* ---------------------------------------------------------
+   Audio controls
+   --------------------------------------------------------- */
+
+.sakin-audio-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.sakin-audio-controls button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid #d6d6d6;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sakin-audio-controls button:hover {
+  background: #f5f5f5;
+}
+
+.sakin-audio-progress {
+  width: 100%;
+  height: 6px;
+  margin-top: 8px;
+}
+
+/* ---------------------------------------------------------
+   Bookmark
+   --------------------------------------------------------- */
+
+.sakin-bookmark-button {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 9px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sakin-bookmark-button.saved {
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------
+   Continue Reading
+   --------------------------------------------------------- */
+
+.sakin-continue-reading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.sakin-continue-reading button {
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 9px;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------
+   Page navigation
+   --------------------------------------------------------- */
+
+.sakin-page-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sakin-page-navigation button {
+  min-width: 44px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #d6d6d6;
+  border-radius: 9px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sakin-page-number {
+  min-width: 100px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Surah / Juz / Para
+   --------------------------------------------------------- */
+
+.sakin-quran-navigation {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.sakin-quran-navigation select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid #d6d6d6;
+  border-radius: 9px;
+  background: #fff;
+}
+
+/* ---------------------------------------------------------
+   Loading
+   --------------------------------------------------------- */
+
+.sakin-quran-loading {
+  padding: 30px;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* ---------------------------------------------------------
+   Offline indicator
+   --------------------------------------------------------- */
+
+.sakin-offline-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.sakin-offline-status.online {
+  background: #f2f2f2;
+}
+
+.sakin-offline-status.offline {
+  background: #eeeeee;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+  .sakin-quran-reader {
+    padding: 8px;
+  }
+
+  .sakin-mushaf-page {
+    padding: 14px 8px;
+    border-radius: 10px;
+  }
+
+  .sakin-arabic {
+    font-size: 25px;
+    line-height: 2.15;
+  }
+
+  .sakin-mushaf-indopak15 .sakin-arabic {
+    font-size: 24px;
+    line-height: 2;
+  }
+
+  .sakin-mushaf-uthmani .sakin-arabic {
+    font-size: 26px;
+  }
+
+  .sakin-mushaf-indopak .sakin-arabic {
+    font-size: 25px;
+  }
+
+  .sakin-word-by-word {
+    gap: 6px;
+  }
+
+  .sakin-word-arabic {
+    font-size: 21px;
+  }
+
+  .sakin-word-translation {
+    font-size: 10px;
+  }
+
+  .sakin-quran-navigation {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------
+   Accessibility
+   --------------------------------------------------------- */
+
+.sakin-quran-reader button:focus-visible,
+.sakin-quran-reader select:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------
+   Print
+   --------------------------------------------------------- */
+
+@media print {
+
+  .sakin-quran-toolbar,
+  .sakin-audio-controls,
+  .sakin-page-navigation,
+  .sakin-quran-navigation,
+  .sakin-continue-reading {
+    display: none !important;
+  }
+
+  .sakin-mushaf-page {
+    border: none;
+  }
+}
