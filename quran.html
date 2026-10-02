@@ -959,6 +959,7 @@
   );
 
 </script>
+
 <script src="./quran-config.js"></script>
   <!-- =====================================================
      SAKIN QURAN SYSTEM
@@ -966,5 +967,34 @@
      ===================================================== -->
 
 <script src="./quran-loader.js"></script>
+  <!-- =====================================================
+     SAKIN QURAN READER MOUNT
+     ===================================================== -->
+
+<div id="sakin-quran-reader"
+     class="sakin-quran-reader">
+
+    <div class="sakin-quran-loading">
+        Quran loading...
+    </div>
+
+</div>
+
+<script>
+    window.addEventListener(
+        "sakin:quran:modules-ready",
+        function () {
+
+            if (
+                window.SakinQuranEngine &&
+                typeof window.SakinQuranEngine.init === "function"
+            ) {
+                window.SakinQuranEngine.init();
+            }
+
+        },
+        { once: true }
+    );
+</script>
 </body>
 </html>
