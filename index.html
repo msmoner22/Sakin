@@ -2809,10 +2809,18 @@
       }
 
     }
+  
 
 
     initializeSakin();
-
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => {
+        console.error("Sakin Service Worker failed:", error);
+      });
+  });
+}
   </script>
 
 </body>
