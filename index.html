@@ -18,9 +18,10 @@
     content="Sakin - Islamic Super App"
   >
 
+  <link rel="manifest" href="manifest.webmanifest">
+
   <title>Sakin - Islamic Super App</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0f6b4f">
+
   <style>
     /* =====================================================
        SAKIN MASTER DESIGN SYSTEM
@@ -98,6 +99,21 @@
     }
 
     /* =====================================================
+       NIGHT MODE
+       ===================================================== */
+
+    body.night-mode {
+      --bg: #05070b;
+      --card: #0d1219;
+      --text: #dfe7ef;
+      --muted: #8e9aa7;
+      --border: #202a35;
+
+      --shadow:
+        0 4px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    /* =====================================================
        HEADER
        ===================================================== */
 
@@ -168,6 +184,7 @@
 
     .header-actions {
       display: flex;
+      align-items: center;
       gap: 7px;
     }
 
@@ -182,6 +199,85 @@
       color: white;
 
       font-size: 18px;
+    }
+
+    /* =====================================================
+       THREE DOT MENU
+       ===================================================== */
+
+    .three-dot-wrapper {
+      position: relative;
+      z-index: 3000;
+    }
+
+    .three-dot-button {
+      width: 40px;
+      height: 40px;
+
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px;
+
+      background: rgba(255,255,255,0.10);
+      color: white;
+
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .three-dot-menu {
+      display: none;
+
+      position: absolute;
+
+      top: 48px;
+      right: 0;
+
+      width: 245px;
+      max-height: 75vh;
+
+      overflow-y: auto;
+
+      background: var(--card);
+      color: var(--text);
+
+      border: 1px solid var(--border);
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.25);
+
+      padding: 8px;
+    }
+
+    .three-dot-menu.open {
+      display: block;
+    }
+
+    .menu-item {
+      width: 100%;
+
+      border: 0;
+
+      background: transparent;
+      color: inherit;
+
+      text-align: left;
+
+      padding: 13px 12px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+    }
+
+    .menu-item:hover {
+      background: rgba(0,0,0,0.07);
+    }
+
+    body.dark-mode .menu-item:hover,
+    body.night-mode .menu-item:hover {
+      background: rgba(255,255,255,0.07);
     }
 
     /* =====================================================
@@ -727,6 +823,13 @@
         grid-template-columns:
           repeat(7, 80px);
       }
+
+      .three-dot-menu {
+        position: fixed;
+        top: 66px;
+        right: 10px;
+        width: min(245px, calc(100vw - 20px));
+      }
     }
 
     @media (min-width: 900px) {
@@ -790,6 +893,106 @@
           ⚙️
         </button>
 
+        <!-- THREE DOT MENU -->
+
+        <div class="three-dot-wrapper">
+
+          <button
+            class="three-dot-button"
+            type="button"
+            onclick="toggleThreeDotMenu()"
+            aria-label="Sakin menu"
+            aria-expanded="false"
+          >
+            ⋮
+          </button>
+
+          <div
+            id="three-dot-menu"
+            class="three-dot-menu"
+          >
+
+            <button
+              class="menu-item"
+              onclick="goHome()"
+            >
+              🏠 Home
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="addToHomeScreen()"
+            >
+              ➕ Add to Home Screen
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="openSettings(); closeThreeDotMenu()"
+            >
+              ⚙️ Settings
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="toggleDarkMode(); closeThreeDotMenu()"
+            >
+              🌙 Dark Mode
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="toggleNightMode()"
+            >
+              🌃 Night Mode
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="requestNotificationPermission(); closeThreeDotMenu()"
+            >
+              🔔 Notifications
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="requestLocation(); closeThreeDotMenu()"
+            >
+              📍 Location
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="openLanguageModal()"
+            >
+              🌐 Language
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="installSakin()"
+            >
+              📲 Install Sakin
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="openPrivacyModal()"
+            >
+              🛡️ Privacy & Security
+            </button>
+
+            <button
+              class="menu-item"
+              onclick="openAboutModal()"
+            >
+              ℹ️ About Sakin
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -801,7 +1004,7 @@
        MAIN HOME
        ===================================================== -->
 
-  <main>
+  <main id="home">
 
     <!-- LIVE TIME -->
 
@@ -1608,6 +1811,25 @@
       <div class="setting-row">
 
         <div>
+          <strong>🌃 Night Mode</strong>
+          <span>
+            Change Sakin night appearance
+          </span>
+        </div>
+
+        <button
+          class="secondary-button"
+          onclick="toggleNightMode()"
+        >
+          Toggle
+        </button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <div>
           <strong>🔔 Smart Reminder</strong>
           <span>
             Enable or disable reminder system
@@ -1780,6 +2002,55 @@
 
 
   <!-- =====================================================
+       INFORMATION MODAL
+       ===================================================== -->
+
+  <div
+    id="info-modal"
+    class="modal"
+    onclick="closeInfoModalOutside(event)"
+  >
+
+    <div
+      class="modal-box"
+      onclick="event.stopPropagation()"
+    >
+
+      <div
+        style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:10px;
+        "
+      >
+
+        <h2 id="info-modal-title">
+          Sakin
+        </h2>
+
+        <button
+          class="secondary-button"
+          onclick="closeInfoModal()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div
+        id="info-modal-content"
+        style="margin-top:16px;line-height:1.7;"
+      >
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
        JAVASCRIPT
        ===================================================== -->
 
@@ -1799,6 +2070,10 @@
         localStorage.getItem("sakinDarkMode")
         === "true",
 
+      nightMode:
+        localStorage.getItem("sakinNightMode")
+        === "true",
+
       reminder:
         localStorage.getItem("sakinReminder")
         !== "false",
@@ -1810,6 +2085,212 @@
         localStorage.getItem("sakinLongitude")
 
     };
+
+
+    /* =====================================================
+       PWA INSTALLATION
+       ===================================================== */
+
+    let deferredInstallPrompt = null;
+
+
+    window.addEventListener(
+      "beforeinstallprompt",
+      function(event) {
+
+        event.preventDefault();
+
+        deferredInstallPrompt = event;
+
+      }
+    );
+
+
+    window.addEventListener(
+      "appinstalled",
+      function() {
+
+        deferredInstallPrompt = null;
+
+        alert(
+          "Sakin has been installed successfully."
+        );
+
+      }
+    );
+
+
+    async function addToHomeScreen() {
+
+      closeThreeDotMenu();
+
+
+      if (!deferredInstallPrompt) {
+
+        alert(
+          "The Home Screen installation prompt is not available yet on this browser. If Sakin is already installable, use the browser's install option."
+        );
+
+        return;
+
+      }
+
+
+      deferredInstallPrompt.prompt();
+
+
+      try {
+
+        await deferredInstallPrompt.userChoice;
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Sakin installation:",
+          error
+        );
+
+      }
+
+
+      deferredInstallPrompt = null;
+
+    }
+
+
+    async function installSakin() {
+
+      await addToHomeScreen();
+
+    }
+
+
+    /* =====================================================
+       THREE DOT MENU
+       ===================================================== */
+
+    function toggleThreeDotMenu() {
+
+      const menu =
+        document.getElementById(
+          "three-dot-menu"
+        );
+
+      const button =
+        document.querySelector(
+          ".three-dot-button"
+        );
+
+
+      if (!menu) {
+        return;
+      }
+
+
+      const isOpen =
+        menu.classList.toggle(
+          "open"
+        );
+
+
+      if (button) {
+
+        button.setAttribute(
+          "aria-expanded",
+          isOpen
+            ? "true"
+            : "false"
+        );
+
+      }
+
+    }
+
+
+    function closeThreeDotMenu() {
+
+      const menu =
+        document.getElementById(
+          "three-dot-menu"
+        );
+
+      const button =
+        document.querySelector(
+          ".three-dot-button"
+        );
+
+
+      if (menu) {
+
+        menu.classList.remove(
+          "open"
+        );
+
+      }
+
+
+      if (button) {
+
+        button.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    }
+
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        const wrapper =
+          document.querySelector(
+            ".three-dot-wrapper"
+          );
+
+
+        if (
+          wrapper &&
+          !wrapper.contains(
+            event.target
+          )
+        ) {
+
+          closeThreeDotMenu();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       HOME
+       ===================================================== */
+
+    function goHome() {
+
+      closeThreeDotMenu();
+
+      closeSettings();
+
+      closeModule();
+
+      closeInfoModal();
+
+
+      window.scrollTo(
+        {
+          top: 0,
+          behavior: "smooth"
+        }
+      );
+
+    }
 
 
     /* =====================================================
@@ -1841,11 +2322,17 @@
           }
         );
 
+
       const timeElement =
-        document.getElementById("live-time");
+        document.getElementById(
+          "live-time"
+        );
 
       const dateElement =
-        document.getElementById("live-date");
+        document.getElementById(
+          "live-date"
+        );
+
 
       if (timeElement) {
         timeElement.textContent = time;
@@ -1885,10 +2372,12 @@
       SAKIN.darkMode =
         !SAKIN.darkMode;
 
+
       localStorage.setItem(
         "sakinDarkMode",
         SAKIN.darkMode
       );
+
 
       applyDarkMode();
 
@@ -1899,18 +2388,62 @@
 
 
     /* =====================================================
+       NIGHT MODE
+       ===================================================== */
+
+    function applyNightMode() {
+
+      document.body.classList.toggle(
+        "night-mode",
+        SAKIN.nightMode
+      );
+
+    }
+
+
+    function toggleNightMode() {
+
+      SAKIN.nightMode =
+        !SAKIN.nightMode;
+
+
+      localStorage.setItem(
+        "sakinNightMode",
+        SAKIN.nightMode
+      );
+
+
+      applyNightMode();
+
+      closeThreeDotMenu();
+
+    }
+
+
+    applyNightMode();
+
+
+    /* =====================================================
        SETTINGS
        ===================================================== */
 
     function openSettings() {
+
+      closeThreeDotMenu();
+
 
       const panel =
         document.getElementById(
           "settings-panel"
         );
 
+
       if (panel) {
-        panel.classList.add("open");
+
+        panel.classList.add(
+          "open"
+        );
+
       }
 
     }
@@ -1923,8 +2456,13 @@
           "settings-panel"
         );
 
+
       if (panel) {
-        panel.classList.remove("open");
+
+        panel.classList.remove(
+          "open"
+        );
+
       }
 
     }
@@ -1937,7 +2475,9 @@
         event.target.id ===
         "settings-panel"
       ) {
+
         closeSettings();
+
       }
 
     }
@@ -1948,6 +2488,9 @@
        ===================================================== */
 
     function requestLocation() {
+
+      closeThreeDotMenu();
+
 
       if (
         !navigator.geolocation
@@ -2033,14 +2576,20 @@
           "settings-location"
         );
 
+
       if (home) {
+
         home.textContent =
           "📍 " + message;
+
       }
 
+
       if (settings) {
+
         settings.textContent =
           message;
+
       }
 
     }
@@ -2057,10 +2606,19 @@
         !SAKIN.longitude
       ) {
 
-        document.getElementById(
-          "weather-condition"
-        ).textContent =
-          "Allow location access to load local weather.";
+        const condition =
+          document.getElementById(
+            "weather-condition"
+          );
+
+
+        if (condition) {
+
+          condition.textContent =
+            "Allow location access to load local weather.";
+
+        }
+
 
         return;
 
@@ -2089,9 +2647,11 @@
 
 
         if (!response.ok) {
+
           throw new Error(
             "Weather request failed."
           );
+
         }
 
 
@@ -2122,11 +2682,15 @@
           "Current local weather";
 
 
-
         const forecast =
           document.getElementById(
             "weather-forecast"
           );
+
+
+        if (!forecast) {
+          return;
+        }
 
 
         forecast.innerHTML = "";
@@ -2160,6 +2724,7 @@
               document.createElement(
                 "div"
               );
+
 
             card.className =
               "forecast-day";
@@ -2217,10 +2782,18 @@
         );
 
 
-        document.getElementById(
-          "weather-condition"
-        ).textContent =
-          "Weather update is temporarily unavailable.";
+        const condition =
+          document.getElementById(
+            "weather-condition"
+          );
+
+
+        if (condition) {
+
+          condition.textContent =
+            "Weather update is temporarily unavailable.";
+
+        }
 
       }
 
@@ -2282,6 +2855,9 @@
 
     async function requestNotificationPermission() {
 
+      closeThreeDotMenu();
+
+
       if (
         !("Notification" in window)
       ) {
@@ -2295,16 +2871,37 @@
       }
 
 
-      const permission =
-        await Notification.requestPermission();
+      try {
+
+        const permission =
+          await Notification.requestPermission();
 
 
-      if (
-        permission === "granted"
-      ) {
+        if (
+          permission === "granted"
+        ) {
 
-        alert(
-          "Sakin notification permission is enabled."
+          alert(
+            "Sakin notification permission is enabled."
+          );
+
+        }
+
+        else {
+
+          alert(
+            "Notification permission was not granted."
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Notification permission error:",
+          error
         );
 
       }
@@ -2692,11 +3289,19 @@
 
     function closeModule() {
 
-      document.getElementById(
-        "module-modal"
-      ).classList.remove(
-        "open"
-      );
+      const modal =
+        document.getElementById(
+          "module-modal"
+        );
+
+
+      if (modal) {
+
+        modal.classList.remove(
+          "open"
+        );
+
+      }
 
     }
 
@@ -2717,6 +3322,153 @@
 
 
     /* =====================================================
+       INFORMATION MODALS
+       ===================================================== */
+
+    function openInfoModal(
+      title,
+      content
+    ) {
+
+      closeThreeDotMenu();
+
+
+      const modal =
+        document.getElementById(
+          "info-modal"
+        );
+
+      const modalTitle =
+        document.getElementById(
+          "info-modal-title"
+        );
+
+      const modalContent =
+        document.getElementById(
+          "info-modal-content"
+        );
+
+
+      modalTitle.textContent =
+        title;
+
+
+      modalContent.innerHTML =
+        content;
+
+
+      modal.classList.add(
+        "open"
+      );
+
+    }
+
+
+    function closeInfoModal() {
+
+      const modal =
+        document.getElementById(
+          "info-modal"
+        );
+
+
+      if (modal) {
+
+        modal.classList.remove(
+          "open"
+        );
+
+      }
+
+    }
+
+
+    function closeInfoModalOutside(event) {
+
+      if (
+        event.target &&
+        event.target.id ===
+        "info-modal"
+      ) {
+
+        closeInfoModal();
+
+      }
+
+    }
+
+
+    function openLanguageModal() {
+
+      openInfoModal(
+        "🌐 Language",
+        `
+        <p>
+          Choose your language from the Settings panel.
+        </p>
+
+        <button
+          class="primary-button"
+          onclick="closeInfoModal(); openSettings();"
+        >
+          Open Language Settings
+        </button>
+        `
+      );
+
+    }
+
+
+    function openPrivacyModal() {
+
+      openInfoModal(
+        "🛡️ Privacy & Security",
+        `
+        <p>
+          Sakin is designed with a modular privacy and
+          security architecture.
+        </p>
+
+        <p style="margin-top:10px;">
+          Location access and notification permission are
+          requested through the browser and can be denied
+          by the user.
+        </p>
+
+        <p style="margin-top:10px;">
+          Sakin does not treat browser permissions as
+          automatic permission to access information.
+        </p>
+        `
+      );
+
+    }
+
+
+    function openAboutModal() {
+
+      openInfoModal(
+        "ℹ️ About Sakin",
+        `
+        <p>
+          <strong>Sakin</strong> is an Islamic Super App
+          foundation designed to bring Islamic tools,
+          libraries, reminders and useful daily utilities
+          together in one place.
+        </p>
+
+        <p style="margin-top:10px;">
+          The application is being developed modularly so
+          new features can be added without removing the
+          existing foundation.
+        </p>
+        `
+      );
+
+    }
+
+
+    /* =====================================================
        LANGUAGE FOUNDATION
        ===================================================== */
 
@@ -2731,12 +3483,6 @@
         language
       );
 
-
-      /*
-        Full multilingual content system
-        will be connected to the content
-        database/module in a later stage.
-      */
 
       console.log(
         "Sakin language:",
@@ -2757,6 +3503,7 @@
           "language-select"
         );
 
+
       if (language) {
 
         language.value =
@@ -2769,6 +3516,7 @@
         document.getElementById(
           "reminder-toggle"
         );
+
 
       if (reminder) {
 
@@ -2784,6 +3532,7 @@
         document.getElementById(
           "reminder-status"
         );
+
 
       if (status) {
 
@@ -2809,176 +3558,53 @@
       }
 
     }
-  
 
 
     initializeSakin();
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .catch(error => {
-   
-      console.error("Sakin Service Worker failed:", error);
-      });
-  });
-}
+
+
+    /* =====================================================
+       SERVICE WORKER
+       ===================================================== */
+
+    if (
+      "serviceWorker" in navigator
+    ) {
+
+      window.addEventListener(
+        "load",
+        function() {
+
+          navigator.serviceWorker
+            .register(
+              "./service-worker.js"
+            )
+            .then(
+              function() {
+
+                console.log(
+                  "Sakin Service Worker registered."
+                );
+
+              }
+            )
+            .catch(
+              function(error) {
+
+                console.error(
+                  "Sakin Service Worker failed:",
+                  error
+                );
+
+              }
+            );
+
+        }
+      );
+
+    }
+
   </script>
-  
-<style>
-#sakin-three-dot {
-  position: fixed;
-  top: 14px;
-  right: 14px;
-  z-index: 99999;
-}
 
-#sakin-three-dot-button {
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 12px;
-  background: var(--card, #ffffff);
-  color: var(--text, #111111);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
-  font-size: 28px;
-  cursor: pointer;
-}
-
-#sakin-three-dot-menu {
-  display: none;
-  position: absolute;
-  top: 50px;
-  right: 0;
-  width: 235px;
-  max-height: 75vh;
-  overflow-y: auto;
-  background: var(--card, #ffffff);
-  color: var(--text, #111111);
-  border: 1px solid var(--border, #dddddd);
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.22);
-  padding: 8px;
-}
-
-#sakin-three-dot-menu.open {
-  display: block;
-}
-
-.sakin-menu-item {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  padding: 13px 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.sakin-menu-item:hover {
-  background: rgba(0,0,0,0.06);
-}
-</style>
-
-<div id="sakin-three-dot">
-
-  <button
-    id="sakin-three-dot-button"
-    type="button"
-    onclick="toggleSakinThreeDot()"
-    aria-label="Sakin Menu"
-  >
-    ⋮
-  </button>
-
-  <div id="sakin-three-dot-menu">
-
-    <button class="sakin-menu-item" onclick="goHome(); closeSakinThreeDot();">
-      🏠 Home
-    </button>
-
-    <button class="sakin-menu-item" onclick="addToHomeScreen();">
-      ➕ Add to Home Screen
-    </button>
-
-    <button class="sakin-menu-item" onclick="openSettings(); closeSakinThreeDot();">
-      ⚙️ Settings
-    </button>
-
-    <button class="sakin-menu-item" onclick="toggleDarkMode(); closeSakinThreeDot();">
-      🌙 Dark Mode
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="document.body.classList.toggle('night-mode'); closeSakinThreeDot();"
-    >
-      🌃 Night Mode
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="requestNotificationPermission(); closeSakinThreeDot();"
-    >
-      🔔 Notifications
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="requestLocation(); closeSakinThreeDot();"
-    >
-      📍 Location
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="openModal('Language'); closeSakinThreeDot();"
-    >
-      🌐 Language
-    </button>
-
-    <button class="sakin-menu-item" onclick="installSakin();">
-      📲 Install Sakin
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="openModal('Privacy & Security'); closeSakinThreeDot();"
-    >
-      🛡️ Privacy & Security
-    </button>
-
-    <button
-      class="sakin-menu-item"
-      onclick="openModal('About Sakin'); closeSakinThreeDot();"
-    >
-      ℹ️ About Sakin
-    </button>
-
-  </div>
-</div>
-
-<script>
-function toggleSakinThreeDot() {
-  document
-    .getElementById("sakin-three-dot-menu")
-    .classList.toggle("open");
-}
-
-function closeSakinThreeDot() {
-  document
-    .getElementById("sakin-three-dot-menu")
-    .classList.remove("open");
-}
-
-document.addEventListener("click", function(event) {
-  const box = document.getElementById("sakin-three-dot");
-
-  if (box && !box.contains(event.target)) {
-    closeSakinThreeDot();
-  }
-});
-</script>
 </body>
 </html>
