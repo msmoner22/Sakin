@@ -1,136 +1,108 @@
 /* =========================================================
-   SAKIN QURAN LOADER
-   Connects Quran Engine + Mushaf + Offline + API
+   SAKIN QURAN MODULE LOADER
    ========================================================= */
 
 (function () {
-  "use strict";
+    "use strict";
 
-  const FILES = [
-    "./quran-mushaf.js",
-    "./quran-offline.js",
-    "./sakin-quran-api.js",
-    "./quran-engine.js"
-  ];
+    const FILES = [
+        "./quran-mushaf.js",
+        "./quran-offline.js",
+        "./sakin-quran-api.js",
+        "./quran-data-loader.js",
+        "./quran-engine.js"
+    ];
 
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
+    function loadScript(src) {
+        return new Promise(function (resolve, reject) {
 
-      /*
-       * Don't load the same script twice.
-       */
-      const existing =
-        document.querySelector(
-          `script[src="${src}"]`
-        );
+            const script = document.createElement("script");
 
-      if (existing) {
-        resolve();
-        return;
-      }
+            script.src = src;
+            script.async = false;
 
-      const script =
-        document.createElement("script");
+            script.onload = function () {
+                resolve();
+            };
 
-      script.src = src;
-      script.async = false;
+            script.onerror = function () {
+                reject(
+                    new Error(
+                        "SAKIN Quran module could not load: " + src
+                    )
+                );
+            };
 
-      script.onload = () => {
-        resolve();
-      };
-
-      script.onerror = () => {
-        reject(
-          new Error(
-            "Sakin Quran file could not load: " +
-            src
-          )
-        );
-      };
-
-      document.head.appendChild(script);
-    });
-  }
-
-
-  async function loadAll() {
-
-    for (const file of FILES) {
-
-      try {
-
-        await loadScript(file);
-
-      } catch (error) {
-
-        console.error(
-          "Sakin Quran Loader:",
-          error
-        );
-
-      }
+            document.head.appendChild(script);
+        });
     }
 
-    /*
-     * Start Quran Engine after all modules
-     * have been loaded.
-     */
+    async function start() {
 
-    if (
-      window.SakinQuranEngine &&
-      typeof
-        window.SakinQuranEngine.init ===
-        "function"
-    ) {
+        try {
 
-      try {
+            for (const file of FILES) {
+                await loadScript(file);
+            }
 
-        await window.SakinQuranEngine.init();
+            /*
+             * First load the Quran data system.
+             */
+            if (
+                window.SakinQuranDataLoader &&
+                typeof window.SakinQuranDataLoader.loadAll === "function"
+            ) {
+                await window.SakinQuranDataLoader.loadAll();
+            }
 
-      } catch (error) {
+            /*
+             * Then start the Quran Engine.
+             */
+            if (
+                window.SakinQuranEngine &&
+                typeof window.SakinQuranEngine.init === "function"
+            ) {
+                await window.SakinQuranEngine.init();
+            }
 
-        console.error(
-          "Sakin Quran Engine initialization failed:",
-          error
-        );
+            window.dispatchEvent(
+                new CustomEvent("sakin:quran:modules-ready")
+            );
 
-      }
+            console.log(
+                "SAKIN Quran system loaded successfully."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "SAKIN Quran system failed:",
+                error
+            );
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    "sakin:quran:modules-error",
+                    {
+                        detail: error
+                    }
+                )
+            );
+        }
     }
 
-    /*
-     * Tell the page that all Sakin Quran
-     * modules are ready.
-     */
+    if (document.readyState === "loading") {
 
-    window.dispatchEvent(
-      new CustomEvent(
-        "sakin:quran:modules-ready"
-      )
-    );
-  }
+        document.addEventListener(
+            "DOMContentLoaded",
+            start,
+            { once: true }
+        );
 
+    } else {
 
-  /*
-   * Wait until DOM is available.
-   */
+        start();
 
-  if (
-    document.readyState ===
-    "loading"
-  ) {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      loadAll,
-      {
-        once: true
-      }
-    );
-
-  } else {
-
-    loadAll();
-
-  }
+    }
 
 })();
