@@ -1328,73 +1328,67 @@
     <section class="library-card">
 
       <button
-        class="library-header"
-        onclick="toggleLibrary('quran-library')"
-      >
+  class="library-header"
+  onclick="toggleLibrary('quran-library')"
+>
+  <div class="library-title">
+    <div class="library-icon">📖</div>
 
-        <div class="library-title">
+    <div>
+      <strong>Qur'an Library</strong>
+      <div style="font-size:11px;color:var(--muted);">
+        30 Juz • 114 Surahs • Arabic • Bangla • English • Tafsir
+      </div>
+    </div>
+  </div>
 
-          <div class="library-icon">
-            📖
-          </div>
+  <span>▼</span>
+</button>
 
-          <div>
-            <strong>Qur'an Library</strong>
-            <div style="font-size:11px;color:var(--muted);">
-              30 Juz • 114 Surahs • Tafsir
-            </div>
-          </div>
+<div
+  id="quran-library"
+  class="library-body"
+>
+  <div class="book-list">
 
-        </div>
+    <button
+      class="book-item"
+      type="button"
+      onclick="openQuranSection('juz')"
+    >
+      📚 30 Juz
+      <small>Read the Qur'an by Juz</small>
+    </button>
 
-        <span>▼</span>
+    <button
+      class="book-item"
+      type="button"
+      onclick="openQuranSection('surah')"
+    >
+      📖 114 Surahs
+      <small>Read the Qur'an by Surah</small>
+    </button>
 
-      </button>
+    <button
+      class="book-item"
+      type="button"
+      onclick="openQuranSection('languages')"
+    >
+      🌐 Arabic • Bangla • English
+      <small>Choose reading and translation options</small>
+    </button>
 
+    <button
+      class="book-item"
+      type="button"
+      onclick="openQuranSection('tafsir')"
+    >
+      📚 Tafsir Library
+      <small>Explore Qur'an Tafsir</small>
+    </button>
 
-      <div
-        id="quran-library"
-        class="library-body"
-      >
-
-        <div class="book-list">
-
-          <div class="book-item">
-            Juz 01
-            <small>
-              Content module ready for insertion
-            </small>
-          </div>
-
-          <div class="book-item">
-            Juz 02
-            <small>
-              Content module ready for insertion
-            </small>
-          </div>
-
-          <div class="book-item">
-            Juz 03
-            <small>
-              Content module ready for insertion
-            </small>
-          </div>
-
-          <div class="book-item">
-            + Add remaining Juz 04–30
-            <small>
-              New content can be added without changing the Home structure.
-            </small>
-          </div>
-
-          <div class="book-item">
-            Tafsir Library
-            <small>
-              Individual Tafsir sources can be added here.
-            </small>
-          </div>
-
-        </div>
+  </div>
+</div>
 
       </div>
 
