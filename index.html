@@ -3638,6 +3638,292 @@ function openQuranSection(section) {
   }
 
 }
+    /* =====================================================
+   SAKIN QURAN READER - MAIN READER SCREEN
+   ===================================================== */
+
+function openQuranSection(section) {
+
+  var reader = document.getElementById("sakin-quran-reader");
+
+  if (!reader) {
+
+    reader = document.createElement("div");
+
+    reader.id = "sakin-quran-reader";
+
+    reader.style.cssText = `
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      background:var(--bg,#ffffff);
+      color:var(--text,#111111);
+      overflow:auto;
+      padding:18px;
+      box-sizing:border-box;
+    `;
+
+    document.body.appendChild(reader);
+
+  }
+
+  reader.innerHTML = `
+    <div style="
+      max-width:900px;
+      margin:auto;
+    ">
+
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:20px;
+      ">
+
+        <button
+          type="button"
+          onclick="closeSakinQuranReader()"
+          style="
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid rgba(128,128,128,.3);
+            background:transparent;
+            color:inherit;
+            cursor:pointer;
+          "
+        >
+          ← Back
+        </button>
+
+        <strong style="font-size:20px;">
+          📖 Qur'an Reader
+        </strong>
+
+        <span style="font-size:20px;">
+          ☾
+        </span>
+
+      </div>
+
+
+      <div style="
+        text-align:center;
+        padding:20px 10px;
+        margin-bottom:18px;
+      ">
+
+        <div style="
+          font-size:28px;
+          margin-bottom:8px;
+        ">
+          القرآن الكريم
+        </div>
+
+        <div style="
+          color:var(--muted);
+          font-size:13px;
+        ">
+          Complete Qur'an Library
+        </div>
+
+      </div>
+
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+        gap:12px;
+      ">
+
+        <button
+          type="button"
+          onclick="openSakinQuranJuz()"
+          style="
+            padding:20px 12px;
+            border-radius:14px;
+            border:1px solid rgba(128,128,128,.25);
+            background:transparent;
+            color:inherit;
+            cursor:pointer;
+          "
+        >
+          <div style="font-size:28px;">📚</div>
+          <strong>30 Juz</strong>
+          <div style="font-size:11px;color:var(--muted);">
+            Juz / Para
+          </div>
+        </button>
+
+
+        <button
+          type="button"
+          onclick="openSakinQuranSurahs()"
+          style="
+            padding:20px 12px;
+            border-radius:14px;
+            border:1px solid rgba(128,128,128,.25);
+            background:transparent;
+            color:inherit;
+            cursor:pointer;
+          "
+        >
+          <div style="font-size:28px;">📖</div>
+          <strong>114 Surahs</strong>
+          <div style="font-size:11px;color:var(--muted);">
+            Surah Library
+          </div>
+        </button>
+
+
+        <button
+          type="button"
+          onclick="openSakinQuranSettings()"
+          style="
+            padding:20px 12px;
+            border-radius:14px;
+            border:1px solid rgba(128,128,128,.25);
+            background:transparent;
+            color:inherit;
+            cursor:pointer;
+          "
+        >
+          <div style="font-size:28px;">🔤</div>
+          <strong>Reading</strong>
+          <div style="font-size:11px;color:var(--muted);">
+            Arabic • Bangla • English
+          </div>
+        </button>
+
+
+        <button
+          type="button"
+          onclick="openSakinQuranTafsir()"
+          style="
+            padding:20px 12px;
+            border-radius:14px;
+            border:1px solid rgba(128,128,128,.25);
+            background:transparent;
+            color:inherit;
+            cursor:pointer;
+          "
+        >
+          <div style="font-size:28px;">📚</div>
+          <strong>Tafsir</strong>
+          <div style="font-size:11px;color:var(--muted);">
+            Bangla • English • More
+          </div>
+        </button>
+
+      </div>
+
+
+      <div style="
+        margin-top:20px;
+        padding:16px;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <strong>Continue Reading</strong>
+
+        <div style="
+          margin-top:6px;
+          color:var(--muted);
+          font-size:12px;
+        ">
+          Your last reading position will appear here.
+        </div>
+
+      </div>
+
+
+      <div style="
+        margin-top:12px;
+        padding:16px;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <strong>🔖 Bookmarks</strong>
+
+        <div style="
+          margin-top:6px;
+          color:var(--muted);
+          font-size:12px;
+        ">
+          Saved Qur'an bookmarks will appear here.
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* Close Quran Reader */
+
+function closeSakinQuranReader() {
+
+  var reader =
+    document.getElementById("sakin-quran-reader");
+
+  if (reader) {
+    reader.remove();
+  }
+
+}
+
+
+/* Juz */
+
+function openSakinQuranJuz() {
+
+  alert(
+    "30 Juz / Para Library\n\n" +
+    "The complete 30 Juz Qur'an data will be connected here."
+  );
+
+}
+
+
+/* Surahs */
+
+function openSakinQuranSurahs() {
+
+  alert(
+    "114 Surahs Library\n\n" +
+    "The complete 114 Surahs will be connected here."
+  );
+
+}
+
+
+/* Reading settings */
+
+function openSakinQuranSettings() {
+
+  alert(
+    "Qur'an Reading Settings\n\n" +
+    "Uthmani • Indo-Pak • Noorani • Hafizi 15-line\n" +
+    "Arabic • Bangla • English • Word-by-word"
+  );
+
+}
+
+
+/* Tafsir */
+
+function openSakinQuranTafsir() {
+
+  alert(
+    "Tafsir Library\n\n" +
+    "Bangla Tafsir • English Tafsir • Other languages"
+  );
+
+}
   </script>
 
 </body>
