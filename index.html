@@ -3924,6 +3924,367 @@ function openSakinQuranTafsir() {
   );
 
 }
+  /* =====================================================
+   SAKIN QURAN - 114 SURAH LIBRARY
+   ===================================================== */
+
+function openSakinQuranSurahs() {
+
+  var reader = document.getElementById("sakin-quran-reader");
+
+  if (!reader) return;
+
+  var surahs = [
+    ["01","Al-Fatihah","الفاتحة"],
+    ["02","Al-Baqarah","البقرة"],
+    ["03","Aal-Imran","آل عمران"],
+    ["04","An-Nisa","النساء"],
+    ["05","Al-Ma'idah","المائدة"],
+    ["06","Al-An'am","الأنعام"],
+    ["07","Al-A'raf","الأعراف"],
+    ["08","Al-Anfal","الأنفال"],
+    ["09","At-Tawbah","التوبة"],
+    ["10","Yunus","يونس"],
+    ["11","Hud","هود"],
+    ["12","Yusuf","يوسف"],
+    ["13","Ar-Ra'd","الرعد"],
+    ["14","Ibrahim","إبراهيم"],
+    ["15","Al-Hijr","الحجر"],
+    ["16","An-Nahl","النحل"],
+    ["17","Al-Isra","الإسراء"],
+    ["18","Al-Kahf","الكهف"],
+    ["19","Maryam","مريم"],
+    ["20","Ta-Ha","طه"],
+    ["21","Al-Anbiya","الأنبياء"],
+    ["22","Al-Hajj","الحج"],
+    ["23","Al-Mu'minun","المؤمنون"],
+    ["24","An-Nur","النور"],
+    ["25","Al-Furqan","الفرقان"],
+    ["26","Ash-Shu'ara","الشعراء"],
+    ["27","An-Naml","النمل"],
+    ["28","Al-Qasas","القصص"],
+    ["29","Al-Ankabut","العنكبوت"],
+    ["30","Ar-Rum","الروم"],
+    ["31","Luqman","لقمان"],
+    ["32","As-Sajdah","السجدة"],
+    ["33","Al-Ahzab","الأحزاب"],
+    ["34","Saba","سبأ"],
+    ["35","Fatir","فاطر"],
+    ["36","Ya-Sin","يس"],
+    ["37","As-Saffat","الصافات"],
+    ["38","Sad","ص"],
+    ["39","Az-Zumar","الزمر"],
+    ["40","Ghafir","غافر"],
+    ["41","Fussilat","فصلت"],
+    ["42","Ash-Shura","الشورى"],
+    ["43","Az-Zukhruf","الزخرف"],
+    ["44","Ad-Dukhan","الدخان"],
+    ["45","Al-Jathiyah","الجاثية"],
+    ["46","Al-Ahqaf","الأحقاف"],
+    ["47","Muhammad","محمد"],
+    ["48","Al-Fath","الفتح"],
+    ["49","Al-Hujurat","الحجرات"],
+    ["50","Qaf","ق"],
+    ["51","Adh-Dhariyat","الذاريات"],
+    ["52","At-Tur","الطور"],
+    ["53","An-Najm","النجم"],
+    ["54","Al-Qamar","القمر"],
+    ["55","Ar-Rahman","الرحمن"],
+    ["56","Al-Waqi'ah","الواقعة"],
+    ["57","Al-Hadid","الحديد"],
+    ["58","Al-Mujadilah","المجادلة"],
+    ["59","Al-Hashr","الحشر"],
+    ["60","Al-Mumtahanah","الممتحنة"],
+    ["61","As-Saff","الصف"],
+    ["62","Al-Jumu'ah","الجمعة"],
+    ["63","Al-Munafiqun","المنافقون"],
+    ["64","At-Taghabun","التغابن"],
+    ["65","At-Talaq","الطلاق"],
+    ["66","At-Tahrim","التحريم"],
+    ["67","Al-Mulk","الملك"],
+    ["68","Al-Qalam","القلم"],
+    ["69","Al-Haqqah","الحاقة"],
+    ["70","Al-Ma'arij","المعارج"],
+    ["71","Nuh","نوح"],
+    ["72","Al-Jinn","الجن"],
+    ["73","Al-Muzzammil","المزمل"],
+    ["74","Al-Muddaththir","المدثر"],
+    ["75","Al-Qiyamah","القيامة"],
+    ["76","Al-Insan","الإنسان"],
+    ["77","Al-Mursalat","المرسلات"],
+    ["78","An-Naba","النبأ"],
+    ["79","An-Nazi'at","النازعات"],
+    ["80","Abasa","عبس"],
+    ["81","At-Takwir","التكوير"],
+    ["82","Al-Infitar","الانفطار"],
+    ["83","Al-Mutaffifin","المطففين"],
+    ["84","Al-Inshiqaq","الانشقاق"],
+    ["85","Al-Buruj","البروج"],
+    ["86","At-Tariq","الطارق"],
+    ["87","Al-A'la","الأعلى"],
+    ["88","Al-Ghashiyah","الغاشية"],
+    ["89","Al-Fajr","الفجر"],
+    ["90","Al-Balad","البلد"],
+    ["91","Ash-Shams","الشمس"],
+    ["92","Al-Layl","الليل"],
+    ["93","Ad-Duha","الضحى"],
+    ["94","Ash-Sharh","الشرح"],
+    ["95","At-Tin","التين"],
+    ["96","Al-Alaq","العلق"],
+    ["97","Al-Qadr","القدر"],
+    ["98","Al-Bayyinah","البينة"],
+    ["99","Az-Zalzalah","الزلزلة"],
+    ["100","Al-Adiyat","العاديات"],
+    ["101","Al-Qari'ah","القارعة"],
+    ["102","At-Takathur","التكاثر"],
+    ["103","Al-Asr","العصر"],
+    ["104","Al-Humazah","الهمزة"],
+    ["105","Al-Fil","الفيل"],
+    ["106","Quraysh","قريش"],
+    ["107","Al-Ma'un","الماعون"],
+    ["108","Al-Kawthar","الكوثر"],
+    ["109","Al-Kafirun","الكافرون"],
+    ["110","An-Nasr","النصر"],
+    ["111","Al-Masad","المسد"],
+    ["112","Al-Ikhlas","الإخلاص"],
+    ["113","Al-Falaq","الفلق"],
+    ["114","An-Nas","الناس"]
+  ];
+
+  reader.innerHTML = `
+    <div style="max-width:900px;margin:auto;">
+
+      <div style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:18px;
+      ">
+
+        <button
+          type="button"
+          onclick="openQuranSection('home')"
+          style="
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid rgba(128,128,128,.3);
+            background:transparent;
+            color:inherit;
+          "
+        >
+          ← Back
+        </button>
+
+        <strong style="font-size:20px;">
+          114 Surahs
+        </strong>
+
+      </div>
+
+      <div style="
+        display:grid;
+        gap:8px;
+      ">
+
+        ${surahs.map(function(surah) {
+
+          return `
+            <button
+              type="button"
+              onclick="openSakinSurah('${surah[0]}')"
+              style="
+                width:100%;
+                text-align:left;
+                padding:14px;
+                border-radius:12px;
+                border:1px solid rgba(128,128,128,.22);
+                background:transparent;
+                color:inherit;
+                cursor:pointer;
+              "
+            >
+
+              <div style="
+                display:flex;
+                align-items:center;
+                gap:12px;
+              ">
+
+                <span style="
+                  min-width:32px;
+                  height:32px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  border-radius:50%;
+                  background:rgba(128,128,128,.12);
+                  font-size:12px;
+                ">
+                  ${surah[0]}
+                </span>
+
+                <div style="flex:1;">
+
+                  <strong>
+                    ${surah[1]}
+                  </strong>
+
+                  <div style="
+                    font-size:11px;
+                    color:var(--muted);
+                    margin-top:3px;
+                  ">
+                    Surah ${surah[0]}
+                  </div>
+
+                </div>
+
+                <span style="
+                  font-size:20px;
+                  direction:rtl;
+                ">
+                  ${surah[2]}
+                </span>
+
+              </div>
+
+            </button>
+          `;
+
+        }).join("")}
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   SURAH READER ENTRY
+   ===================================================== */
+
+function openSakinSurah(surahNumber) {
+
+  var reader =
+    document.getElementById("sakin-quran-reader");
+
+  if (!reader) return;
+
+  reader.innerHTML = `
+    <div style="max-width:900px;margin:auto;">
+
+      <button
+        type="button"
+        onclick="openSakinQuranSurahs()"
+        style="
+          padding:10px 14px;
+          border-radius:10px;
+          border:1px solid rgba(128,128,128,.3);
+          background:transparent;
+          color:inherit;
+          margin-bottom:20px;
+        "
+      >
+        ← Surah List
+      </button>
+
+      <div style="
+        text-align:center;
+        padding:25px 10px;
+      ">
+
+        <div style="
+          font-size:28px;
+          direction:rtl;
+          margin-bottom:10px;
+        ">
+          القرآن الكريم
+        </div>
+
+        <h2>
+          Surah ${surahNumber}
+        </h2>
+
+        <p style="
+          color:var(--muted);
+          font-size:13px;
+        ">
+          Quran Reader
+        </p>
+
+      </div>
+
+      <div style="
+        padding:18px;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <strong>Reading options</strong>
+
+        <div style="
+          margin-top:12px;
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+          gap:8px;
+        ">
+
+          <button type="button">
+            Arabic
+          </button>
+
+          <button type="button">
+            Bangla
+          </button>
+
+          <button type="button">
+            English
+          </button>
+
+          <button type="button">
+            Word-by-word
+          </button>
+
+          <button type="button">
+            Line-by-line
+          </button>
+
+          <button type="button">
+            Tafsir
+          </button>
+
+          <button type="button">
+            🔊 Audio
+          </button>
+
+          <button type="button">
+            🔖 Bookmark
+          </button>
+
+        </div>
+
+      </div>
+
+      <div style="
+        margin-top:15px;
+        padding:20px;
+        text-align:center;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <div style="font-size:13px;color:var(--muted);">
+          Quran content will be loaded into this reader.
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+}
   </script>
 
 </body>
