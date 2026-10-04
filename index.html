@@ -4285,6 +4285,264 @@ function openSakinSurah(surahNumber) {
   `;
 
 }
+    /* =====================================================
+   SAKIN QURAN - 30 JUZ / PARA LIBRARY
+   ===================================================== */
+
+function openSakinQuranJuz() {
+
+  var reader =
+    document.getElementById("sakin-quran-reader");
+
+  if (!reader) return;
+
+  var juzList = [
+    ["01","Alif Lam Mim","الم"],
+    ["02","Sayaqul","سَيَقُولُ"],
+    ["03","Tilkal Rusul","تِلْكَ الرُّسُلُ"],
+    ["04","Lan Tanaalu","لَنْ تَنَالُوا"],
+    ["05","Wal Muhsanat","وَالْمُحْصَنَاتُ"],
+    ["06","La Yuhibbullah","لَا يُحِبُّ اللَّهُ"],
+    ["07","Wa Iza Samiu","وَإِذَا سَمِعُوا"],
+    ["08","Wa Lau Annana","وَلَوْ أَنَّنَا"],
+    ["09","Qalal Mala'u","قَالَ الْمَلَأُ"],
+    ["10","Wa A'lamu","وَاعْلَمُوا"],
+    ["11","Ya'tazirun","يَعْتَذِرُونَ"],
+    ["12","Wa Ma Min Dabbah","وَمَا مِنْ دَابَّةٍ"],
+    ["13","Wa Ma Ubarri'u","وَمَا أُبَرِّئُ"],
+    ["14","Rubama","رُبَمَا"],
+    ["15","Subhanalladhi","سُبْحَانَ الَّذِي"],
+    ["16","Qala Alam","قَالَ أَلَمْ"],
+    ["17","Iqtaraba","اقْتَرَبَ"],
+    ["18","Qad Aflaha","قَدْ أَفْلَحَ"],
+    ["19","Wa Qalalladhina","وَقَالَ الَّذِينَ"],
+    ["20","A'man Khalaq","أَمَّنْ خَلَقَ"],
+    ["21","Utlu Ma Uhiya","اتْلُ مَا أُوحِيَ"],
+    ["22","Wa Man Yaqnut","وَمَنْ يَقْنُتْ"],
+    ["23","Wa Mali","وَمَا لِيَ"],
+    ["24","Faman Azlam","فَمَنْ أَظْلَمُ"],
+    ["25","Ilayhi Yuraddu","إِلَيْهِ يُرَدُّ"],
+    ["26","Ha Mim","حم"],
+    ["27","Qala Fama Khatbukum","قَالَ فَمَا خَطْبُكُمْ"],
+    ["28","Qad Sami Allah","قَدْ سَمِعَ اللَّهُ"],
+    ["29","Tabarakalladhi","تَبَارَكَ الَّذِي"],
+    ["30","Amma","عَمَّ"]
+  ];
+
+  reader.innerHTML = `
+    <div style="max-width:900px;margin:auto;">
+
+      <div style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:20px;
+      ">
+
+        <button
+          type="button"
+          onclick="openQuranSection('home')"
+          style="
+            padding:10px 14px;
+            border-radius:10px;
+            border:1px solid rgba(128,128,128,.3);
+            background:transparent;
+            color:inherit;
+          "
+        >
+          ← Back
+        </button>
+
+        <strong style="font-size:20px;">
+          30 Juz / Para
+        </strong>
+
+      </div>
+
+      <div style="
+        display:grid;
+        gap:8px;
+      ">
+
+        ${juzList.map(function(juz) {
+
+          return `
+            <button
+              type="button"
+              onclick="openSakinJuz('${juz[0]}')"
+              style="
+                width:100%;
+                text-align:left;
+                padding:15px;
+                border-radius:12px;
+                border:1px solid rgba(128,128,128,.22);
+                background:transparent;
+                color:inherit;
+                cursor:pointer;
+              "
+            >
+
+              <div style="
+                display:flex;
+                align-items:center;
+                gap:12px;
+              ">
+
+                <span style="
+                  min-width:36px;
+                  height:36px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  border-radius:50%;
+                  background:rgba(128,128,128,.12);
+                  font-size:12px;
+                ">
+                  Juz ${juz[0]}
+                </span>
+
+                <div style="flex:1;">
+
+                  <strong>
+                    Juz ${juz[0]}
+                  </strong>
+
+                  <div style="
+                    font-size:11px;
+                    color:var(--muted);
+                    margin-top:3px;
+                  ">
+                    ${juz[1]}
+                  </div>
+
+                </div>
+
+                <span style="
+                  font-size:19px;
+                  direction:rtl;
+                ">
+                  ${juz[2]}
+                </span>
+
+              </div>
+
+            </button>
+          `;
+
+        }).join("")}
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   JUZ READER ENTRY
+   ===================================================== */
+
+function openSakinJuz(juzNumber) {
+
+  var reader =
+    document.getElementById("sakin-quran-reader");
+
+  if (!reader) return;
+
+  reader.innerHTML = `
+    <div style="max-width:900px;margin:auto;">
+
+      <button
+        type="button"
+        onclick="openSakinQuranJuz()"
+        style="
+          padding:10px 14px;
+          border-radius:10px;
+          border:1px solid rgba(128,128,128,.3);
+          background:transparent;
+          color:inherit;
+          margin-bottom:20px;
+        "
+      >
+        ← Juz List
+      </button>
+
+      <div style="
+        text-align:center;
+        padding:25px 10px;
+      ">
+
+        <div style="
+          font-size:28px;
+          direction:rtl;
+          margin-bottom:10px;
+        ">
+          القرآن الكريم
+        </div>
+
+        <h2>
+          Juz ${juzNumber}
+        </h2>
+
+        <p style="
+          color:var(--muted);
+          font-size:13px;
+        ">
+          Juz / Para Reader
+        </p>
+
+      </div>
+
+      <div style="
+        padding:20px;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <strong>Reading options</strong>
+
+        <div style="
+          margin-top:12px;
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+          gap:8px;
+        ">
+
+          <button type="button">Arabic</button>
+          <button type="button">Bangla</button>
+          <button type="button">English</button>
+          <button type="button">Word-by-word</button>
+          <button type="button">Line-by-line</button>
+          <button type="button">Tafsir</button>
+          <button type="button">🔊 Audio</button>
+          <button type="button">🔖 Bookmark</button>
+
+        </div>
+
+      </div>
+
+      <div style="
+        margin-top:15px;
+        padding:20px;
+        text-align:center;
+        border-radius:14px;
+        border:1px solid rgba(128,128,128,.25);
+      ">
+
+        <div style="
+          color:var(--muted);
+          font-size:13px;
+        ">
+          Quran content will be loaded into this Juz reader.
+        </div>
+
+      </div>
+
+    </div>
+  `;
+
+}
   </script>
 
 </body>
