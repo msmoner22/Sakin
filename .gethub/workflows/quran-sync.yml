@@ -1,0 +1,260 @@
+name: SAKIN Quran Content Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  quran-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout SAKIN
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Sync Quran Foundation content
+        env:
+          QF_CLIENT_ID: ${{ secrets.QF_CLIENT_ID }}
+          QF_CLIENT_SECRET: ${{ secrets.QF_CLIENT_SECRET }}
+        run: |
+          python <<'PY'
+          import os
+          import json
+          import base64
+          import requests
+          from pathlib import Path
+
+          CLIENT_ID = os.environ["QF_CLIENT_ID"]
+          CLIENT_SECRET = os.environ["QF_CLIENT_SECRET"]
+
+          if not CLIENT_ID or not CLIENT_SECRET:
+              raise RuntimeError(
+                  "QF_CLIENT_ID or QF_CLIENT_SECRET is missing."
+              )
+
+          AUTH_URL = "https://oauth2.quran.foundation/oauth2/token"
+          API_BASE = "https://apis.quran.foundation/content/api/v4"
+
+          OUTPUT = Path("quran-data")
+          OUTPUT.mkdir(parents=True, exist_ok=True)
+
+          # ============================================
+          # 1. OAuth authentication
+          # ============================================
+
+          credentials = f"{CLIENT_ID}:{CLIENT_SECRET}".encode("utf-8")
+          basic_auth = base64.b64encode(credentials).decode("ascii")
+
+          token_response = requests.post(
+              AUTH_URL,
+              headers={
+                  "Authorization": f"Basic {basic_auth}",
+                  "Content-Type": "application/x-www-form-urlencoded",
+              },
+              data={
+                  "grant_type": "client_credentials",
+                  "scope": "content",
+              },
+              timeout=60,
+          )
+
+          token_response.raise_for_status()
+
+          token_data = token_response.json()
+          access_token = token_data["access_token"]
+
+          headers = {
+              "x-auth-token": access_token,
+              "x-client-id": CLIENT_ID,
+              "Accept": "application/json",
+          }
+
+          # ============================================
+          # 2. Quran resources
+          # ============================================
+
+          resources = (
+              "quran_core:1;"
+              "mushafs:1;"
+              "translations:19;"
+              "tafsirs:151;"
+              "word_by_word_translations:1"
+          )
+
+          # ============================================
+          # 3. Content synchronization
+          # ============================================
+
+          sync_url = f"{API_BASE}/resources/sync"
+
+          params = {
+              "bootstrap": "true",
+              "resources": resources,
+              "per_page": "100",
+          }
+
+          all_changes = []
+
+          while True:
+
+              response = requests.get(
+                  sync_url,
+                  headers=headers,
+                  params=params,
+                  timeout=120,
+              )
+
+              response.raise_for_status()
+
+              data = response.json()
+
+              changes = data.get("changes", [])
+              all_changes.extend(changes)
+
+              next_page_url = data.get("next_page_url")
+
+              if not next_page_url:
+                  break
+
+              sync_url = (
+                  "https://apis.quran.foundation/content"
+                  + next_page_url
+              )
+
+              params = {}
+
+          # ============================================
+          # 4. Save synchronization information
+          # ============================================
+
+          with (OUTPUT / "sync.json").open(
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  {
+                      "environment": "production",
+                      "resources": resources,
+                      "changes_count": len(all_changes),
+                      "changes": all_changes,
+                  },
+                  f,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          # ============================================
+          # 5. Download Quran resource snapshots
+          # ============================================
+
+          snapshots = {}
+
+          for change in all_changes:
+
+              snapshot_url = change.get("snapshot_url")
+
+              if not snapshot_url:
+                  continue
+
+              resource_group = change.get("resource_group")
+              resource_id = change.get("resource_id")
+
+              if not resource_group or not resource_id:
+                  continue
+
+              key = f"{resource_group}_{resource_id}"
+
+              if key in snapshots:
+                  continue
+
+              full_url = (
+                  "https://apis.quran.foundation/content"
+                  + snapshot_url
+              )
+
+              snapshot_response = requests.get(
+                  full_url,
+                  headers=headers,
+                  timeout=180,
+              )
+
+              snapshot_response.raise_for_status()
+
+              snapshot_data = snapshot_response.json()
+
+              snapshots[key] = snapshot_data
+
+              safe_name = (
+                  f"{resource_group}_{resource_id}.json"
+              )
+
+              with (OUTPUT / safe_name).open(
+                  "w",
+                  encoding="utf-8"
+              ) as f:
+
+                  json.dump(
+                      snapshot_data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2,
+                  )
+
+          # ============================================
+          # 6. Create Quran data manifest
+          # ============================================
+
+          manifest = {
+              "name": "Sakin Quran Data",
+              "version": 1,
+              "environment": "production",
+              "resources": list(snapshots.keys()),
+          }
+
+          with (OUTPUT / "manifest.json").open(
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  manifest,
+                  f,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          print("======================================")
+          print("SAKIN QURAN SYNC COMPLETED")
+          print("Resources:", len(snapshots))
+          print("Changes:", len(all_changes))
+          print("======================================")
+          PY
+
+      - name: Commit Quran data
+        run: |
+          git config user.name "Sakin Quran Sync"
+          git config user.email "actions@github.com"
+
+          git add quran-data/
+
+          if git diff --cached --quiet; then
+            echo "No Quran content changes."
+          else
+            git commit -m "Sync Quran Foundation content"
+            git push
+          fi
