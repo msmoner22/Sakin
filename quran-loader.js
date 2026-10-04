@@ -8,7 +8,7 @@
     const FILES = [
         "./quran-mushaf.js",
         "./quran-offline.js",
-        "./sakin-quran-api.js",
+        "./quran-api.js",
         "./quran-data-loader.js",
         "./quran-engine.js"
     ];
